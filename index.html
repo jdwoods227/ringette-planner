@@ -178,6 +178,10 @@ svg.rink{display:block}
 .pprog{font-size:7.8pt;color:#334155}
 .sheet.dense .prow{max-height:1.12in}.sheet.dense .pd svg{height:.98in;width:1.75in}.sheet.dense .prow{grid-template-columns:.55in 1.75in 1fr}.sheet.dense .psetup{font-size:7.8pt}
 .sheet.dense2 .prow{max-height:.86in}.sheet.dense2 .pd svg{height:.76in;width:1.4in}.sheet.dense2 .prow{grid-template-columns:.5in 1.4in 1fr}.sheet.dense2 .psetup{display:none}
+/* shrink-to-fit steps applied by fitSheetRows() when a drill's text is too long for its row */
+.prow.fit1 .psetup{font-size:7.5pt;line-height:1.22}.prow.fit1 .pcues{font-size:7.8pt;line-height:1.22}.prow.fit1 .pprog{font-size:7.2pt;line-height:1.2}
+.prow.fit2 .psetup{font-size:7pt;line-height:1.16}.prow.fit2 .pcues{font-size:7.2pt;line-height:1.16}.prow.fit2 .pprog{font-size:6.8pt;line-height:1.15}.prow.fit2 .pname b{font-size:9.5pt}
+.prow.fit3 .psetup{font-size:6.5pt;line-height:1.12}.prow.fit3 .pcues{font-size:6.7pt;line-height:1.12}.prow.fit3 .pprog{font-size:6.3pt;line-height:1.1}.prow.fit3 .pname b{font-size:9pt}
 .pf{border-top:1px solid #94a3b8;padding-top:.05in;margin-top:.05in;font-size:8pt}
 .pf .legend svg{width:3.6in;height:auto}
 .pnotes{margin:.03in 0}
@@ -241,7 +245,7 @@ svg.rink{display:block}
       <label class="lts-only">Skaters expected <input id="f-skaters" type="number" min="0" max="60" inputmode="numeric" placeholder="e.g. 14"></label>
       <label class="lts-only">Coaches/helpers on ice <input id="f-coaches" type="number" min="0" max="20" inputmode="numeric" placeholder="e.g. 3"></label>
     </div>
-    <p class="lts-only small muted" style="margin:.5rem 0 0">Ratio guide: 1 on-ice coach or helper per 4–6 skaters (1 per 3–4 for first-timers); never more than 1:8. Every skater and on-ice helper wears a CSA-certified helmet with chin strap done up.</p>
+    <p class="lts-only small muted" style="margin:.5rem 0 0">Ratio (the planner's own rule of thumb): 1 on-ice coach or helper per 4–6 skaters (1 per 3–4 for first-timers); never more than 1:8. Skate Canada CanSkate requires at least 1 per 10 (1 per 5 is better practice). Every skater: CSA hockey helmet, chin strap fastened, CSA Type A/B ringette facial protector, neck protector. On-ice coaches and helpers must wear helmets (masks not required).</p>
     <div class="actions"><button class="btn primary big" id="btn-build">⚡ Auto-build plan</button></div>
   </div>
 
@@ -290,7 +294,7 @@ svg.rink{display:block}
 <!-- GUIDE & DATA -->
 <section class="panel" id="tab-guide" hidden>
   <div class="card prose lts-only">
-    <h2>Learn to Skate (U7/U8 Active Start) – the planner's rules of thumb</h2>
+    <h2>Learn to Skate (Active Start / FUNdamentals, first-time skaters) – the planner's rules of thumb</h2>
     <ul>
       <li><b>Fun first.</b> Games, stories and silly names ("pizza stop", "make lemons", "bear, knight, stand"). Every practice ends with a game they'll talk about at home.</li>
       <li><b>Minimal lining up.</b> The auto-builder targets <b>under 15% of time in lines</b>: everyone-at-once drills, waves of 4–5 across the width of the ice, and 3–4 short stations (3–4 min each) with a coach at each.</li>
@@ -302,13 +306,14 @@ svg.rink{display:block}
     </ul>
     <h2>Safety &amp; ratios</h2>
     <ul>
-      <li><b>Helmets on, always.</b> CSA-certified helmet with a face mask, chin strap snug (one finger under it), gloves on – for every skater on the ice. Check helmets in the warm-up; re-check after falls.</li>
-      <li><b>Coach-to-skater ratio.</b> Aim for <b>1 on-ice coach or helper per 4–6 skaters</b>, and 1 per 3–4 for first-timers or very nervous skaters. Above 1:8, split the group or get more helpers. Enter skaters and coaches on the Plan tab and the planner checks it.</li>
-      <li><b>On-ice helpers</b> (parents, older players) wear helmets too and must meet your association's screening rules.</li>
+      <li><b>Helmets and gear, always.</b> Every skater: <b>CSA hockey helmet, chin strap fastened</b> (one finger under it), <b>CSA Type A/B ringette facial protector</b>, <b>neck protector</b> (rule 5.6) and gloves. Goalies: Type A/B or a Type C goalie facial protector (rule 5.10.d). Check gear in the warm-up; re-check after falls.</li>
+      <li><b>Coach-to-skater ratio – the planner's own rule of thumb.</b> Aim for <b>1 on-ice coach or helper per 4–6 skaters</b>, and 1 per 3–4 for first-timers or very nervous skaters; never over 1:8 – split the group or get more helpers. These numbers are this planner's guidance, not a Ringette Canada rule. For comparison, Skate Canada's CanSkate delivery standard is a minimum of 1 coach/helper per 10 skaters, with 1 per 5 as better practice. Enter skaters and coaches on the Plan tab and the planner checks it.</li>
+      <li><b>On-ice coaches and helpers must wear a helmet</b> (Ringette Canada policy OP-05); a facial protector is not required for them.</li>
+      <li><b>Helper screening.</b> Follow the <b>Rule of Two</b> (two screened adults present – never one adult alone with a child, out of sight). Anyone on the ice as a coach or helper (parents, older players) completes <b>Respect in Sport</b>, and gets a <b>police check</b> as your association requires. Ringette Ontario's Screening Policy sets which checks apply to which role – follow it rather than this planner.</li>
       <li><b>Space and direction.</b> Everyone skates the same way in waves; keep the gate and boards clear; no sticks above the knees; no pushing or body contact.</li>
       <li><b>Watch for cold, tired or upset skaters</b> – a short water break or a coach-helper buddy usually fixes it.</li>
     </ul>
-    <p class="small muted">Ratios, helmet and face-mask rules and helper screening vary by association. Check Ringette Canada's Active Start / learn-to-skate resources and your local association's requirements.</p>
+    <p class="small muted">Ratio, equipment and screening requirements can change and vary by association – check your local association. Sources (plain-text references, not fetched by this page): Ringette Canada Official Rules &amp; Case Book 2025–2027 (rules 5.6, 5.10.d) – https://www.ringette.ca/wp-content/uploads/2025/09/Final-Draft-Official-Rules-and-Case-Book-2025-2027-English-5.5x8.5-sm-1.pdf · Ringette Canada Policy OP-05 (coaching certification) – https://www.ringette.ca/wp-content/uploads/2025/06/PolicyOP-05_2025__CoachingCertification_EN.pdf · Skate Canada CanSkate requirements and delivery standards – https://info.skatecanada.ca/index.php/en-ca/procedures/394-canskate-requirements-and-delivery-standards.html · Ringette Ontario Screening Policy (2025) – https://cloud.rampinteractive.com/ringetteontariogames/files/Policies/2025/SCREENING%20POLICY.pdf (also on ringetteontario.com → Safe Sport).</p>
   </div>
   <div class="card prose u10-only">
     <h2>Learn to Train at U10 – the planner's rules of thumb</h2>
@@ -324,13 +329,14 @@ svg.rink{display:block}
     </ul>
     <h2>Ringette rules to teach (and the drills that teach them)</h2>
     <ul>
-      <li><b>Blue lines:</b> the ring can't be carried over a blue line – it must be passed across and played by a different player. <i>Blue-Line Pass Relay, Neutral Zone Pass-Through, 4v4 Half-Ice with Blue-Line Rule.</i></li>
+      <li><b>Blue lines:</b> the ring can't be carried over a blue line – it must be passed across and played by a different player. <b>One blue line per pass</b>: a pass can't cross two blue lines, so a player in the neutral zone must play it. <i>Blue-Line Pass Relay, Neutral Zone Pass-Through, 4v4 Half-Ice with Blue-Line Rule.</i></li>
       <li><b>Free pass:</b> play starts and restarts with a free pass; the taker has 5 seconds and must pass the ring out of the free-pass circle (not skate it out). <i>Free-Pass Fundamentals, Free-Pass Options, Whistle &amp; Restart Scrimmage.</i></li>
-      <li><b>Goal crease:</b> only the goalie may play the ring in the crease; skaters (and their sticks) stay out. The goalie clears it by passing or throwing it out. <i>Crease Rules Game, Goalie Outlet Throw.</i></li>
-      <li><b>Three-skater rule:</b> only three skaters per team in an end zone (plus the goalie). <i>Three-in-the-Zone Game.</i></li>
+      <li><b>Goal crease:</b> only the goalie may play the ring in the crease; skaters (and their sticks) stay out. The goalie clears it by passing or throwing it out within 5 seconds (check the current rulebook for how far the goalie may throw it). <i>Crease Rules Game, Goalie Outlet Throw.</i></li>
+      <li><b>Three-skater rule:</b> only three skaters per team (plus the goalie) may be past the <b>free-play line</b> – the line just inside each blue line that touches the tops of the end circles. It is not the whole end zone: a 4th player waits outside the free-play line. (A team that pulls its goalie may send the extra skater in.) <i>Three-in-the-Zone Game.</i></li>
       <li><b>Safety:</b> no body contact; controlled stick checks only – no slashing, hooking or high sticks.</li>
+      <li><b>Equipment:</b> CSA hockey helmet, chin strap fastened, CSA Type A/B ringette facial protector and a neck protector (rule 5.6) for every player. Goalies: Type A/B or a Type C goalie facial protector (rule 5.10.d). On-ice coaches and helpers must wear helmets (Ringette Canada OP-05); masks are not required for them.</li>
     </ul>
-    <p class="small muted">Rule details and U10 modifications (shot clock, game format, ice size) change between seasons and associations. Check the current Ringette Canada rulebook and Ringette Ontario / your local association's U10 guidelines before teaching them.</p>
+    <p class="small muted">Rule details and U10 modifications (shot clock, game format, ice size) change between seasons and associations. Check the current Ringette Canada rulebook and Ringette Ontario / your local association's U10 guidelines before teaching them. Sources (plain-text references): Simplified Rules of Ringette – https://cloud.rampinteractive.com/apringette/files/Coaching/Simplified%20Rules%20of%20Ringette.pdf · 2019–2021 Rule Changes summary – https://cloud.rampinteractive.com/apringette/files/Coaching/2019%20-%202021%20Rule%20Changes%2C%20summary.pdf · Official Rules &amp; Case Book 2025–2027 – https://www.ringette.ca/wp-content/uploads/2025/09/Final-Draft-Official-Rules-and-Case-Book-2025-2027-English-5.5x8.5-sm-1.pdf · Policy OP-05 – https://www.ringette.ca/wp-content/uploads/2025/06/PolicyOP-05_2025__CoachingCertification_EN.pdf</p>
   </div>
   <div class="card prose">
     <h3>Diagram legend</h3>
@@ -408,8 +414,8 @@ var DRILLS = [
  reg:["Coaches are the only taggers","Walk-skate speed only for the first round"],
  dia:"v half; X 120,20; X 145,62; X 165,28; X 178,58; X 132,45; X 152,14; X 160,46; s 120,20 135,30 150,24; s 145,62 160,72 172,66; s 178,58 168,48; s 132,45 116,58; s 152,14 172,10"},
 {id:"wu-sharks", name:"Sharks & Minnows with Rings", cat:"warmup", focus:"Ring carrying under pressure, agility", dur:7, area:"half", players:"All skaters (2 sharks)", wait:0.1, tags:["carrying"],
- setup:"Minnows line up on one side boards each with a ring. Two sharks (no rings) start in the middle. On 'Go!' minnows carry their ring to the far boards. Sharks lift sticks or knock rings away; caught minnows become sharks.",
- cues:["Keep the ring tight to your skates","Head up – look for space, not the ring","Change speed to beat the shark"],
+ setup:"Minnows line up on one side boards each with a ring. Two sharks (no rings) start in the middle. On 'Go!' minnows carry their ring to the far boards. Sharks may only lift a minnow's stick (no knocking or slashing at rings) and every stick stays below the knees. A minnow who loses the ring picks it up and keeps going; pick 2 new sharks each round.",
+ cues:["Sticks below the knees – lift, don't knock","Keep the ring tight to your skates","Head up – look for space, not the ring","Change speed to beat the shark"],
  prog:["Must cross through a cone gate in the middle","Sharks get sticks; minnows must protect with body position"],
  reg:["Sharks only tag (no stick checks)","Minnows may go without rings"],
  dia:"v half; X 112,7; X 130,7; X 148,7; X 166,7; X 184,7; O 140,42 S; O 168,40 S; k 112,7 118,78; k 148,7 156,78; k 184,7 176,78; t 150,83 SAFE"},
@@ -475,12 +481,12 @@ var DRILLS = [
  prog:["Stop facing the other way each time","Carry a ring through the ladder"],
  reg:["Snowplow stops","Shorter ladder (goal line – blue line only)"],
  dia:"v full; X 12,15; X 12,30; X 12,45; X 12,60; s 12,22 73,22; s 73,30 14,30; s 14,38 98,38; d 75,0 75,85; t 75,8 STOP; t 100,8 STOP"},
-{id:"sk-backward", name:"Backward C-Cuts Race", cat:"skating", focus:"Backward skating, C-cuts", dur:6, area:"half", players:"Waves of 4", wait:0.3, tags:["skating"],
- setup:"Waves of 4 start on the goal line facing the coach. Skate backward with C-cuts to the blue line, pivot forward, sprint back.",
+{id:"sk-backward", name:"Backward C-Cuts Waves", cat:"skating", focus:"Backward skating, C-cuts", dur:6, area:"half", players:"Waves of 4", wait:0.3, tags:["skating"],
+ setup:"Not a race – everyone goes at their own controlled pace. Waves of 4, spread across the ice, start on the goal line. A coach stands at the far end (blue line) to watch and stop skaters. Skate backward with C-cuts to the coach, stop, then skate forward back down the side boards. Leave space between waves: the next wave starts when the one in front passes the top of the circles.",
  cues:["Sit low, back straight","Make a 'C' with each foot – push out and pull in","Look over your shoulder for the line"],
- prog:["Carry a ring backward","Add a pivot at the top of the circle"],
+ prog:["Carry a ring backward","Add a pivot at the top of the circle (still not a race)"],
  reg:["Hold the stick across the knees for posture","Two-foot 'hourglass' (out-in-out-in) only"],
- dia:"v half; X 186,15; X 186,32; X 186,50; X 186,68; b 186,15 128,15; b 186,32 128,32; b 186,50 128,50; d 125,0 125,85; C 115,42"},
+ dia:"v half; X 186,15; X 186,32; X 186,50; X 186,68; b 186,15 132,15; b 186,32 132,32; b 186,50 132,50; b 186,68 132,68; C 128,42; t 128,52 COACH"},
 {id:"sk-pivots", name:"Pivot Turns Pattern", cat:"skating", focus:"Forward-to-backward pivots", dur:7, area:"half", players:"2 lines", wait:0.3, tags:["skating"],
  setup:"Cones in a zig-zag up the ice. Skate forward to cone 1, pivot to backward, skate backward to cone 2, pivot forward, etc. Two lines, one from each corner.",
  cues:["Open hips – turn on the balls of your feet","Stay low through the turn","Stick on the ice, eyes up-ice"],
@@ -494,11 +500,11 @@ var DRILLS = [
  reg:["Wide turns around cones instead of dots"],
  dia:"v half; c 150,20 150,64 125,20 125,64; X 112,42; X 106,42; s 112,42 145,24 154,18 150,26 128,64 122,68 124,58 148,62 152,70 152,62 128,22 120,16 118,24 108,40"},
 {id:"sk-obstacle", name:"Obstacle Course Agility", cat:"skating", focus:"Agility, balance, recovery", dur:8, area:"third", players:"1 line, staggered starts", wait:0.25, tags:["skating"],
- setup:"Course: jump over a stick laid on cones → crawl under a stick → knee-drop at a cone and get up → two-foot hops over lines → slalom → sprint. Start the next player when the previous reaches the 2nd obstacle.",
+ setup:"Course: two-foot hop over a stick lying flat on the ice (never higher than ankle height) → low-crouch glide through a narrow cone gate → knee-drop at a cone and get up → two-foot hops over lines → slalom → sprint. Start the next player when the previous reaches the 2nd obstacle.",
  cues:["Get up fast – push off one knee","Land soft, knees bent","Keep moving your feet"],
  prog:["Carry a ring through the whole course","Time it – beat your own time"],
- reg:["Remove the crawl station","Coach helps at stations"],
- dia:"v end; c 140,15 146,15; c 160,15 166,15; c 180,30; c 175,50 165,58 155,50 145,58; X 128,15; X 124,15; s 128,15 140,10 165,10 185,22 182,36 175,46 165,62 155,46 145,62 130,72; t 143,22 JUMP; t 163,22 CRAWL; t 188,30 KNEE"},
+ reg:["Step over the stick instead of hopping","Coach helps at stations"],
+ dia:"v end; d 139,15 147,15; c 160,15 166,15; c 180,30; c 175,50 165,58 155,50 145,58; X 128,15; X 124,15; s 128,15 140,10 165,10 185,22 182,36 175,46 165,62 155,46 145,62 130,72; t 143,22 HOP; t 163,22 CROUCH; t 188,30 KNEE"},
 {id:"sk-quickstart", name:"Crossover Starts", cat:"skating", focus:"Quick starts, first 3 strides", dur:6, area:"half", players:"Waves of 4–5", wait:0.3, tags:["skating"],
  setup:"Players stand sideways on a line. On the whistle, crossover start (cross the back foot over) and sprint 5 strides to the next line. Do both directions.",
  cues:["Cross over, then drive the back leg","Short, quick, choppy strides","Low and forward body lean"],
@@ -518,7 +524,7 @@ var DRILLS = [
  reg:["Larger 8, step-overs only"],
  dia:"v end; c 145,42 175,42; X 160,42; s 160,42 170,33 182,38 180,50 168,52 160,42 150,33 138,38 138,48 150,52 160,42"},
 {id:"sk-power", name:"Power Strides – Tire Pull", cat:"skating", focus:"Full stride extension, power", dur:5, area:"half", players:"Pairs", wait:0.1, tags:["skating"],
- setup:"Partner A holds one end of a stick, partner B holds the other end and resists (glide/snowplow) while A strides across the ice. Switch at the boards.",
+ setup:"Partner A holds one end of a towel or short rope (not a shared stick), partner B holds the other end and resists (glide/snowplow) while A strides across the ice. Switch at the boards.",
  cues:["Push to full leg extension","Recover the foot under the body","Low knee bend, chest up"],
  prog:["Partner adds light resistance with snowplow"],
  reg:["No resistance – just long strides counting pushes"],
@@ -588,7 +594,7 @@ var DRILLS = [
 
 /* ---------- RING CARRYING ---------- */
 {id:"ca-protect", name:"Ring Protection Circle", cat:"carrying", focus:"Protecting the ring with body position", dur:7, area:"third", players:"Pairs inside circles", wait:0.0, tags:["carrying","game"],
- setup:"Pairs inside a face-off circle. One carries the ring, the other tries to lift the stick or knock the ring out. 20 seconds, then switch. Must stay inside the circle.",
+ setup:"Pairs inside a face-off circle. One carries the ring, the other tries to lift the carrier's stick (stick lifts only – no knocking the ring, sticks below the knees). 20 seconds, then switch. Must stay inside the circle.",
  cues:["Body between the checker and the ring","Ring on the far side of your body","Keep your feet moving"],
  prog:["2v1 checkers","Must carry with backhand side only"],
  reg:["Checker uses stick only to touch, not lift"],
@@ -600,8 +606,8 @@ var DRILLS = [
  reg:["Wider spacing, 4 cones"],
  dia:"v half; c 120,20 130,20 140,20 150,20 160,20; c 120,42 130,42 140,42 150,42 160,42; c 120,64 130,64 140,64 150,64 160,64; X 108,20; X 108,42; X 108,64; k 108,42 120,38 130,46 140,38 150,46 160,38 175,42"},
 {id:"ca-keep", name:"Keep Your Ring (Stick-Lift Tag)", cat:"carrying", focus:"Protecting the ring, lifting sticks", dur:6, area:"half", players:"All, everyone with a ring", wait:0.02, tags:["carrying","game"],
- setup:"Everyone has a ring in the half or third. Protect yours while trying to lift other players' sticks to make them lose their ring. If you lose it, pick up any free ring and keep going. Count how many rings you knock loose.",
- cues:["Lift the stick from underneath, don't slash","Heads up – protect and attack","Fast feet, small area"],
+ setup:"Everyone has a ring in the half or third. Protect yours while trying to lift other players' sticks to make them lose their ring – stick lifts only (no knocking, slashing or hitting rings) and sticks stay below the knees. If you lose it, pick up any free ring and keep going. Count how many sticks you lift.",
+ cues:["Stick lifts only – from underneath, no knocking","Sticks below the knees","Heads up – protect and attack","Fast feet, small area"],
  prog:["Shrink the area","Lost ring = do 3 stick handles before rejoining"],
  reg:["Only coaches check"],
  dia:"v half; X 120,20; X 140,55; X 160,30; X 175,65; X 135,30; X 185,45; X 150,72; k 120,20 132,12; k 160,30 170,20; k 140,55 128,62; k 185,45 176,38"},
@@ -624,11 +630,11 @@ var DRILLS = [
  reg:["Stationary switches first"],
  dia:"v half; X 110,15; X 110,35; X 110,55; X 110,75; k 110,15 175,15; k 110,35 175,35; k 110,55 175,55; k 110,75 175,75; t 130,8 FH; t 150,8 BH; t 170,8 FH"},
 {id:"ca-escape", name:"Escape the Corner 1v1", cat:"carrying", focus:"Protecting the ring, escaping pressure", dur:8, area:"third", players:"Pairs from 2 corners", wait:0.3, tags:["carrying","game"],
- setup:"Coach dumps a ring into the corner. Attacker races to it, defender follows. Attacker must escape the corner and carry/shoot; defender tries to lift and clear past the circle top.",
- cues:["Turn away from pressure","Protect with your body and a wide base","Burst out when you see space"],
+ setup:"Coach dumps a ring into the corner. Staggered start: the attacker goes first, the defender starts 2 seconds later. Both approach the corner at an angle – never straight into the boards. Attacker must escape the corner and carry/shoot; defender tries to lift the stick and clear past the circle top. Coach stops play on any contact (body or boards).",
+ cues:["Approach the corner at an angle, not straight in","Turn away from pressure","Protect with your body and a wide base","Burst out when you see space"],
  prog:["2v1 in the corner","Add a 'pass out to point' option"],
- reg:["Defender starts a stick-length behind"],
- dia:"v end; C 140,8; r 192,10; X 150,15; O 145,22; s 150,15 186,10; s 145,22 180,15; k 186,10 175,24 175,35; h 175,35 186,42"},
+ reg:["Defender starts 3–4 seconds behind and only shadows (no stick lifts)"],
+ dia:"v end; C 140,8; r 186,12; X 150,15; O 136,26; s 150,15 172,24 184,15; s 136,26 162,30 174,24; k 186,10 175,24 175,35; h 175,35 186,42"},
 {id:"ca-speed", name:"Speed Carry Relay", cat:"carrying", focus:"Ring control at full speed", dur:6, area:"half", players:"4 teams", wait:0.45, tags:["carrying"],
  setup:"Teams of 3–4 line up on the boards. First player carries around a cone at the far side and back, passes the ring to the next player (handoff over the start line). Keep relays short so lines stay small.",
  cues:["Push the ring out in front for speed","Control around the cone – slow down a bit","Clean pass to the next teammate"],
@@ -688,8 +694,8 @@ var DRILLS = [
 
 /* ---------- FREE PASS & BLUE LINES (RULES) ---------- */
 {id:"ru-blueline", name:"Blue-Line Pass Relay", cat:"rules", focus:"Ring must be passed over each blue line", dur:8, area:"full", players:"Groups of 3 per lane", wait:0.25, tags:["rules","passing"],
- setup:"Lanes of 3 players: one in each zone (end, neutral, end). The ring must travel the length of the ice by passing over each blue line – no carrying across! Rotate positions each run.",
- cues:["You can't skate the ring over the blue line – pass it","A different player must play it on the other side","Receiver: stick on the ice, ready"],
+ setup:"Lanes of 3 players: one in each zone (end, neutral, end). The ring must travel the length of the ice by passing over each blue line – no carrying across, and one blue line per pass: a pass can't cross two blue lines, so the neutral-zone player must play it. Rotate positions each run.",
+ cues:["You can't skate the ring over the blue line – pass it","One blue line per pass – the neutral-zone player must play it","Receiver: stick on the ice, ready"],
  prog:["Race lanes against each other","Add a defender in the middle zone"],
  reg:["Coach walks through the rule first"],
  dia:"v full; X 40,20; X 100,20; X 160,20; p 50,20 98,20; p 102,22 158,22; X 40,62; X 100,62; X 160,62; p 50,62 98,62; d 75,0 75,85; d 125,0 125,85; t 75,82 BLUE; t 125,82 BLUE"},
@@ -700,17 +706,17 @@ var DRILLS = [
  reg:["No defenders"],
  dia:"v end; C 150,10; X 169,20; r 169,20; X 145,35; X 185,6; O 160,30; p 170,21 145,34; s 145,35 135,40"},
 {id:"ru-fpoptions", name:"Free-Pass Options", cat:"rules", focus:"Decision-making on restarts", dur:8, area:"half", players:"Groups of 4", wait:0.25, tags:["rules","passing","teamplay"],
- setup:"Teach 3 free-pass options at the centre or an end circle: (1) short pass to the closest player, (2) long pass up the boards across the blue line, (3) back pass to a support player. Coach calls the number, then players choose.",
- cues:["Know your option BEFORE the whistle","Support player stays behind the taker","Long pass must be played by a teammate over the line"],
+ setup:"Teach 3 free-pass options at the centre or an end circle: (1) short pass to the closest player, (2) longer pass up the boards across ONE blue line only – from an end circle, a teammate in the neutral zone must play it (a pass can't cross two blue lines), (3) back pass to a support player. Coach calls the number, then players choose.",
+ cues:["Know your option BEFORE the whistle","Support player stays behind the taker","One blue line per pass – a neutral-zone player must play it"],
  prog:["Add defenders who guess the option","Options by hand signals only"],
  reg:["One option per rep"],
- dia:"v half; X 105,42; r 105,42; X 115,30; X 140,10; X 90,55; p 106,41 114,31; p 106,40 139,11; p 104,43 91,54; t 116,24 1; t 142,4 2; t 88,62 3"},
-{id:"ru-3player", name:"Three-in-the-Zone Game", cat:"rules", focus:"3-skater zone rule, spacing", dur:10, area:"full", players:"Two teams of 4–5", wait:0.15, tags:["rules","game","teamplay"],
- setup:"Small-sided scrimmage where only 3 skaters per team may be in each end zone (plus goalie). Coaches call out a 'zone count' – if a 4th player enters, that's a free pass to the other team.",
- cues:["Count your teammates in the zone","4th player: wait at the blue line for the pass","Spread out – 3 different places"],
- prog:["Normal ringette rules with shot clock on coach watch"],
+ dia:"v mid; X 100,42; r 100,42; X 113,58; X 128,14; X 84,28; p 102,44 111,56; p 102,40 126,16; p 98,40 86,30; t 113,67 1; t 128,8 2; t 84,22 3"},
+{id:"ru-3player", name:"Three-in-the-Zone Game", cat:"rules", focus:"3-skater rule past the free-play line, spacing", dur:10, area:"full", players:"Two teams of 4–5", wait:0.15, tags:["rules","game","teamplay"],
+ setup:"Small-sided scrimmage teaching the three-skater rule: only 3 skaters per team (plus the goalie) may be past the free-play line – the line just inside each blue line touching the tops of the end circles (mark it with cones if the rink has no line). Coaches call out a 'zone count' – if a 4th player crosses the free-play line, that's a free pass to the other team.",
+ cues:["Count your teammates past the free-play line","4th player waits outside the free-play line","Spread out – 3 different places"],
+ prog:["Normal ringette rules with shot clock on coach watch","Pull a goalie: that team may send a 4th skater past the free-play line"],
  reg:["Stop play and freeze to count players"],
- dia:"v full; G 186,42; G 14,42; X 150,20; X 165,60; X 175,35; X 120,42; O 160,45; O 140,30; O 180,70; O 100,60; d 125,0 125,85; d 75,0 75,85; t 120,50 WAIT"},
+ dia:"v full; d 154,0 154,85; d 46,0 46,85; G 186,42; G 14,42; X 163,18; X 166,62; X 176,36; X 143,44; O 160,52; O 180,22; O 181,66; O 100,60; p 173,37 146,43; t 143,52 WAIT; t 154,83 FREE-PLAY; t 46,83 FREE-PLAY"},
 {id:"ru-crease", name:"Crease Rules Game", cat:"rules", focus:"Goalie crease rules", dur:7, area:"third", players:"3v3 + goalie", wait:0.15, tags:["rules","goalie","game"],
  setup:"3v3 in one zone. Goalie can play the ring anywhere; skaters can't enter or reach into the crease. If the ring stops in the crease, only the goalie can play it (5 seconds) – they pass or throw it to a teammate.",
  cues:["Skaters: stay out of the crease, sticks too","Goalie: clear the ring within 5 seconds","Get open for the goalie's outlet"],
@@ -730,7 +736,7 @@ var DRILLS = [
  reg:["Stationary passes over the lines"],
  dia:"v full; G 186,42; X 55,30; X 100,20; X 140,30; p 56,30 99,21; p 101,21 139,30; s 140,30 165,38; h 165,38 186,42; d 75,0 75,85; d 125,0 125,85"},
 {id:"ru-goalieout", name:"Goalie Outlet Throw", cat:"rules", focus:"Goalie clears, getting open for outlet", dur:6, area:"half", players:"Goalie + 4 skaters", wait:0.3, tags:["rules","goalie","passing"],
- setup:"Coach shoots on goalie. Goalie gains control, then throws or passes the ring to a teammate who has moved to the side boards. Teammate carries to the blue line and passes over it to the coach.",
+ setup:"Coach shoots on goalie. Goalie gains control, then within 5 seconds throws or passes the ring to a teammate who has moved to the side boards (check the current rulebook for how far the goalie may throw). Teammate carries to the blue line and passes over it to the coach.",
  cues:["Goalie: control, look, throw","Skaters: get to the boards fast, show a target","Pass over the blue line, don't carry it"],
  prog:["Add a forechecker"],
  reg:["Goalie rolls the ring along the ice"],
@@ -763,7 +769,7 @@ var DRILLS = [
  dia:"v half; z 100,0,14,85; z 186,0,14,85; X 130,30; X 150,60; X 170,20; X 190,50; O 120,50; O 160,40; O 175,65; O 106,20; p 171,21 190,48"},
 {id:"ga-4v4half", name:"4v4 Half-Ice with Blue-Line Rule", cat:"game", focus:"Game play with ringette rules", dur:15, area:"half", players:"4v4 + goalies", wait:0.15, tags:["game","rules","teamplay"],
  setup:"4v4 in half ice with one net. When a team gains possession it must pass the ring back over the blue line (to a teammate) before attacking. Change shifts every 90 seconds.",
- cues:["Win the ring → pass it out over the line","Support the passer","3 skaters max in the zone"],
+ cues:["Win the ring → pass it out over the line","Support the passer","Max 3 skaters past the free-play line"],
  prog:["Add the 30-second clock (coach count)"],
  reg:["Clearing the ring by carrying is OK for the first round"],
  dia:"v half; G 186,42; X 150,25; X 160,60; X 135,40; X 118,70; O 165,35; O 155,50; O 140,20; O 170,70; p 136,41 120,68; d 125,0 125,85"},
@@ -818,13 +824,13 @@ var DRILLS = [
  reg:["Shuffles without equipment, slow"],
  dia:"v end; G 186,42; C 160,42; s 186,42 184,34; s 186,42 184,50; t 160,34 points"},
 {id:"go-downup", name:"Down & Up Recovery", cat:"goalie", focus:"Getting up quickly, balance", dur:5, area:"third", players:"Goalies", wait:0.1, tags:["goalie"],
- setup:"Goalie drops to the knees (butterfly-type) on the whistle and recovers to the stance as fast as possible. Then saves a low shot from the coach after each recovery.",
+ setup:"Padded goalies only: drop to the knees (butterfly-type) on the whistle and recover to the stance as fast as possible, then save a low shot from the coach after each recovery. Players without full goalie pads (e.g. skaters taking a turn in net) do stance and shuffle only – no knee drops.",
  cues:["Push up with one leg, the other plants","Eyes on the ring during recovery","Get square again"],
  prog:["Second shot after recovery"],
- reg:["Recovery without a shot"],
+ reg:["No full pads: stance and side shuffles only – no knee drops","Recovery without a shot"],
  dia:"v end; G 186,42; C 155,42; h 156,42 184,44; t 186,58 DOWN-UP"},
 {id:"go-throw", name:"Goalie Clears: Throw & Pass", cat:"goalie", focus:"Controlling and clearing the ring", dur:6, area:"half", players:"Goalie + 3 skaters", wait:0.2, tags:["goalie","passing"],
- setup:"Coach shoots a soft shot. Goalie traps it, then throws the ring (frisbee style) or passes with the stick to a skater on the boards within 5 seconds.",
+ setup:"Coach shoots a soft shot. Goalie traps it, then throws the ring (frisbee style) or passes with the stick to a skater on the boards within 5 seconds. Throw distance limits: check the current rulebook.",
  cues:["Trap and control first","Look at your target before you throw","Throw flat and low to the stick"],
  prog:["Two targets – goalie picks the open one"],
  reg:["Roll/slide the ring to a close target"],
@@ -875,13 +881,13 @@ var DRILLS = [
  dia:"v full; r 40,30; r 120,60; r 160,20; X 60,40; X 140,50; X 100,30; k 40,30 100,2; k 120,60 100,4; t 100,10 BENCH"}
 ];
 
-/* ===== LEARN TO SKATE LIBRARY (U7/U8 Active Start, first-time and weak skaters) =====
+/* ===== LEARN TO SKATE LIBRARY (Active Start / FUNdamentals, first-time and weak skaters) =====
    Same format as DRILLS; each entry gets lvl:"lts" below. Keep groups tiny, reps high, lines short. */
 var LTS_DRILLS = [
 /* ---------- WARM-UPS ---------- */
 {id:"lts-wu-helmet", name:"Helmet Check & Wiggle Warm-up", cat:"warmup", focus:"Equipment check, body awareness", dur:5, area:"third", players:"All skaters around a coach", wait:0.05, tags:["balance"],
- setup:"Skaters make a circle around a coach. Coaches walk the circle and check every helmet: buckled, snug (one finger under the chin strap), face mask on, gloves on. Then everyone wiggles toes, marches on the spot, does 5 small knee bends and makes a 'superhero pose' (ready position).",
- cues:["Helmet buckled – one finger under the strap","Gloves on, fingers curled","Knees soft, hands out front like a superhero"],
+ setup:"Skaters make a circle around a coach. Coaches walk the circle and check every skater: CSA hockey helmet on and snug, chin strap fastened (one finger under it), CSA Type A/B ringette facial protector on, neck protector on, gloves on. Coaches and helpers on the ice wear helmets too. Then everyone wiggles toes, marches on the spot, does 5 small knee bends and makes a 'superhero pose' (ready position).",
+ cues:["Chin strap fastened – one finger under it","Ringette face mask and neck guard on","Gloves on, fingers curled","Knees soft, hands out front like a superhero"],
  prog:["Add 3 two-foot hops on the spot","Skaters check a partner's chin strap"],
  reg:["Hold the boards or a coach's hand while marching on the spot"],
  dia:"v end; C 160,42; X 160,22; X 175,28; X 180,42; X 175,57; X 160,62; X 145,57; X 140,42; X 145,28; t 160,80 HELMETS ON"},
@@ -974,7 +980,7 @@ var LTS_DRILLS = [
  reg:["Coach tow to start the glide","Glide only 2 seconds"],
  dia:"v half; X 115,80; X 135,80; X 155,80; X 175,80; s 115,76 115,30; s 135,76 135,22; s 155,76 155,36; s 175,76 175,26; c 115,28 135,20 155,34 175,24"},
 {id:"lts-fw-bridge", name:"Rocket Glide Under the Bridge", cat:"forward", focus:"Two-foot glide with deep knee bend", dur:6, area:"half", players:"2 lines of 3–4, two bridges", wait:0.2, tags:["forward","balance"],
- setup:"Two coaches hold a pool noodle or stick across as a 'bridge' at shoulder height. Skaters march, glide on two feet and bend their knees to duck under. Lower the bridge each round. Use two bridges so lines stay short.",
+ setup:"Two coaches hold a pool noodle (not a stick) across as a 'bridge' at shoulder height. Skaters march, glide on two feet and bend their knees to duck under. Lower the bridge each round. Use two bridges so lines stay short.",
  cues:["Glide on two feet BEFORE the bridge","Bend your knees – don't bend your back","Hands on your knees, eyes forward"],
  prog:["Lower bridge","Glide on one foot under the bridge"],
  reg:["High bridge","March under instead of gliding"],
@@ -1140,7 +1146,7 @@ var LTS_DRILLS = [
  reg:["Red light = sit down (fall safely)","Shorter distance"],
  dia:"v half; C 125,42; X 186,10; X 186,24; X 186,38; X 186,52; X 186,66; X 186,78; s 186,10 160,12; s 186,38 155,38; s 186,66 162,64; t 125,30 RED/GREEN"},
 {id:"lts-g-sharks", name:"Sharks and Minnows (Beginner)", cat:"fun", focus:"Skating forward under light pressure, dodging", dur:7, area:"half", players:"All skaters; coaches start as sharks", wait:0.1, tags:["forward"],
- setup:"Minnows start on one side, coaches are the sharks in the middle. On 'Fishies, fishies, cross my ocean!' minnows march and glide across. A tagged minnow becomes seaweed: stands in place with arms out and can tag minnows who come close. Use the width of half ice.",
+ setup:"Minnows start on one side, coaches are the sharks in the middle. On 'Fishies, fishies, cross my ocean!' minnows march and glide across. A tagged minnow becomes seaweed: stands in place with arms out and can tag minnows who come close (seaweed never moves, so the chasers don't multiply). If skaters carry sticks, sticks stay below the knees. Use the width of half ice.",
  cues:["Look for the open water","Little quick steps to get away","Seaweed keeps their skates still"],
  prog:["Minnows carry rings","Must glide through a cone gate"],
  reg:["Sharks only walk","Narrower ocean"],
@@ -1170,7 +1176,7 @@ var LTS_DRILLS = [
  reg:["Push rings with your skates","Fewer rings"],
  dia:"v half; c 150,6 150,20 150,34 150,48 150,62 150,76; r 120,20 130,50 115,70 165,25 180,55 170,72 135,30 185,30; X 125,35; X 115,58; X 170,40; X 182,66; k 125,35 148,40; k 170,40 152,30"},
 {id:"lts-g-crocodile", name:"Crocodile River", cat:"fun", focus:"Gliding and dodging, listening", dur:7, area:"half", players:"All skaters; 1–2 coach crocodiles", wait:0.15, tags:["forward"],
- setup:"Skaters line up on one side of the 'river'. The crocodile (coach) calls a colour or item: 'Anyone wearing red socks can cross!' Those skaters cross while the crocodile tries to tag them. Tagged skaters become baby crocodiles and help tag.",
+ setup:"Skaters line up on one side of the 'river'. The crocodile (coach) calls a colour or item: 'Anyone wearing red socks can cross!' Those skaters cross while the crocodile tries to tag them. Tagged skaters go back to the start and try again on the next call – only coaches are crocodiles, so the chasers never multiply.",
  cues:["Push, push, glide across","Look for the gaps","Crocs tag gently – one hand"],
  prog:["Cross backward","Cross carrying a ring"],
  reg:["Crocodile only walks","Narrower river"],
@@ -1289,7 +1295,7 @@ var LEVELS = {
     slots: [50, 60], defSlot: 60, themes: THEMES, templates: TEMPLATES, skillCats: SKILL_CATS, lineTarget: LINE_TARGET,
     cats: ["warmup", "skating", "passing", "carrying", "shooting", "rules", "game", "goalie", "cooldown"],
     gameLabel: "Small-area games", gameAim: "aim 25–35%"},
-  lts: {id: "lts", label: "Learn to Skate", title: "Learn to Skate Ringette Planner", sub: "U7/U8 · Active Start · works offline", team: "Learn to Skate",
+  lts: {id: "lts", label: "Learn to Skate", title: "Learn to Skate Ringette Planner", sub: "Active Start / FUNdamentals (first-time skaters) · works offline", team: "Learn to Skate",
     slots: [45, 50], defSlot: 45, themes: LTS_THEMES, templates: LTS_TEMPLATES, lineTarget: 0.15,
     skillCats: ["balance", "forward", "stopping", "backward", "edges", "ringstick"],
     cats: ["warmup", "balance", "forward", "stopping", "backward", "edges", "ringstick", "fun", "stations", "cooldown"],
@@ -1412,7 +1418,7 @@ function ltsWarnings(plan) {
   if (st.idle > L.lineTarget) w.push({lvl: "warn", msg: "Estimated time standing in lines is " + Math.round(st.idle * 100) + "% (Learn to Skate target: under 15%). Little skaters get cold and bored in lines – use waves of 4–5, stations or a game."});
   if (plan.blocks.length) {
     var first = drillById(plan.blocks[0].drillId), last = drillById(plan.blocks[plan.blocks.length - 1].drillId);
-    if (first.cat !== "warmup") w.push({lvl: "warn", msg: "Start with a warm-up that includes a helmet and chin-strap check."});
+    if (first.cat !== "warmup") w.push({lvl: "warn", msg: "Start with a warm-up that includes a gear check: helmet, chin strap fastened, ringette facial protector, neck protector."});
     if (last.cat !== "cooldown") w.push({lvl: "info", msg: "Finish with a short cool-down, huddle and cheer."});
     if (!st.byCat.fun) w.push({lvl: "warn", msg: "No fun game – games are why 5- to 8-year-olds want to come back."});
     plan.blocks.forEach(function (b) {
@@ -1422,9 +1428,9 @@ function ltsWarnings(plan) {
     var skillMin = 0; L.skillCats.forEach(function (c) { skillMin += st.byCat[c] || 0; });
     if (st.active > 30 && !(st.byCat.stations || 0) && skillMin > st.active * 0.5) w.push({lvl: "info", msg: "Consider a station rotation – more reps and less waiting than whole-group drills."});
   }
-  if (!r.n || !r.c) w.push({lvl: "info", msg: "Enter skaters and on-ice coaches to check your ratio (aim for 1 coach per " + LTS_RATIO.ideal + " or fewer skaters)."});
-  else if (r.per > LTS_RATIO.max) w.push({lvl: "bad", msg: "Ratio is 1 coach to " + r.per.toFixed(1) + " skaters – too many to keep everyone safe and moving. You need about " + r.need + " on-ice coaches/helpers."});
-  else if (r.per > LTS_RATIO.ideal) w.push({lvl: "warn", msg: "Ratio is 1:" + r.per.toFixed(1) + ". Aim for 1:" + LTS_RATIO.ideal + " or better (1:3–4 for first-timers) – about " + r.need + " on-ice coaches/helpers."});
+  if (!r.n || !r.c) w.push({lvl: "info", msg: "Enter skaters and on-ice coaches to check your ratio (planner's rule of thumb: 1 coach per " + LTS_RATIO.ideal + " or fewer skaters)."});
+  else if (r.per > LTS_RATIO.max) w.push({lvl: "bad", msg: "Ratio is 1 coach to " + r.per.toFixed(1) + " skaters – over the planner's 1:" + LTS_RATIO.max + " limit, too many to keep everyone safe and moving. You need about " + r.need + " on-ice coaches/helpers."});
+  else if (r.per > LTS_RATIO.ideal) w.push({lvl: "warn", msg: "Ratio is 1:" + r.per.toFixed(1) + ". Planner's rule of thumb: 1:" + LTS_RATIO.ideal + " or better (1:3–4 for first-timers) – about " + r.need + " on-ice coaches/helpers."});
   var big = plan.blocks.filter(function (b) { return !fits(drillById(b.drillId), plan.share); });
   if (big.length) w.push({lvl: "bad", msg: big.length + " drill(s) need more ice than your " + AREA_LABEL[plan.share] + " share."});
   return w;
@@ -1976,8 +1982,8 @@ if (typeof document !== "undefined") (function () {
       }).join("") + "</div>" +
       '<footer class="pf"><div class="legend">' + legendSVG() + '</div><div class="pnotes">' + (p.notes ? "<b>Notes:</b> " + esc(p.notes) : "<b>Notes:</b> ________________________________________________") +
       '</div><div class="small">' + (levelOf(p) === "lts"
-        ? "<b>Safety:</b> CSA helmet + face mask on every skater, chin strap snug (1 finger), gloves on; re-check after falls. Ratio 1 coach : 4–6 skaters (1:3–4 first-timers, never over 1:8). Active Start: fun first, show don't tell (&lt;20 s), waves of 4–5 or stations – no long lines, praise effort. Fall: bend &amp; sit to the side · Get up: bear → knight → stand."
-        : "Learn to Train: fun first, lots of touches, short instructions (&lt;30 s), both sides/directions, everyone tries goalie. Ring is passed over every blue line.") + "</div></footer></section>";
+        ? "<b>Safety:</b> every skater: CSA hockey helmet, chin strap fastened, CSA Type A/B ringette facial protector, neck protector, gloves (goalies: A/B or Type C); on-ice coaches/helpers wear helmets; re-check after falls. Planner's rule-of-thumb ratio 1 coach : 4–6 skaters (1:3–4 first-timers, never over 1:8). Active Start: fun first, show don't tell (&lt;20 s), waves of 4–5 or stations – no long lines, praise effort. Fall: bend &amp; sit to the side · Get up: bear → knight → stand."
+        : "Learn to Train: fun first, lots of touches, short instructions (&lt;30 s), both sides/directions, everyone tries goalie. One blue line per pass. Max 3 skaters past the free-play line. <b>Gear:</b> CSA hockey helmet, chin strap fastened, CSA Type A/B ringette facial protector, neck protector (goalies: A/B or Type C); on-ice coaches wear helmets.") + "</div></footer></section>";
   }
   function benchHTML(p) {
     var t = 0, st = planStats(p.blocks);
@@ -1987,14 +1993,22 @@ if (typeof document !== "undefined") (function () {
         return '<li style="--c:' + CATS[d.cat].color + '"><span class="bt">' + clock(p.start, from) + '</span><span class="bn"><b>' + esc(d.name) + "</b> <em>" + b.dur + "′</em>" +
           (d.cues[0] ? "<small>" + esc(d.cues[0]) + (d.cues[1] ? " · " + esc(d.cues[1]) : "") + "</small>" : "") + (b.note ? "<small>📝 " + esc(b.note) + "</small>" : "") + "</span><span class='box'></span></li>";
       }).join("") + "</ol><p class='bf'>End " + clock(p.start, st.total) + " · Lines ~" + pct(st.idle) + (levelOf(p) === "lts"
-        ? " · ⛑ Helmets + chin straps checked · Ratio ≤ 1:6" + (ratioInfo(p).per ? " (today " + ratioInfo(p).n + " skaters, " + ratioInfo(p).c + " coaches)" : "") + " · Fall: sit to the side · Up: bear → knight → stand"
-        : " · Pass over blue lines · 5-sec free pass · Crease = goalie only") + "</p></div>";
+        ? " · ⛑ Helmet, chin strap, A/B mask, neck guard checked · Ratio ≤ 1:6 (rule of thumb)" + (ratioInfo(p).per ? " (today " + ratioInfo(p).n + " skaters, " + ratioInfo(p).c + " coaches)" : "") + " · Fall: sit to the side · Up: bear → knight → stand"
+        : " · 1 blue line per pass · 3 past free-play line · 5-sec free pass · Crease = goalie only") + "</p></div>";
     return '<section class="page benchpage">' + card + card + '<div class="cutline">✂ cut</div></section>';
   }
   function openPrint(mode, plans) {
     $("#print-pages").innerHTML = plans.map(mode === "bench" ? benchHTML : sheetHTML).join("");
     $("#print-mode").textContent = mode === "bench" ? "Bench card – 2 copies per page (cut down the middle)" : "Practice sheet – one US Letter page per practice";
     $("#print-view").hidden = false; document.body.classList.add("printing"); window.scrollTo(0, 0);
+    if (mode !== "bench") fitSheetRows();
+  }
+  /* Shrink a row's text a step at a time until it fits, instead of letting the row clip it. */
+  function fitSheetRows() {
+    function over(r) { return r.lastElementChild.getBoundingClientRect().bottom > r.getBoundingClientRect().bottom - 1; }
+    [].forEach.call(document.querySelectorAll("#print-pages .prow:not(.brk)"), function (r) {
+      for (var i = 1; i <= 3 && over(r); i++) { r.classList.remove("fit" + (i - 1)); r.classList.add("fit" + i); }
+    });
   }
   function closePrint() { $("#print-view").hidden = true; document.body.classList.remove("printing"); }
 

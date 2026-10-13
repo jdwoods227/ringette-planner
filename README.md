@@ -1,8 +1,8 @@
 # Ringette Practice Planner (U10 + Learn to Skate)
 
 An offline practice-plan builder with two levels, picked with the **U10 / Learn to Skate** switch at the top of the page:
-- **U10** (FUN3 / Learn to Train): the original planner, unchanged.
-- **Learn to Skate**: roughly U7/U8 Active Start, first-time skaters and weak skaters.
+- **U10** (FUN3 / Learn to Train): the original planner, with corrections from a ringette coach's review (rules wording and drill safety).
+- **Learn to Skate** (Active Start / FUNdamentals): first-time skaters and weak skaters.
 
 Everything is in **one file, `index.html`**: no install, no internet, no accounts.
 
@@ -15,7 +15,7 @@ Everything is in **one file, `index.html`**: no install, no internet, no account
 0. **Pick the level** with the switch in the header. Each level keeps its own draft plan, ice-slot options, themes, drill library and season stats, so switching back and forth doesn't lose anything. Saved plans from both levels are listed together (with a level badge), and opening one switches to its level.
 1. **Plan tab**: set the date, start time, **ice slot (50 or 60 min)**, **theme** and **ice share** (full, half or a third), then press **⚡ Auto-build plan**. It builds warm-up → 2–3 skill blocks → water → small-area game → cool-down. It only uses drills that fit your share of the ice, and it aims to keep time standing in lines under 20%.
 2. **Edit the plan**: drag the ⠿ handle (touch or mouse), or use ↑ ↓ to reorder. Use − / + to change minutes, ⇄ to swap a drill (pick one yourself or press 🎲 Random swap), ✕ to remove, and add a note for each block. The summary shows total vs. slot, the estimated time in lines, how much of the practice is games, minutes per skill area, and warnings (over time, no warm-up, a drill that needs more ice than you have, and so on).
-3. **🖨 Practice sheet**: one US Letter page per practice, with a rink diagram, setup, coaching cues and progressions for each drill. Press **Print / Save as PDF**. Use Letter paper, scale 100%, margins "None" or "Default".
+3. **🖨 Practice sheet**: one US Letter page per practice, with a rink diagram, setup, coaching cues and progressions for each drill. If a drill's text is too long for its row, the sheet shrinks that row's text a step or two so nothing is cut off. Press **Print / Save as PDF**. Use Letter paper, scale 100%, margins "None" or "Default".
 4. **🗒 Bench card**: a compact checklist with times and the top 2 cues per drill, two copies per page (cut down the middle, one for each coach).
 5. **💾 Save** stores the plan. The **Saved** tab can reopen, print or delete plans, or print them all (one page each).
 6. **✔ Log as run** after practice records it in **Season** history (date, how it went, number of players, notes). The Season tab shows minutes per skill area, average time in lines and game time, and which drills you use most. **Reuse plan** copies an old practice into a new plan. Drills used in your last 3 logged practices are less likely to be auto-picked, so practices stay varied.
@@ -27,8 +27,10 @@ Everything is in **one file, `index.html`**: no install, no internet, no account
   - 50 min: warm-up 6 → skill 7 → skill 7 → water 2 → station rotation 12 → fun game 12 → cool-down 4
 - **Themes:** balanced mix, first time on ice (balance & falling), marching/gliding/striding, stopping (snowplow), backward skating, edges/turns/crossover intro, ring & stick fun.
 - **Minimal lining up:** the auto-builder targets **under 15% of time in lines** (U10 target is 20%) by using everyone-at-once drills, waves of 4–5 across the width of the ice, and 3–4 short stations with a coach at each.
-- **Coach-to-skater ratio:** enter *skaters expected* and *coaches/helpers on ice*. The summary shows the ratio and warns above 1:6, with a stronger warning above 1:8 (aim for 1:3–4 with first-timers). This is planning guidance; check your association's ratio and helper-screening rules.
-- **Safety cues:** helmet/chin-strap check in the warm-up, safe falling and the *bear → knight → stand* get-up, plus a helmet and ratio reminder on every practice sheet and bench card.
+- **Coach-to-skater ratio:** enter *skaters expected* and *coaches/helpers on ice*. The summary shows the ratio and warns above 1:6, with a stronger warning above 1:8 (aim for 1:3–4 with first-timers). These numbers are **the planner's own rule of thumb**, not a Ringette Canada rule. For comparison, Skate Canada's CanSkate standard is at least 1 coach/helper per 10 skaters, with 1 per 5 as better practice.
+- **Equipment:** every skater wears a CSA hockey helmet with the chin strap fastened, a CSA Type A/B ringette facial protector and a neck protector (rule 5.6). Goalies wear a Type A/B or a Type C goalie facial protector (rule 5.10.d). On-ice coaches and helpers must wear helmets (Ringette Canada OP-05); they don't need masks.
+- **Helper screening:** follow the Rule of Two. Anyone on the ice as a coach or helper completes Respect in Sport and gets a police check as your association requires. The Guide tab points to Ringette Ontario's Screening Policy rather than quoting its levels.
+- **Safety cues:** a gear check in the warm-up (helmet, chin strap, facial protector, neck protector), safe falling and the *bear → knight → stand* get-up. Every practice sheet and bench card also carries a gear and ratio reminder.
 - Warnings tell you when there's no fun game, a block runs longer than 12 minutes, there's no station rotation in a skill-heavy plan, or the ratio is too high.
 - In the drill picker and the Drills tab, tick **All levels** to borrow drills from the other level (for example, Learn to Skate drills for weak skaters in a U10 practice).
 
@@ -70,9 +72,25 @@ Each drill has: name, skill focus, suggested duration, players/grouping, ice are
 - Under ~20% of practice time standing in lines (each drill has an estimate, and the auto-builder checks the total).
 - 25–35% of the practice in small-area games.
 - Short instructions with 2–3 cues, both sides and both directions, everyone gets a turn in goal.
-- Ringette rules taught through drills: passing over the blue lines, 5-second free passes, crease is for the goalie only, three skaters per team in an end zone.
+- Ringette rules taught through drills: pass over each blue line, but only **one blue line per pass** (a neutral-zone player must play it). Also 5-second free passes, crease is for the goalie only, and at most **three skaters per team (plus the goalie) past the free-play line**.
+- Safety built into the contact and equipment drills:
+  - Stick lifts only, with sticks below the knees, in tag and keep-away games.
+  - Staggered, angled corner entries, and play stops on any contact.
+  - Knee drops for padded goalies only.
+  - Towel or rope (not a shared stick) for partner resistance.
+  - Obstacle sticks lie flat on the ice.
+  - Backward skating in non-competitive, spaced waves.
 
-> Rules and U10 game formats vary by season and association. Check the current Ringette Canada rulebook and Ringette Ontario / your local association's U10 guidelines.
+> Rules and U10 game formats vary by season and association. Check the current Ringette Canada rulebook and Ringette Ontario / your local association's U10 guidelines (for example, how far a goalie may throw the ring).
+
+### Sources cited in the Guide tab
+These are plain-text references. The page never fetches them.
+- Simplified Rules of Ringette: https://cloud.rampinteractive.com/apringette/files/Coaching/Simplified%20Rules%20of%20Ringette.pdf
+- 2019–2021 Rule Changes summary: https://cloud.rampinteractive.com/apringette/files/Coaching/2019%20-%202021%20Rule%20Changes%2C%20summary.pdf
+- Ringette Canada Official Rules & Case Book 2025–2027: https://www.ringette.ca/wp-content/uploads/2025/09/Final-Draft-Official-Rules-and-Case-Book-2025-2027-English-5.5x8.5-sm-1.pdf
+- Ringette Canada Policy OP-05: https://www.ringette.ca/wp-content/uploads/2025/06/PolicyOP-05_2025__CoachingCertification_EN.pdf
+- Skate Canada CanSkate requirements: https://info.skatecanada.ca/index.php/en-ca/procedures/394-canskate-requirements-and-delivery-standards.html
+- Ringette Ontario Screening Policy (2025): https://cloud.rampinteractive.com/ringetteontariogames/files/Policies/2025/SCREENING%20POLICY.pdf
 
 ## Data & privacy
 - Older backups and data from the U10-only version load as U10 plans. Nothing needs converting.
