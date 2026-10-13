@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1e3a8a">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'">
+<title>U10 Ringette Practice Planner</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--bg:#f1f5f9;--card:#fff;--pri:#1e40af;--pri2:#1d4ed8;--good:#15803d;--warn:#b45309;--bad:#b91c1c;--r:12px}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+body.noscroll{overflow:hidden}
+h1,h2,h3,h4{margin:.2em 0 .4em;line-height:1.2}
+h2{font-size:1.2rem} h3{font-size:1.05rem} h4{font-size:.95rem;margin-top:.8em}
+button,input,select,textarea{font:inherit;color:inherit}
+input,select,textarea{width:100%;padding:.55rem .6rem;border:1px solid #cbd5e1;border-radius:8px;background:#fff;min-height:44px}
+textarea{min-height:auto;resize:vertical}
+label{display:block;font-size:.85rem;font-weight:600;color:#334155}
+label input,label select,label textarea{margin-top:.25rem;font-weight:400}
+.small{font-size:.85rem}.muted{color:var(--muted)}.bad{color:var(--bad)}
+.app-head{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:.5rem .75rem 0;box-shadow:0 2px 8px #0003}
+.brand{display:flex;gap:.6rem;align-items:center}
+.brand h1{font-size:1.1rem;margin:0}.brand p{margin:0;font-size:.75rem;opacity:.85}
+.logo{font-size:1.8rem;line-height:1}
+.tabs{display:flex;gap:.25rem;overflow-x:auto;margin-top:.4rem;scrollbar-width:none}
+.tab{border:0;background:transparent;color:#dbeafe;padding:.6rem .8rem;border-radius:10px 10px 0 0;white-space:nowrap;cursor:pointer;min-height:44px;font-weight:600}
+.tab.active{background:var(--bg);color:var(--pri)}
+main{max-width:1100px;margin:0 auto;padding:.75rem}
+.card{background:var(--card);border-radius:var(--r);padding:.9rem;margin-bottom:.75rem;box-shadow:0 1px 3px #0001}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem}
+.span2{grid-column:span 2}
+@media (max-width:420px){.span2{grid-column:span 1}}
+fieldset.seg{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;align-content:flex-end;gap:.3rem;min-width:0}
+fieldset.seg legend{font-size:.85rem;font-weight:600;color:#334155;padding:0;margin-bottom:.25rem;float:left;width:100%}
+.seg label{flex:1}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg span{display:flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-weight:600;cursor:pointer}
+.seg input:checked+span{background:var(--pri2);border-color:var(--pri2);color:#fff}
+.seg input:focus-visible+span{outline:3px solid #93c5fd}
+.actions{display:flex;gap:.5rem;margin-top:.75rem;align-items:center}
+.actions.wrap{flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.3rem;min-height:44px;padding:.5rem .9rem;border-radius:10px;border:1px solid #cbd5e1;background:#fff;cursor:pointer;font-weight:600;text-decoration:none}
+.btn:hover{background:#f8fafc}
+.btn.primary{background:var(--pri2);border-color:var(--pri2);color:#fff}
+.btn.primary:hover{background:var(--pri)}
+.btn.big{font-size:1.05rem;padding:.6rem 1.3rem;width:100%}
+.btn.sm{min-height:38px;padding:.3rem .7rem;font-size:.85rem}
+.btn.danger{color:var(--bad);border-color:#fecaca}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.45;cursor:default}
+.linkish{border:0;background:none;padding:0;cursor:pointer;text-align:left;font-weight:700;color:inherit}
+.linkish:hover{text-decoration:underline}
+.chip{display:inline-block;font-size:.72rem;font-weight:700;padding:.1rem .5rem;border-radius:99px;background:color-mix(in srgb,var(--c) 18%,#fff);border:1px solid var(--c);color:#1f2937;white-space:nowrap}
+.pill{display:inline-block;font-size:.8rem;background:#f1f5f9;border-radius:99px;padding:.1rem .55rem;margin:.1rem 0}
+/* summary */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem}
+.tile{border:1px solid var(--line);border-radius:10px;padding:.5rem .6rem;display:flex;flex-direction:column}
+.tile span{font-size:.75rem;color:var(--muted);font-weight:600}
+.tile b{font-size:1.35rem}
+.tile small{font-size:.75rem;color:var(--muted)}
+.tile.good{border-color:#86efac;background:#f0fdf4}.tile.good small{color:var(--good)}
+.tile.warn{border-color:#fcd34d;background:#fffbeb}.tile.warn small{color:var(--warn)}
+.tile.bad{border-color:#fca5a5;background:#fef2f2}.tile.bad small{color:var(--bad)}
+.catbar{display:flex;gap:2px;height:14px;margin:.75rem 0 .35rem;border-radius:4px;overflow:hidden;background:#fff}
+.catbar span{display:block;min-width:3px}
+.catbar .gap{background:repeating-linear-gradient(45deg,#e2e8f0 0 4px,#fff 4px 8px)}
+.catlegend{display:flex;flex-wrap:wrap;gap:.25rem .8rem;font-size:.78rem;color:#334155}
+.catlegend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.warnings{list-style:none;padding:0;margin:.6rem 0 0;font-size:.85rem}
+.warnings li{padding:.35rem .55rem;border-radius:8px;margin-top:.3rem}
+.warnings .warn{background:#fffbeb;color:#92400e}.warnings .warn::before{content:"⚠ "}
+.warnings .bad{background:#fef2f2;color:var(--bad)}.warnings .bad::before{content:"⛔ "}
+.warnings .info{background:#eff6ff;color:#1e40af}.warnings .info::before{content:"ℹ "}
+/* blocks */
+.blocks{list-style:none;padding:0;margin:0}
+.block{display:grid;grid-template-columns:36px 54px 1fr auto auto;gap:.5rem;align-items:center;background:#fff;border-radius:10px;padding:.5rem;margin-bottom:.45rem;border-left:6px solid var(--c);box-shadow:0 1px 2px #0001}
+.block.too-big{outline:2px solid #fca5a5}
+.block.dragging{opacity:.85;box-shadow:0 6px 18px #0003;transform:scale(1.01);position:relative;z-index:5}
+.handle{touch-action:none;cursor:grab;border:0;background:#f1f5f9;border-radius:8px;height:44px;font-size:1.3rem;color:#64748b}
+.b-time{text-align:center;font-variant-numeric:tabular-nums;line-height:1.15}
+.b-time small{display:block;color:var(--muted);font-size:.75rem}
+.b-name{font-size:1rem}
+.b-sub{font-size:.78rem;color:var(--muted)}
+.b-note{min-height:34px;padding:.25rem .5rem;font-size:.85rem;margin-top:.3rem;border-color:#e2e8f0}
+.b-dur{display:flex;align-items:center;gap:.2rem}
+.b-dur button,.b-tools button{min-width:38px;height:38px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;cursor:pointer;font-size:1rem}
+.b-dur span{min-width:2.4em;text-align:center;font-weight:700;font-size:1.05rem}
+.b-dur small{display:block;font-size:.65rem;color:var(--muted);font-weight:400}
+.b-tools{display:flex;gap:.2rem}
+.b-tools button:disabled{opacity:.35}
+.empty{padding:1rem;text-align:center;color:var(--muted);background:#fff;border-radius:10px}
+@media (max-width:700px){
+  .block{grid-template-columns:36px 50px 1fr auto;grid-template-areas:"h t m m" "h d d k"}
+  .handle{grid-area:h;height:100%}.b-time{grid-area:t}.b-main{grid-area:m}.b-dur{grid-area:d}.b-tools{grid-area:k}
+}
+.notes textarea{margin-top:.3rem}
+/* library */
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.filters input[type=search]{flex:2 1 220px}.filters select{flex:1 1 160px;width:auto}
+.check{display:flex;align-items:center;gap:.35rem;font-weight:600;min-height:44px}
+.check input{width:auto;min-height:0}
+.grid-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.75rem}
+.card-dia{display:block;width:100%;border:0;padding:0;background:#e8eef5;cursor:pointer;border-radius:var(--r) var(--r) 0 0;overflow:hidden}
+.card-dia svg{display:block;width:100%;height:150px}
+article.card{padding:0;display:flex;flex-direction:column;border-top:4px solid var(--c);overflow:hidden}
+.card-body{padding:.6rem .75rem .75rem;display:flex;flex-direction:column;flex:1}
+.card-body h3{font-size:1rem;margin:.35rem 0 .2rem}
+.card-body p{margin:.1rem 0}
+.card-top{display:flex;justify-content:space-between;align-items:center}
+.fav{border:0;background:none;font-size:1.4rem;cursor:pointer;color:#94a3b8;min-width:44px;min-height:40px}
+.fav.on,[data-fav].on{color:#d97706}
+.card-actions{display:flex;gap:.4rem;margin-top:auto;padding-top:.5rem}
+.card-actions .btn{flex:1}
+/* modal */
+.modal{position:fixed;inset:0;background:#0f172a99;z-index:50;display:flex;align-items:flex-start;justify-content:center;padding:4vh .5rem;overflow-y:auto}
+.modal[hidden]{display:none}
+.modal-card{background:#fff;border-radius:14px;max-width:640px;width:100%;padding:1rem 1rem 1.2rem;position:relative}
+.modal.wide .modal-card{max-width:820px}
+.modal-close{position:absolute;right:.5rem;top:.5rem;border:0;background:#f1f5f9;border-radius:50%;width:40px;height:40px;font-size:1.1rem;cursor:pointer}
+.modal h2{padding-right:44px}
+.modal label{margin-top:.6rem}
+.drill-detail svg.big{width:100%;height:auto;max-height:320px;background:#e8eef5;border-radius:10px}
+.drill-detail .meta{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center;margin:.5rem 0}
+.drill-detail ul{margin:.2rem 0;padding-left:1.2rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media (max-width:520px){.two{grid-template-columns:1fr}}
+.legend svg{width:100%;max-width:520px;height:auto}
+.pick-list{list-style:none;padding:0;margin:0;max-height:60vh;overflow-y:auto}
+.pick{display:flex;gap:.6rem;align-items:center;width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:10px;padding:.35rem;margin-bottom:.35rem;cursor:pointer}
+.pick:hover{background:#f8fafc}
+.pick svg.thumb{width:90px;height:52px;flex:none;background:#e8eef5;border-radius:6px}
+.pick small{display:block;color:var(--muted)}
+/* saved / season */
+.head-row{display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap}
+.rows-list{list-style:none;padding:0;margin:0}
+.row-card{display:flex;justify-content:space-between;gap:.75rem;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;padding:.6rem;margin-bottom:.5rem}
+.row-card small{display:block;color:var(--muted)}
+.row-card p{margin:.3rem 0}
+.row-actions{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}
+.hbars{width:100%;border-collapse:collapse;font-size:.85rem}
+.hbars th{text-align:left;font-weight:600;width:38%;padding:.2rem .4rem .2rem 0}
+.hbars .hbar{display:block;height:12px;border-radius:0 4px 4px 0;min-width:3px}
+.hbars .num{width:70px;text-align:right;color:#334155;font-variant-numeric:tabular-nums}
+.prose li{margin:.3rem 0}
+#io-text{margin-top:.6rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
+#toast{position:fixed;left:50%;bottom:1rem;transform:translate(-50%,150%);background:#0f172a;color:#fff;padding:.6rem 1rem;border-radius:10px;z-index:60;transition:transform .25s;max-width:92vw;font-size:.9rem;pointer-events:none}
+#toast.show{transform:translate(-50%,0)}
+svg.rink{display:block}
+/* ===== PRINT VIEW ===== */
+#print-view{position:fixed;inset:0;z-index:70;background:#64748b;overflow:auto}
+#print-view[hidden]{display:none}
+.print-bar{position:sticky;top:0;display:flex;gap:.6rem;align-items:center;justify-content:space-between;background:#0f172a;color:#fff;padding:.5rem .75rem;z-index:2}
+#print-pages{padding:1rem 0}
+.page{width:8.5in;height:11in;margin:0 auto 1rem;background:#fff;padding:.4in;overflow:hidden;box-shadow:0 4px 18px #0005;font-size:9.5pt;line-height:1.3;color:#000}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #1e3a8a;padding-bottom:.08in;margin-bottom:.08in}
+.ph h1{font-size:16pt;margin:0;color:#1e3a8a}.ph p{margin:.02in 0 0;font-size:9pt}
+.ph-stats{text-align:right;font-size:9pt;display:flex;flex-direction:column}
+.ph-stats b{font-size:12pt}
+.rows{height:8.65in;display:flex;flex-direction:column;gap:.05in;overflow:hidden}
+.prow{display:grid;grid-template-columns:.55in 1.95in 1fr;gap:.1in;border-left:5px solid var(--c);padding:.04in .06in;border-bottom:1px solid #e2e8f0;flex:0 1 auto;max-height:1.32in;overflow:hidden;break-inside:avoid}
+.prow.brk{grid-template-columns:.55in 1fr;border-left-color:#cbd5e1;background:#f8fafc;max-height:.32in}
+.pt{font-weight:700;font-size:10.5pt;font-variant-numeric:tabular-nums}.pt small{display:block;font-weight:400;font-size:8pt;color:#475569}
+.pd svg{width:1.95in;height:1.1in;background:#f1f5f9;border-radius:4px}
+.pname b{font-size:10.5pt}.pcat{font-size:8pt;color:#475569}
+.psetup{font-size:8.3pt;margin:.02in 0}
+.pcues{font-size:8.5pt;font-weight:600;color:#14532d}
+.pprog{font-size:7.8pt;color:#334155}
+.sheet.dense .prow{max-height:1.12in}.sheet.dense .pd svg{height:.98in;width:1.75in}.sheet.dense .prow{grid-template-columns:.55in 1.75in 1fr}.sheet.dense .psetup{font-size:7.8pt}
+.sheet.dense2 .prow{max-height:.86in}.sheet.dense2 .pd svg{height:.76in;width:1.4in}.sheet.dense2 .prow{grid-template-columns:.5in 1.4in 1fr}.sheet.dense2 .psetup{display:none}
+.pf{border-top:1px solid #94a3b8;padding-top:.05in;margin-top:.05in;font-size:8pt}
+.pf .legend svg{width:3.6in;height:auto}
+.pnotes{margin:.03in 0}
+.pf .small{font-size:7.5pt;color:#334155}
+.benchpage{display:grid;grid-template-columns:1fr 1fr;gap:.4in;position:relative;align-items:start}
+.bench{border:2px solid #1e3a8a;border-radius:8px;padding:.15in;font-size:10pt;overflow:hidden}
+.bench h2{font-size:14pt;margin:0;color:#1e3a8a}
+.bh{margin:.02in 0 .08in;font-size:9pt}
+.bench ol{list-style:none;padding:0;margin:0}
+.bench li{display:grid;grid-template-columns:.5in 1fr .18in;gap:.06in;padding:.06in 0 .06in .06in;border-bottom:1px dashed #94a3b8;border-left:4px solid var(--c);align-items:start}
+.bt{font-weight:700;font-variant-numeric:tabular-nums}
+.bn b{font-size:10.5pt}.bn em{font-style:normal;color:#475569}
+.bn small{display:block;font-size:8.5pt;color:#1f2937}
+.box{width:.16in;height:.16in;border:1.5px solid #334155;border-radius:2px;margin-top:.02in}
+.bf{font-size:8pt;margin:.08in 0 0;color:#334155}
+.cutline{position:absolute;left:50%;top:.1in;bottom:.1in;border-left:1px dashed #94a3b8;font-size:7pt;color:#94a3b8;writing-mode:vertical-rl;padding-left:2px}
+@media screen and (max-width:900px){#print-pages{zoom:.55}}
+@media screen and (max-width:500px){#print-pages{zoom:.42}}
+@page{size:letter portrait;margin:0}
+@media print{
+  body{background:#fff}
+  body.printing>*:not(#print-view){display:none!important}
+  #print-view{position:static;background:#fff;overflow:visible}
+  .noprint{display:none!important}
+  #print-pages{padding:0;zoom:1}
+  .page{margin:0;box-shadow:none;page-break-after:always;break-after:page}
+  .page:last-child{page-break-after:auto;break-after:auto}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+</style>
+</head>
+<body>
+<header class="app-head">
+  <div class="brand"><span class="logo" aria-hidden="true">◎</span><div><h1>U10 Ringette Practice Planner</h1><p>FUN3 · Learn to Train · works offline</p></div></div>
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="plan" role="tab" aria-selected="true">📋 Plan</button>
+    <button class="tab" data-tab="drills" role="tab">🏒 Drills</button>
+    <button class="tab" data-tab="saved" role="tab">💾 Saved</button>
+    <button class="tab" data-tab="season" role="tab">📅 Season</button>
+    <button class="tab" data-tab="guide" role="tab">ℹ️ Guide &amp; Data</button>
+  </nav>
+</header>
+
+<main>
+<!-- PLAN -->
+<section class="panel" id="tab-plan">
+  <div class="card form-card">
+    <div class="grid">
+      <label class="span2">Plan title <input id="f-title" placeholder="e.g. Passing over the blue line"></label>
+      <label>Team <input id="f-team" placeholder="U10 FUN3"></label>
+      <label>Date <input id="f-date" type="date"></label>
+      <label>Ice start time <input id="f-start" type="time"></label>
+      <fieldset class="seg"><legend>Ice slot</legend>
+        <label><input type="radio" name="slot" value="50"><span>50 min</span></label>
+        <label><input type="radio" name="slot" value="60"><span>60 min</span></label>
+      </fieldset>
+      <label>Theme <select id="f-theme"></select></label>
+      <label>Ice share <select id="f-share"><option value="full">Full ice</option><option value="half">Half ice</option><option value="third">Third of the ice</option></select></label>
+    </div>
+    <div class="actions"><button class="btn primary big" id="btn-build">⚡ Auto-build plan</button></div>
+  </div>
+
+  <div class="card" id="summary" aria-live="polite"></div>
+
+  <ol id="blocks" class="blocks"></ol>
+
+  <div class="actions wrap">
+    <button class="btn" id="btn-add">+ Add drill</button>
+    <button class="btn" id="btn-water">+ Water break</button>
+    <button class="btn primary" id="btn-save">💾 Save</button>
+    <button class="btn" id="btn-copy">Save as copy</button>
+    <button class="btn" id="btn-print">🖨 Practice sheet</button>
+    <button class="btn" id="btn-bench">🗒 Bench card</button>
+    <button class="btn" id="btn-run">✔ Log as run</button>
+    <button class="btn ghost" id="btn-new">New plan</button>
+  </div>
+  <label class="card notes">Plan notes (printed on the sheet) <textarea id="f-notes" rows="2" placeholder="Coaches on ice, groups, equipment (cones, mini-nets, pool noodles)…"></textarea></label>
+</section>
+
+<!-- DRILLS -->
+<section class="panel" id="tab-drills" hidden>
+  <div class="filters card">
+    <input type="search" id="lib-q" placeholder="Search drills, cues, setups…" aria-label="Search drills">
+    <select id="lib-cat" aria-label="Category"></select>
+    <select id="lib-area" aria-label="Ice area"><option value="">Any ice area</option><option value="third">Fits ⅓ ice</option><option value="half">Fits ½ ice</option><option value="full">Full ice</option></select>
+    <label class="check"><input type="checkbox" id="lib-fav"> ★ Favourites only</label>
+    <span id="lib-count" class="muted small"></span>
+  </div>
+  <div id="lib-grid" class="grid-cards"></div>
+</section>
+
+<!-- SAVED -->
+<section class="panel" id="tab-saved" hidden>
+  <div class="card"><div class="head-row"><h2>Saved plans</h2><button class="btn" id="print-all">🖨 Print all (1 page each)</button></div>
+  <ul id="saved-list" class="rows-list"></ul></div>
+</section>
+
+<!-- SEASON -->
+<section class="panel" id="tab-season" hidden>
+  <div class="card"><h2>Season summary</h2><div id="season-stats"></div></div>
+  <div class="card"><h2>Practice log</h2><ul id="history-list" class="rows-list"></ul></div>
+</section>
+
+<!-- GUIDE & DATA -->
+<section class="panel" id="tab-guide" hidden>
+  <div class="card prose">
+    <h2>Learn to Train at U10 – the planner's rules of thumb</h2>
+    <ul>
+      <li><b>Fun first, every player active.</b> The auto-builder targets <b>under 20% of time standing in lines</b> (each drill carries an estimate) and favours stations, partner work and small-area games.</li>
+      <li><b>Lots of touches.</b> One ring per player (or per pair) wherever possible; small groups; short shifts (60–90 s) in games.</li>
+      <li><b>Play the game to learn the game.</b> Aim for 25–35% of practice in small-area games – cross-ice 3v3 and 2v2 give many more touches than full-ice play.</li>
+      <li><b>Short instructions.</b> Under 30 seconds on the ice, 2–3 key cues per drill; show it, don't lecture. Use the bench card.</li>
+      <li><b>Both sides, both directions.</b> Forehand and backhand, left and right crossovers.</li>
+      <li><b>This is the skill-hungry window.</b> Speed, agility, balance and skating skills develop fast at this age – build them in every practice.</li>
+      <li><b>Everyone tries goalie.</b> Rotate goaltending in U10 so all players learn the position.</li>
+      <li><b>Plan structure:</b> warm-up → 2–3 skill blocks → water → small-area game → cool-down &amp; team talk.</li>
+    </ul>
+    <h2>Ringette rules to teach (and the drills that teach them)</h2>
+    <ul>
+      <li><b>Blue lines:</b> the ring can't be carried over a blue line – it must be passed across and played by a different player. <i>Blue-Line Pass Relay, Neutral Zone Pass-Through, 4v4 Half-Ice with Blue-Line Rule.</i></li>
+      <li><b>Free pass:</b> play starts and restarts with a free pass; the taker has 5 seconds and must pass the ring out of the free-pass circle (not skate it out). <i>Free-Pass Fundamentals, Free-Pass Options, Whistle &amp; Restart Scrimmage.</i></li>
+      <li><b>Goal crease:</b> only the goalie may play the ring in the crease; skaters (and their sticks) stay out. The goalie clears it by passing or throwing it out. <i>Crease Rules Game, Goalie Outlet Throw.</i></li>
+      <li><b>Three-skater rule:</b> only three skaters per team in an end zone (plus the goalie). <i>Three-in-the-Zone Game.</i></li>
+      <li><b>Safety:</b> no body contact; controlled stick checks only – no slashing, hooking or high sticks.</li>
+    </ul>
+    <p class="small muted">Rule details and U10 modifications (shot clock, game format, ice size) change between seasons and associations. Check the current Ringette Canada rulebook and Ringette Ontario / your local association's U10 guidelines before teaching them.</p>
+    <h3>Diagram legend</h3>
+    <div class="legend" id="legend-big"></div>
+    <p class="small">● <b style="color:#1d4ed8">X</b> team A &nbsp; ● <b style="color:#dc2626">O</b> team B &nbsp; ■ <b style="color:#0f766e">G</b> goalie &nbsp; ● <b>C</b> coach &nbsp; <span style="color:#ea580c">○</span> ring &nbsp; <span style="color:#f97316">▲</span> cone &nbsp; ▭ mini-net / target &nbsp; <span style="background:#fde68a">▢</span> play area</p>
+    <p class="small muted">Library: <b id="drill-total"></b> drills.</p>
+  </div>
+
+  <div class="card">
+    <h2>Back up &amp; move your data</h2>
+    <p class="small">Plans, favourites and season history are stored only in this browser on this device. Export a backup regularly (e.g. to email yourself or move between phone and laptop).</p>
+    <div class="actions wrap">
+      <button class="btn primary" id="io-export">⬇ Export JSON</button>
+      <label class="btn">⬆ Import JSON file<input type="file" id="io-file" accept=".json,application/json" hidden></label>
+      <button class="btn" id="io-import-text">Import from box</button>
+      <label class="check"><input type="checkbox" id="io-replace"> Replace instead of merge</label>
+    </div>
+    <textarea id="io-text" rows="6" placeholder="Exported JSON appears here; or paste a backup here and press “Import from box”." aria-label="Backup JSON"></textarea>
+    <div class="actions"><button class="btn danger" id="io-reset">Erase all data on this device</button></div>
+  </div>
+</section>
+</main>
+
+<div id="modal" class="modal" hidden role="dialog" aria-modal="true">
+  <div class="modal-card"><button class="modal-close" aria-label="Close">✕</button><div id="modal-body"></div></div>
+</div>
+
+<div id="print-view" hidden>
+  <div class="print-bar noprint">
+    <button class="btn" id="print-close">← Back</button>
+    <span id="print-mode" class="small"></span>
+    <button class="btn primary" id="print-go">🖨 Print / Save as PDF</button>
+  </div>
+  <div id="print-pages"></div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+/* ===== DRILL LIBRARY =====
+   Diagram mini-language (rink units: 200 x 85, right net at x=189):
+   v full|half|end|mid   view crop
+   X/O x,y [label]       skaters team A / team B     G goalie   C coach   r ring
+   c x,y x,y ...         cones          n x,y   mini-net / target
+   s skate  k carry (wavy)  p pass (dashed)  h shot (thick)  b backward skate
+   z x,y,w,h shaded area   d x1,y1 x2,y2 divider   t x,y text
+   wait = rough share of drill time a typical player spends standing in line. */
+var CATS = {
+  warmup:   {label: "Warm-up",            color: "#2a78d6"},
+  skating:  {label: "Skating & Edges",    color: "#eb6834"},
+  passing:  {label: "Passing & Receiving",color: "#1baf7a"},
+  carrying: {label: "Ring Carrying",      color: "#eda100"},
+  shooting: {label: "Shooting",           color: "#e87ba4"},
+  rules:    {label: "Free Pass & Blue Lines", color: "#008300"},
+  game:     {label: "Small-Area Games",   color: "#6250d6"},
+  goalie:   {label: "Goalie Basics",      color: "#e34948"},
+  cooldown: {label: "Cool-down",          color: "#8a8f98"},
+  "break":  {label: "Break",              color: "#cfd3d8"}
+};
+
+var DRILLS = [
+/* ---------- WARM-UPS ---------- */
+{id:"wu-tag", name:"Everybody's It Tag", cat:"warmup", focus:"Agility, edges, scanning", dur:6, area:"half", players:"All skaters", wait:0.02, tags:["skating"],
+ setup:"Everyone skates inside half ice (or a third). Everyone is 'it': tag someone on the shoulder and they do 2 quick knee-taps, then rejoin. No sticks for the first minute, then add sticks and rings.",
+ cues:["Eyes up – find open ice","Short quick strides to dodge","Bend knees, stick on the ice"],
+ prog:["Each skater carries a ring; tag only ring carriers","Shrink the area"],
+ reg:["Coaches are the only taggers","Walk-skate speed only for the first round"],
+ dia:"v half; X 120,20; X 145,62; X 165,28; X 178,58; X 132,45; X 152,14; X 160,46; s 120,20 135,30 150,24; s 145,62 160,72 172,66; s 178,58 168,48; s 132,45 116,58; s 152,14 172,10"},
+{id:"wu-sharks", name:"Sharks & Minnows with Rings", cat:"warmup", focus:"Ring carrying under pressure, agility", dur:7, area:"half", players:"All skaters (2 sharks)", wait:0.1, tags:["carrying"],
+ setup:"Minnows line up on one side boards each with a ring. Two sharks (no rings) start in the middle. On 'Go!' minnows carry their ring to the far boards. Sharks lift sticks or knock rings away; caught minnows become sharks.",
+ cues:["Keep the ring tight to your skates","Head up – look for space, not the ring","Change speed to beat the shark"],
+ prog:["Must cross through a cone gate in the middle","Sharks get sticks; minnows must protect with body position"],
+ reg:["Sharks only tag (no stick checks)","Minnows may go without rings"],
+ dia:"v half; X 112,7; X 130,7; X 148,7; X 166,7; X 184,7; O 140,42 S; O 168,40 S; k 112,7 118,78; k 148,7 156,78; k 184,7 176,78; t 150,83 SAFE"},
+{id:"wu-snake", name:"Follow-the-Leader Ring Snake", cat:"warmup", focus:"Edges, crossovers, ring control", dur:5, area:"half", players:"Groups of 4–5", wait:0.05, tags:["skating","carrying"],
+ setup:"Groups of 4–5 in a single file, each with a ring. The leader skates any path (circles, zig-zags, stops); everyone copies. Switch leader on the whistle (front goes to back).",
+ cues:["Copy the leader's edges exactly","Stick in the ring, ring beside your front foot","Keep a stick-length gap"],
+ prog:["Leader must include a stop and a crossover each turn","Add backward skating"],
+ reg:["No rings first round","Coach leads one group"],
+ dia:"v half; X 115,20; X 122,24; X 129,28; X 136,32; s 115,20 112,12 125,8 150,14 165,30 158,50 140,58; X 160,64; X 167,68; X 174,72; s 160,64 150,74 128,72 115,62"},
+{id:"wu-simon", name:"Coach Says (Simon Says on Ice)", cat:"warmup", focus:"Balance, agility, listening", dur:5, area:"third", players:"All skaters", wait:0.02, tags:["skating"],
+ setup:"Players spread out facing the coach. Coach calls actions: 'Coach says… two-foot jump / one knee down / spin / stop / sit and get up / skate to the blue line'. If the coach didn't say 'Coach says', do a silly dance instead of going out.",
+ cues:["Athletic stance between calls","Get up fast – hands on knee","Quick feet on the starts"],
+ prog:["Add stick-handling the ring between calls","Players lead the calls"],
+ reg:["Fewer actions, slower calls"],
+ dia:"v end; C 190,15; X 140,25; X 155,25; X 170,30; X 140,45; X 155,48; X 170,52; X 145,65; X 162,68; t 190,8 Coach"},
+{id:"wu-mirror", name:"Partner Mirror", cat:"warmup", focus:"Lateral movement, reaction", dur:5, area:"third", players:"Pairs", wait:0.0, tags:["skating"],
+ setup:"Partners face each other about 2 stick-lengths apart. Leader moves forward, back, side-to-side and stops; follower mirrors. Switch leader every 30 seconds.",
+ cues:["Stay low, knees bent","Push with edges, no toe-running","Eyes on partner's hips"],
+ prog:["Leader carries a ring; follower mirrors with stick on the ice","Add pivots"],
+ reg:["Slow speed, only side-to-side"],
+ dia:"v end; X 140,18; O 152,18; X 140,42; O 152,42; X 140,66; O 152,66; X 170,30; O 182,30; X 170,55; O 182,55; s 152,18 152,10; s 140,18 140,10; s 152,42 160,48"},
+{id:"wu-flow", name:"Four-Corner Flow Skate", cat:"warmup", focus:"Crossovers, stride, ring carry at speed", dur:6, area:"full", players:"All skaters, 4 corners", wait:0.15, tags:["skating","carrying"],
+ setup:"Split into 4 groups at the corners. On the whistle the first player from each corner skates around the nearest end-zone circle, then up the boards with a ring, around the far circle and to the next corner line. Next player goes when the previous one reaches the blue line.",
+ cues:["Crossovers around the circle – lean in","Long strides on the straightaway","Ring on the forehand side, close"],
+ prog:["Add backward skating through the neutral zone","Shoot on net after the far circle"],
+ reg:["No rings","Half-speed first lap"],
+ dia:"v full; X 8,8; X 8,77; X 192,8; X 192,77; s 8,8 20,6 40,10 46,20 31,34 18,22 30,10 70,6; k 70,6 130,6; s 130,6 160,8 178,20 168,34 155,22 170,10 188,8"},
+{id:"wu-pairs", name:"Partner Pass & Skate Warm-up", cat:"warmup", focus:"Passing on the move, communication", dur:6, area:"full", players:"Pairs", wait:0.2, tags:["passing"],
+ setup:"Pairs start on the goal line about 3 stick-lengths apart. They skate the length of the ice passing back and forth (must pass across each blue line). Return down the boards with the other partner carrying.",
+ cues:["Pass ahead to where your partner is going","Call your partner's name","Target: stick on the ice"],
+ prog:["Count passes – beat your record","Backhand passes only on the way back"],
+ reg:["Go half ice only","Glide while passing, no speed"],
+ dia:"v full; X 12,32; X 12,52; s 12,32 60,30 110,32 170,30; s 12,52 60,54 110,52 170,54; p 40,30 60,53; p 80,53 100,31; p 115,31 135,53; d 75,0 75,85; d 125,0 125,85"},
+{id:"wu-redlight", name:"Red Light, Green Light (Ring Edition)", cat:"warmup", focus:"Starts, stops, ring control", dur:5, area:"half", players:"All skaters", wait:0.05, tags:["skating","carrying"],
+ setup:"Players with rings on the goal line; coach at the far blue line with back turned. 'Green light' = carry forward, 'Red light' = stop with ring still on stick. Anyone moving or losing the ring goes back 3 strides.",
+ cues:["Two-foot hockey stop or snowplow","Ring stays in the stick on the stop","Explode out of the stop"],
+ prog:["'Yellow light' = backward skating","Coach adds 'pivot' call"],
+ reg:["No rings","Snowplow stops allowed"],
+ dia:"v half; C 128,42; X 186,12; X 186,26; X 186,40; X 186,54; X 186,68; k 186,12 150,14; k 186,40 155,40; k 186,68 158,68"},
+{id:"wu-musical", name:"Musical Rings", cat:"warmup", focus:"Skating in traffic, quick pickups", dur:5, area:"half", players:"All skaters", wait:0.05, tags:["carrying"],
+ setup:"Spread one fewer ring than players around the circle area. Players skate laps around the outside of the circles. On the whistle, grab a ring with the stick tip and carry it to the nearest blue line. Player without a ring does 3 tuck jumps, then rejoins — nobody is out.",
+ cues:["Scoop the ring with the stick tip","Look up while skating – where are the rings?","Stay on your feet in traffic"],
+ prog:["Remove 2–3 rings each round","Must skate backward until the whistle"],
+ reg:["Rings for everyone; first to the blue line wins"],
+ dia:"v half; r 150,30; r 165,50; r 140,52; r 172,25; r 155,62; X 120,20; X 130,70; X 185,60; X 190,20; s 120,20 140,10 175,8; s 130,70 155,78 180,72"},
+
+/* ---------- SKATING & EDGES ---------- */
+{id:"sk-slalom", name:"Inside/Outside Edge Slalom", cat:"skating", focus:"Inside and outside edges", dur:8, area:"third", players:"2–3 lines of 3–4", wait:0.3, tags:["skating"],
+ setup:"Set 3 rows of 6 cones (about 2 m apart) in one end zone. Players slalom on two feet first, then on one foot (inside edge, then outside edge). Start next player when the previous one reaches cone 3.",
+ cues:["Knees bent – 'sit in the chair'","Shoulders quiet, hips turn","Push from the edge, don't step"],
+ prog:["Add a ring and carry through","Skate backward slalom"],
+ reg:["Wider cone spacing","Two-foot only"],
+ dia:"v end; c 140,20 150,20 160,20 170,20 180,20; c 140,42 150,42 160,42 170,42 180,42; c 140,64 150,64 160,64 170,64 180,64; X 130,20; X 126,20; X 130,42; X 126,42; X 130,64; X 126,64; s 130,20 140,15 150,25 160,15 170,25 180,15 190,20"},
+{id:"sk-circles", name:"Circle Crossovers", cat:"skating", focus:"Forward crossovers both ways", dur:8, area:"half", players:"Groups at each circle", wait:0.15, tags:["skating"],
+ setup:"A group at each circle (2 per half ice). Skate around the circle with crossovers, 2 laps each way. Up to 3 skaters on a circle at once, evenly spaced.",
+ cues:["Outside foot crosses over, inside foot pushes under","Lean in, stick on the ice inside the circle","Eyes up at the circle centre"],
+ prog:["Carry a ring on the inside","Race: first around 2 laps"],
+ reg:["Step-overs (marching) without gliding","Hold the stick with two hands across the body for balance"],
+ dia:"v half; X 155,20; X 170,6; X 183,20; X 155,64; X 170,50; X 183,64; s 155,20 157,10 170,6 182,10; s 155,64 157,74 170,79 182,74"},
+{id:"sk-stops", name:"Stop & Start Ladder", cat:"skating", focus:"Two-foot stops, explosive starts", dur:6, area:"full", players:"4 waves", wait:0.35, tags:["skating"],
+ setup:"Players in 4 waves on the goal line. Skate to the near blue line – stop facing the coach – back to the goal line – stop – to the centre – stop – back. Next wave goes when the previous finishes the first stop.",
+ cues:["Shoulders square, turn hips to stop","Push ice out with both blades","First 3 strides short and quick"],
+ prog:["Stop facing the other way each time","Carry a ring through the ladder"],
+ reg:["Snowplow stops","Shorter ladder (goal line – blue line only)"],
+ dia:"v full; X 12,15; X 12,30; X 12,45; X 12,60; s 12,22 73,22; s 73,30 14,30; s 14,38 98,38; d 75,0 75,85; t 75,8 STOP; t 100,8 STOP"},
+{id:"sk-backward", name:"Backward C-Cuts Race", cat:"skating", focus:"Backward skating, C-cuts", dur:6, area:"half", players:"Waves of 4", wait:0.3, tags:["skating"],
+ setup:"Waves of 4 start on the goal line facing the coach. Skate backward with C-cuts to the blue line, pivot forward, sprint back.",
+ cues:["Sit low, back straight","Make a 'C' with each foot – push out and pull in","Look over your shoulder for the line"],
+ prog:["Carry a ring backward","Add a pivot at the top of the circle"],
+ reg:["Hold the stick across the knees for posture","Two-foot 'hourglass' (out-in-out-in) only"],
+ dia:"v half; X 186,15; X 186,32; X 186,50; X 186,68; b 186,15 128,15; b 186,32 128,32; b 186,50 128,50; d 125,0 125,85; C 115,42"},
+{id:"sk-pivots", name:"Pivot Turns Pattern", cat:"skating", focus:"Forward-to-backward pivots", dur:7, area:"half", players:"2 lines", wait:0.3, tags:["skating"],
+ setup:"Cones in a zig-zag up the ice. Skate forward to cone 1, pivot to backward, skate backward to cone 2, pivot forward, etc. Two lines, one from each corner.",
+ cues:["Open hips – turn on the balls of your feet","Stay low through the turn","Stick on the ice, eyes up-ice"],
+ prog:["Carry a ring through all pivots","Receive a pass after the last pivot"],
+ reg:["Coach skates beside, slow speed"],
+ dia:"v half; c 175,25 160,15 145,25 130,15; c 175,60 160,70 145,60 130,70; X 192,12; X 192,73; s 192,12 175,25; b 175,25 160,15; s 160,15 145,25; b 145,25 130,15"},
+{id:"sk-tightturns", name:"Tight Turns Around the Dots", cat:"skating", focus:"Tight turns, edge lean", dur:7, area:"half", players:"Groups of 3–4", wait:0.25, tags:["skating","carrying"],
+ setup:"Players skate a figure path around the face-off dots / cones, doing a tight turn at each (both directions). Four dots = four turns, then a sprint finish.",
+ cues:["Inside knee bent, outside leg pushes","Stick tip inside the turn","Accelerate out of the turn"],
+ prog:["With ring","Race a partner on a mirrored course"],
+ reg:["Wide turns around cones instead of dots"],
+ dia:"v half; c 150,20 150,64 125,20 125,64; X 112,42; X 106,42; s 112,42 145,24 154,18 150,26 128,64 122,68 124,58 148,62 152,70 152,62 128,22 120,16 118,24 108,40"},
+{id:"sk-obstacle", name:"Obstacle Course Agility", cat:"skating", focus:"Agility, balance, recovery", dur:8, area:"third", players:"1 line, staggered starts", wait:0.25, tags:["skating"],
+ setup:"Course: jump over a stick laid on cones → crawl under a stick → knee-drop at a cone and get up → two-foot hops over lines → slalom → sprint. Start the next player when the previous reaches the 2nd obstacle.",
+ cues:["Get up fast – push off one knee","Land soft, knees bent","Keep moving your feet"],
+ prog:["Carry a ring through the whole course","Time it – beat your own time"],
+ reg:["Remove the crawl station","Coach helps at stations"],
+ dia:"v end; c 140,15 146,15; c 160,15 166,15; c 180,30; c 175,50 165,58 155,50 145,58; X 128,15; X 124,15; s 128,15 140,10 165,10 185,22 182,36 175,46 165,62 155,46 145,62 130,72; t 143,22 JUMP; t 163,22 CRAWL; t 188,30 KNEE"},
+{id:"sk-quickstart", name:"Crossover Starts", cat:"skating", focus:"Quick starts, first 3 strides", dur:6, area:"half", players:"Waves of 4–5", wait:0.3, tags:["skating"],
+ setup:"Players stand sideways on a line. On the whistle, crossover start (cross the back foot over) and sprint 5 strides to the next line. Do both directions.",
+ cues:["Cross over, then drive the back leg","Short, quick, choppy strides","Low and forward body lean"],
+ prog:["Coach points direction at the last second","Race a partner to a ring"],
+ reg:["Front-facing V-starts only"],
+ dia:"v half; X 130,15; X 130,30; X 130,45; X 130,60; s 130,15 158,15; s 130,30 158,30; s 130,45 158,45; s 130,60 158,60; C 172,75"},
+{id:"sk-balance", name:"One-Foot Glide Challenges", cat:"skating", focus:"Balance, edge control", dur:5, area:"half", players:"All, spread out", wait:0.05, tags:["skating"],
+ setup:"Players glide on one foot as far as possible ('Stork'), then try: one-foot glide + touch toe, glide on inside edge curve, glide on outside edge curve. Everyone goes at once across the ice.",
+ cues:["Weight over the gliding foot","Arms/stick out for balance","Bend the gliding knee"],
+ prog:["Glide while carrying a ring","Count to 5 on each edge"],
+ reg:["Two-foot glide with one blade lifted slightly"],
+ dia:"v half; X 110,10; X 110,25; X 110,40; X 110,55; X 110,70; s 110,10 150,10; s 110,25 145,32; s 110,40 160,40; s 110,55 145,48; s 110,70 155,70"},
+{id:"sk-fig8", name:"Figure-8 Edge Work", cat:"skating", focus:"Edges, crossovers both ways", dur:7, area:"third", players:"Groups of 3", wait:0.2, tags:["skating"],
+ setup:"Two cones 10 m apart. Skate a figure-8 around them: crossovers on the curves, switch direction in the middle. Three skaters per figure-8, evenly spaced.",
+ cues:["Lean into the circle, both directions","Crossovers on the weak side too","Head up through the crossing"],
+ prog:["With a ring","Backward figure-8"],
+ reg:["Larger 8, step-overs only"],
+ dia:"v end; c 145,42 175,42; X 160,42; s 160,42 170,33 182,38 180,50 168,52 160,42 150,33 138,38 138,48 150,52 160,42"},
+{id:"sk-power", name:"Power Strides – Tire Pull", cat:"skating", focus:"Full stride extension, power", dur:5, area:"half", players:"Pairs", wait:0.1, tags:["skating"],
+ setup:"Partner A holds one end of a stick, partner B holds the other end and resists (glide/snowplow) while A strides across the ice. Switch at the boards.",
+ cues:["Push to full leg extension","Recover the foot under the body","Low knee bend, chest up"],
+ prog:["Partner adds light resistance with snowplow"],
+ reg:["No resistance – just long strides counting pushes"],
+ dia:"v half; X 115,15; O 108,15; X 115,40; O 108,40; X 115,65; O 108,65; s 115,15 180,15; s 115,40 180,40; s 115,65 180,65"},
+
+/* ---------- PASSING & RECEIVING ---------- */
+{id:"pa-partner", name:"Partner Passing (Forehand/Backhand)", cat:"passing", focus:"Forehand and backhand pass, receiving", dur:7, area:"third", players:"Pairs, 1 ring", wait:0.0, tags:["passing"],
+ setup:"Partners 3–4 m apart, stationary. 10 forehand passes, 10 backhand, then move apart 1 m and repeat.",
+ cues:["Ring on the stick tip, sweep and release toward the target","Follow through at your partner's stick","Receive: stick flat on the ice, 'give' as the ring arrives"],
+ prog:["Pass while gliding sideways","One-touch passes"],
+ reg:["Closer together","Receiver can stop the ring with skate first"],
+ dia:"v end; X 135,18; X 160,18; X 135,42; X 160,42; X 135,66; X 160,66; p 136,18 159,18; p 159,42 136,42; p 136,66 159,66"},
+{id:"pa-moving", name:"Moving Pairs Up Ice", cat:"passing", focus:"Passing to a moving target", dur:8, area:"full", players:"Pairs in waves", wait:0.25, tags:["passing"],
+ setup:"Pairs start at the goal line, 3–4 m apart. Skate the length of the ice passing back and forth. Must pass over each blue line (ringette rule). Next pair goes when the previous reaches the first blue line.",
+ cues:["Lead your partner – pass in front of their stick","Receiver shows a target","Talk: say 'here!'"],
+ prog:["Finish with a shot on net","Limit to backhand passes"],
+ reg:["Half-ice length only","Glide, then pass"],
+ dia:"v full; X 12,30; X 12,55; s 12,30 180,30; s 12,55 180,55; p 30,30 50,54; p 62,54 85,31; p 100,31 120,54; p 135,54 160,31; d 75,0 75,85; d 125,0 125,85"},
+{id:"pa-triangle", name:"Triangle Passing", cat:"passing", focus:"Passing angles, quick receive-and-release", dur:7, area:"third", players:"Groups of 3", wait:0.05, tags:["passing"],
+ setup:"Groups of 3 set up in a triangle around cones. Pass clockwise 10 times, counter-clockwise 10 times. Then after each pass, follow your pass to the next cone.",
+ cues:["Open your body to the next target before the ring arrives","Pass hard and flat","Stick on the ice = 'I'm ready'"],
+ prog:["Follow your pass","Add a 4th player as a passive defender in the middle"],
+ reg:["Bigger triangle, slower passes"],
+ dia:"v end; c 145,20 175,20 160,45; X 145,20; X 175,20; X 160,45; p 146,20 174,20; p 174,22 161,44; p 159,44 146,22; c 145,60 175,60; X 145,62; X 175,62; X 160,80"},
+{id:"pa-givego", name:"Give-and-Go", cat:"passing", focus:"Pass and move to open ice", dur:8, area:"half", players:"2 lines + coach", wait:0.35, tags:["passing","shooting"],
+ setup:"Player carries from the corner, passes to the coach/teammate at the blue line, accelerates past a cone and receives the return pass, then shoots.",
+ cues:["Pass, then GO – don't watch your pass","Give a target after the cone","Shoot quickly after the catch"],
+ prog:["Replace coach with a player who rotates","Add a passive defender"],
+ reg:["No shot, just catch and stop"],
+ dia:"v half; X 190,10; X 186,6; C 130,30; c 155,25; k 190,10 165,15; p 165,15 131,30; s 165,15 150,25 160,40; p 131,31 160,40; h 162,40 186,42"},
+{id:"pa-boards", name:"Bank Pass off the Boards", cat:"passing", focus:"Using the boards, angles", dur:6, area:"third", players:"Pairs", wait:0.05, tags:["passing"],
+ setup:"Partners stand along the same boards, 5 m apart, 3 m off the wall. Pass to partner by banking the ring off the boards. Switch sides to use the backhand.",
+ cues:["Aim at the spot half-way between you on the boards","Angle in = angle out","Firm pass, follow through"],
+ prog:["Do it while skating","Bank pass to yourself to beat a cone 'defender'"],
+ reg:["Closer to the boards"],
+ dia:"v end; X 140,10; X 165,10; p 141,11 152,1 164,11; X 140,72; X 165,72; p 141,73 152,84 164,73; c 152,6"},
+{id:"pa-monkey", name:"Monkey in the Middle (2v1)", cat:"passing", focus:"Passing lanes, moving to get open", dur:8, area:"third", players:"Groups of 3", wait:0.0, tags:["passing","game"],
+ setup:"Small squares (about 6 m) marked with cones. Two passers vs one 'monkey' in the middle. 5 passes = point. If the monkey touches the ring, swap the passer who made the bad pass.",
+ cues:["Move to make a passing lane","Fake a pass, then pass","Pass away from the defender's stick"],
+ prog:["3v1 in a bigger square, one touch only","Count only backhand passes double"],
+ reg:["Monkey uses hands behind back (stick only)"],
+ dia:"v end; z 135,10,30,30; z 165,45,30,30; X 137,12; X 162,36; O 150,25; p 138,13 161,35; X 168,48; X 192,72; O 180,60; p 169,49 191,71"},
+{id:"pa-weave", name:"Three-Player Weave", cat:"passing", focus:"Passing and support in motion", dur:8, area:"full", players:"Lines of 3", wait:0.4, tags:["passing","teamplay"],
+ setup:"Three lines on the goal line. Middle player passes to a wing, then skates behind that player. Keep going the length of the ice, passing over each blue line. Finish with a shot.",
+ cues:["Pass and go behind","Stay wide – use the whole ice","Pass across every blue line"],
+ prog:["Add a defender on the last blue line","2 passes per zone minimum"],
+ reg:["Two-player version","Walk it through first"],
+ dia:"v full; X 12,20; X 12,42; X 12,64; p 25,42 45,22; s 25,42 50,30 60,62; p 55,22 75,62; s 45,22 70,40 95,22; p 85,62 105,22; h 160,30 186,42"},
+{id:"pa-softhands", name:"Soft Hands Receiving", cat:"passing", focus:"Receiving cleanly, cushioning", dur:6, area:"third", players:"Pairs", wait:0.0, tags:["passing"],
+ setup:"Partners 4 m apart. Passer sends harder and harder passes; receiver must catch the ring on the stick tip and stop it dead before passing back. Add passes to the skates and kick it to the stick.",
+ cues:["Stick tip flat on the ice, ready","Relax the hands and 'give' back with the ring","Catch ring on the forehand and the backhand"],
+ prog:["Receive while skating backward","Receive and pass in one motion"],
+ reg:["Slow, rolling passes"],
+ dia:"v end; X 140,20; O 165,20; X 140,45; O 165,45; X 140,70; O 165,70; p 164,20 141,20; p 164,45 141,45; p 164,70 141,70"},
+{id:"pa-square", name:"Passing Square with Follow", cat:"passing", focus:"Quick passes, follow the ring", dur:7, area:"half", players:"Groups of 5 per circle", wait:0.15, tags:["passing"],
+ setup:"Four players around an end-zone circle (12, 3, 6, 9 o'clock), fifth player waiting. Pass around the circle and follow your pass to the next spot. Switch directions on the whistle.",
+ cues:["Pass to the stick, not the skates","Turn your body before the ring arrives","Communicate: name + 'here'"],
+ prog:["Two rings at once!","Pass across the circle instead of around"],
+ reg:["No follow, stay on spot"],
+ dia:"v half; X 169,6; X 183,20; X 169,35; X 155,20; p 170,7 182,19; p 182,21 170,34; p 168,34 156,21; p 156,19 168,7; X 169,50; X 183,64; X 169,79; X 155,64"},
+{id:"pa-flip", name:"Flip Pass over the Stick", cat:"passing", focus:"Lifting the ring over sticks", dur:6, area:"third", players:"Pairs + stick barrier", wait:0.05, tags:["passing"],
+ setup:"Partners 4 m apart with a stick lying flat on the ice between them. Flip the ring over the stick so it lands flat before the partner. Advanced players use a stick on 2 cones.",
+ cues:["Ring on the stick tip, roll the wrist up","Follow through low to high","Land it flat – not a rocket"],
+ prog:["Raise the barrier","Flip pass while moving"],
+ reg:["Flat passes through a cone gate instead"],
+ dia:"v end; X 140,20; X 165,20; d 152,14 152,26; p 141,20 152,15 164,20; X 140,55; X 165,55; d 152,49 152,61; p 164,55 152,50 141,55"},
+
+/* ---------- RING CARRYING ---------- */
+{id:"ca-protect", name:"Ring Protection Circle", cat:"carrying", focus:"Protecting the ring with body position", dur:7, area:"third", players:"Pairs inside circles", wait:0.0, tags:["carrying","game"],
+ setup:"Pairs inside a face-off circle. One carries the ring, the other tries to lift the stick or knock the ring out. 20 seconds, then switch. Must stay inside the circle.",
+ cues:["Body between the checker and the ring","Ring on the far side of your body","Keep your feet moving"],
+ prog:["2v1 checkers","Must carry with backhand side only"],
+ reg:["Checker uses stick only to touch, not lift"],
+ dia:"v end; X 165,18; O 175,24; k 165,18 158,12 150,20; X 165,64; O 172,56; k 165,64 160,72 152,66; t 169,42 SWITCH 20s"},
+{id:"ca-weave", name:"Cone Weave Ring Carry", cat:"carrying", focus:"Ring control through turns", dur:7, area:"half", players:"3 lines", wait:0.3, tags:["carrying"],
+ setup:"Three lines of cones (6 each). Carry the ring through, keeping the stick in the ring, then shoot on net or stop at the end. Next player goes at cone 3.",
+ cues:["Stick in the ring, ring beside your skates","Short turns, knees bent","Look ahead to the next cone"],
+ prog:["Backhand-only carry","Add a tight turn at the last cone + shot"],
+ reg:["Wider spacing, 4 cones"],
+ dia:"v half; c 120,20 130,20 140,20 150,20 160,20; c 120,42 130,42 140,42 150,42 160,42; c 120,64 130,64 140,64 150,64 160,64; X 108,20; X 108,42; X 108,64; k 108,42 120,38 130,46 140,38 150,46 160,38 175,42"},
+{id:"ca-keep", name:"Keep Your Ring (Stick-Lift Tag)", cat:"carrying", focus:"Protecting the ring, lifting sticks", dur:6, area:"half", players:"All, everyone with a ring", wait:0.02, tags:["carrying","game"],
+ setup:"Everyone has a ring in the half or third. Protect yours while trying to lift other players' sticks to make them lose their ring. If you lose it, pick up any free ring and keep going. Count how many rings you knock loose.",
+ cues:["Lift the stick from underneath, don't slash","Heads up – protect and attack","Fast feet, small area"],
+ prog:["Shrink the area","Lost ring = do 3 stick handles before rejoining"],
+ reg:["Only coaches check"],
+ dia:"v half; X 120,20; X 140,55; X 160,30; X 175,65; X 135,30; X 185,45; X 150,72; k 120,20 132,12; k 160,30 170,20; k 140,55 128,62; k 185,45 176,38"},
+{id:"ca-headsup", name:"Heads-Up Carry (Coach Signals)", cat:"carrying", focus:"Carrying without looking at the ring", dur:5, area:"half", players:"All", wait:0.02, tags:["carrying"],
+ setup:"All players carry a ring facing the coach. Coach holds up fingers or points; players shout the number or skate the direction shown while keeping the ring.",
+ cues:["Feel the ring – don't look at it","Ring on the tip, close to the skates","Eyes on the coach at all times"],
+ prog:["Coach points to stop, pivot, turn","Two coaches with different signals"],
+ reg:["Stationary stick handling, eyes up"],
+ dia:"v half; C 192,42; X 130,15; X 145,30; X 130,45; X 145,60; X 130,72; k 130,15 150,10; k 145,30 160,22; k 130,45 155,45; k 145,60 165,66; t 192,32 3 fingers"},
+{id:"ca-pivot", name:"Carry with Pivots & Turns", cat:"carrying", focus:"Ring control during pivots", dur:7, area:"half", players:"2 lines", wait:0.3, tags:["carrying","skating"],
+ setup:"Carry forward to cone 1, pivot backward keeping the ring, carry backward to cone 2, pivot forward, tight turn at cone 3 and shoot.",
+ cues:["Stick stays in the ring through the pivot","Ring on the inside of the turn","Low hips"],
+ prog:["Add a defender at cone 3","Pass to a partner after cone 3"],
+ reg:["Forward turns only"],
+ dia:"v half; X 115,15; X 115,70; c 140,22 160,30 175,42; k 115,15 140,22; b 140,22 160,30; k 160,30 178,44 172,52; h 172,52 187,43"},
+{id:"ca-switch", name:"Forehand/Backhand Switches", cat:"carrying", focus:"Switching sides with the ring", dur:6, area:"half", players:"All, spread out", wait:0.05, tags:["carrying"],
+ setup:"Players carry across the ice switching the ring from forehand to backhand side every 3 strides (rotate the stick in the ring). Then switch on coach's whistle.",
+ cues:["Rotate the stick inside the ring – don't let it slip off","Keep the ring close to your feet","Small, quick movements"],
+ prog:["Switch around a cone","Switch while doing crossovers"],
+ reg:["Stationary switches first"],
+ dia:"v half; X 110,15; X 110,35; X 110,55; X 110,75; k 110,15 175,15; k 110,35 175,35; k 110,55 175,55; k 110,75 175,75; t 130,8 FH; t 150,8 BH; t 170,8 FH"},
+{id:"ca-escape", name:"Escape the Corner 1v1", cat:"carrying", focus:"Protecting the ring, escaping pressure", dur:8, area:"third", players:"Pairs from 2 corners", wait:0.3, tags:["carrying","game"],
+ setup:"Coach dumps a ring into the corner. Attacker races to it, defender follows. Attacker must escape the corner and carry/shoot; defender tries to lift and clear past the circle top.",
+ cues:["Turn away from pressure","Protect with your body and a wide base","Burst out when you see space"],
+ prog:["2v1 in the corner","Add a 'pass out to point' option"],
+ reg:["Defender starts a stick-length behind"],
+ dia:"v end; C 140,8; r 192,10; X 150,15; O 145,22; s 150,15 186,10; s 145,22 180,15; k 186,10 175,24 175,35; h 175,35 186,42"},
+{id:"ca-speed", name:"Speed Carry Relay", cat:"carrying", focus:"Ring control at full speed", dur:6, area:"half", players:"4 teams", wait:0.45, tags:["carrying"],
+ setup:"Teams of 3–4 line up on the boards. First player carries around a cone at the far side and back, passes the ring to the next player (handoff over the start line). Keep relays short so lines stay small.",
+ cues:["Push the ring out in front for speed","Control around the cone – slow down a bit","Clean pass to the next teammate"],
+ prog:["Backward carry on the return"],
+ reg:["Skate without the ring first lap"],
+ dia:"v half; X 115,8; X 115,3; X 140,8; X 140,3; X 165,8; X 165,3; c 115,72 140,72 165,72; k 115,10 112,70 118,74 118,15; k 140,10 137,70 143,74 143,15"},
+
+/* ---------- SHOOTING ---------- */
+{id:"sh-wrist", name:"Wrist Shot Basics (Stationary)", cat:"shooting", focus:"Wrist shot technique", dur:7, area:"third", players:"All, spread along boards", wait:0.0, tags:["shooting"],
+ setup:"Players line up 3–4 m from the boards, each with a ring. Shoot at the boards (targets marked or cones). Then move to shooting on net in two groups.",
+ cues:["Ring on the stick tip, back by your back foot","Drag, sweep and snap the wrists","Point your stick tip at the target to finish"],
+ prog:["Shoot on the move","Shoot at small targets"],
+ reg:["Closer to the boards","Sweep shot without snap"],
+ dia:"v end; X 140,18; X 155,18; X 170,18; X 140,35; X 155,35; X 170,35; h 140,18 140,2; h 155,18 155,2; h 170,18 170,2; n 147,1; n 162,1"},
+{id:"sh-wing", name:"Shoot Off the Wing", cat:"shooting", focus:"Shooting while skating", dur:8, area:"half", players:"2 lines at the blue line", wait:0.35, tags:["shooting","carrying"],
+ setup:"Two lines at the blue line boards. Skate in with a ring, cut toward the net (outside the crease), shoot from the top of the circle. Alternate lines.",
+ cues:["Shoot in stride – don't stop","Pick a spot, look, shoot","Stay out of the crease!"],
+ prog:["Receive a pass from the coach first","Add a cone defender to skate around"],
+ reg:["Coast and shoot from closer"],
+ dia:"v half; G 186,42; X 128,6; X 128,79; k 128,6 150,15 165,28; h 165,28 186,40; k 128,79 150,70 165,57; h 165,57 186,45"},
+{id:"sh-passout", name:"Pass-Out & Shoot", cat:"shooting", focus:"Catch-and-shoot, passing from behind", dur:8, area:"half", players:"2 lines + corner passer", wait:0.3, tags:["shooting","passing"],
+ setup:"Passer in the corner, shooter line at the top of the circle. Shooter skates into the slot, receives the pass and shoots quickly. Passer becomes next shooter.",
+ cues:["Stick on the ice = target","Catch and release fast","Passer: lead the shooter"],
+ prog:["One-touch shot","Shooter must fake first"],
+ reg:["Stationary shooter"],
+ dia:"v half; G 186,42; X 190,12; X 150,25; X 145,25; s 150,25 165,35; p 189,13 165,34; h 166,36 186,42; X 190,73; X 150,60"},
+{id:"sh-rebound", name:"Rebound Ready", cat:"shooting", focus:"Following the shot, second chances", dur:7, area:"half", players:"Pairs", wait:0.3, tags:["shooting"],
+ setup:"Coach shoots from the point; two players at the sides of the crease (outside!) try to play the rebound and score.",
+ cues:["Stick on the ice, ready","Don't step into the crease","Quick shot – no extra handling"],
+ prog:["Defender boxes out","Shooter follows own shot"],
+ reg:["Coach rolls the ring to the side"],
+ dia:"v half; G 186,42; C 140,42; h 141,42 185,42; X 175,30; O 175,55; r 172,46; s 175,30 172,43"},
+{id:"sh-2v0", name:"2-on-0 Rush & Shoot", cat:"shooting", focus:"Passing across the blue line, shooting", dur:8, area:"full", players:"Pairs from the far end", wait:0.4, tags:["shooting","rules","passing"],
+ setup:"Pairs start at the far blue line. Carry, pass across the near blue line (required), then the pair attacks with a shot and a rebound player. Two pairs in the air at once.",
+ cues:["Pass over the blue line – don't carry it","Second player drives the net","Shoot early, follow your shot"],
+ prog:["Add a back-checker (2v1)","Shot must come within 3 passes"],
+ reg:["Start at centre ice"],
+ dia:"v full; G 186,42; X 72,25; X 72,60; k 72,25 115,28; p 115,28 135,58; s 72,60 130,58; h 140,55 186,44; s 115,28 170,35; d 125,0 125,85"},
+{id:"sh-targets", name:"Target Practice", cat:"shooting", focus:"Accuracy", dur:6, area:"half", players:"2 groups", wait:0.25, tags:["shooting"],
+ setup:"Hang pool noodles / hula hoops or stand cones in the corners of the net (no goalie). Shooters get 3 rings each from the top of the crease area (outside). Points for hitting targets.",
+ cues:["Look at the target, not the ring","Follow through to the target","Use your weight – transfer back to front"],
+ prog:["Shoot from further","Shoot after a quick move"],
+ reg:["Bigger targets, closer"],
+ dia:"v half; n 189,36; n 189,48; X 160,42; X 155,30; X 155,55; h 160,42 188,36; h 155,55 188,48"},
+{id:"sh-pickup", name:"Quick Pick-Up Shot", cat:"shooting", focus:"Picking up loose rings, quick release", dur:6, area:"half", players:"2 lines", wait:0.3, tags:["shooting","carrying"],
+ setup:"Rings scattered in the slot. Player skates in, picks up a loose ring with the stick tip and shoots within 2 seconds. Repeat for 3 rings, then next player.",
+ cues:["Stick tip down into the ring, scoop","Shoot from where you pick it up","Keep feet moving"],
+ prog:["Coach calls which ring","Goalie in net"],
+ reg:["Stop, pick up, then shoot"],
+ dia:"v half; G 186,42; r 160,32; r 165,50; r 155,42; X 130,25; X 130,60; s 130,25 158,32; h 160,32 186,40"},
+{id:"sh-backhand", name:"Backhand Shot Station", cat:"shooting", focus:"Backhand shooting", dur:6, area:"third", players:"Station groups", wait:0.1, tags:["shooting"],
+ setup:"Players shoot backhand shots at the boards (or into an empty net) from 4 m. Many rings, no line – everyone shoots.",
+ cues:["Ring on the back side of the stick tip","Pull across the body, finish high","Look at the target"],
+ prog:["Backhand shot after a backhand carry"],
+ reg:["Backhand sweep pass to the boards"],
+ dia:"v end; X 140,18; X 155,18; X 170,18; h 140,18 140,2; h 155,18 155,2; h 170,18 170,2; r 145,22; r 160,22; t 155,30 backhand"},
+
+/* ---------- FREE PASS & BLUE LINES (RULES) ---------- */
+{id:"ru-blueline", name:"Blue-Line Pass Relay", cat:"rules", focus:"Ring must be passed over each blue line", dur:8, area:"full", players:"Groups of 3 per lane", wait:0.25, tags:["rules","passing"],
+ setup:"Lanes of 3 players: one in each zone (end, neutral, end). The ring must travel the length of the ice by passing over each blue line – no carrying across! Rotate positions each run.",
+ cues:["You can't skate the ring over the blue line – pass it","A different player must play it on the other side","Receiver: stick on the ice, ready"],
+ prog:["Race lanes against each other","Add a defender in the middle zone"],
+ reg:["Coach walks through the rule first"],
+ dia:"v full; X 40,20; X 100,20; X 160,20; p 50,20 98,20; p 102,22 158,22; X 40,62; X 100,62; X 160,62; p 50,62 98,62; d 75,0 75,85; d 125,0 125,85; t 75,82 BLUE; t 125,82 BLUE"},
+{id:"ru-freepass", name:"Free-Pass Fundamentals", cat:"rules", focus:"Taking a free pass in 5 seconds", dur:7, area:"third", players:"Groups of 4 at free-pass circles", wait:0.2, tags:["rules","passing"],
+ setup:"Coach places the ring in a free-pass circle and blows the whistle. Taker has 5 seconds to pass the ring out of the circle to a teammate. Teammates move to get open; one defender must start outside the circle.",
+ cues:["Ring starts in the circle – pass it, don't skate it out","Look first, then pass (count 5!)","Teammates: move to open ice before the whistle"],
+ prog:["Add 2 defenders","Taker gets 3 seconds only"],
+ reg:["No defenders"],
+ dia:"v end; C 150,10; X 169,20; r 169,20; X 145,35; X 185,6; O 160,30; p 170,21 145,34; s 145,35 135,40"},
+{id:"ru-fpoptions", name:"Free-Pass Options", cat:"rules", focus:"Decision-making on restarts", dur:8, area:"half", players:"Groups of 4", wait:0.25, tags:["rules","passing","teamplay"],
+ setup:"Teach 3 free-pass options at the centre or an end circle: (1) short pass to the closest player, (2) long pass up the boards across the blue line, (3) back pass to a support player. Coach calls the number, then players choose.",
+ cues:["Know your option BEFORE the whistle","Support player stays behind the taker","Long pass must be played by a teammate over the line"],
+ prog:["Add defenders who guess the option","Options by hand signals only"],
+ reg:["One option per rep"],
+ dia:"v half; X 105,42; r 105,42; X 115,30; X 140,10; X 90,55; p 106,41 114,31; p 106,40 139,11; p 104,43 91,54; t 116,24 1; t 142,4 2; t 88,62 3"},
+{id:"ru-3player", name:"Three-in-the-Zone Game", cat:"rules", focus:"3-skater zone rule, spacing", dur:10, area:"full", players:"Two teams of 4–5", wait:0.15, tags:["rules","game","teamplay"],
+ setup:"Small-sided scrimmage where only 3 skaters per team may be in each end zone (plus goalie). Coaches call out a 'zone count' – if a 4th player enters, that's a free pass to the other team.",
+ cues:["Count your teammates in the zone","4th player: wait at the blue line for the pass","Spread out – 3 different places"],
+ prog:["Normal ringette rules with shot clock on coach watch"],
+ reg:["Stop play and freeze to count players"],
+ dia:"v full; G 186,42; G 14,42; X 150,20; X 165,60; X 175,35; X 120,42; O 160,45; O 140,30; O 180,70; O 100,60; d 125,0 125,85; d 75,0 75,85; t 120,50 WAIT"},
+{id:"ru-crease", name:"Crease Rules Game", cat:"rules", focus:"Goalie crease rules", dur:7, area:"third", players:"3v3 + goalie", wait:0.15, tags:["rules","goalie","game"],
+ setup:"3v3 in one zone. Goalie can play the ring anywhere; skaters can't enter or reach into the crease. If the ring stops in the crease, only the goalie can play it (5 seconds) – they pass or throw it to a teammate.",
+ cues:["Skaters: stay out of the crease, sticks too","Goalie: clear the ring within 5 seconds","Get open for the goalie's outlet"],
+ prog:["Goalie's outlet must go to the boards side"],
+ reg:["Freeze play when ring enters crease and talk it through"],
+ dia:"v end; G 186,42; X 150,30; X 160,62; X 135,45; O 168,38; O 165,55; O 145,20; r 183,44; p 185,43 150,30"},
+{id:"ru-whistle", name:"Whistle & Restart Scrimmage", cat:"rules", focus:"Learning infractions and restarts", dur:10, area:"half", players:"Two teams", wait:0.15, tags:["rules","game"],
+ setup:"Half-ice scrimmage. Coach stops play often and explains: blue-line pass, crease, high stick, 3-player rule. Restart each time with a free pass from the nearest circle.",
+ cues:["Freeze on the whistle","Listen – what was the call?","Quick restart, 5 seconds"],
+ prog:["Players call the infraction","Fewer stoppages"],
+ reg:["Walk through the restarts without opposition"],
+ dia:"v half; C 140,8; G 186,42; X 150,25; X 160,55; X 130,40; O 165,30; O 150,60; O 140,45; r 169,20; t 140,16 FREE PASS"},
+{id:"ru-neutral", name:"Neutral Zone Pass-Through", cat:"rules", focus:"Passing through the neutral zone", dur:7, area:"full", players:"Groups of 3", wait:0.3, tags:["rules","passing","teamplay"],
+ setup:"Player A passes from the end zone across the blue line to B in the neutral zone. B passes across the far blue line to C, who skates in and shoots. Rotate A→B→C→A.",
+ cues:["Every blue line needs a pass","Time your skating – stay on-side of the line until the pass","Quick passes, keep moving"],
+ prog:["Add a neutral-zone defender","Two balls of play at once (both sides)"],
+ reg:["Stationary passes over the lines"],
+ dia:"v full; G 186,42; X 55,30; X 100,20; X 140,30; p 56,30 99,21; p 101,21 139,30; s 140,30 165,38; h 165,38 186,42; d 75,0 75,85; d 125,0 125,85"},
+{id:"ru-goalieout", name:"Goalie Outlet Throw", cat:"rules", focus:"Goalie clears, getting open for outlet", dur:6, area:"half", players:"Goalie + 4 skaters", wait:0.3, tags:["rules","goalie","passing"],
+ setup:"Coach shoots on goalie. Goalie gains control, then throws or passes the ring to a teammate who has moved to the side boards. Teammate carries to the blue line and passes over it to the coach.",
+ cues:["Goalie: control, look, throw","Skaters: get to the boards fast, show a target","Pass over the blue line, don't carry it"],
+ prog:["Add a forechecker"],
+ reg:["Goalie rolls the ring along the ice"],
+ dia:"v half; G 186,42; C 155,42; h 156,42 185,42; X 170,10; p 185,40 170,12; k 170,10 130,10; p 128,10 115,25; d 125,0 125,85"},
+
+/* ---------- SMALL-AREA GAMES ---------- */
+{id:"ga-3v3cross", name:"3v3 Cross-Ice Mini Games", cat:"game", focus:"Lots of touches, game sense", dur:15, area:"third", players:"3v3 (2–3 games at once)", wait:0.05, tags:["game","teamplay"],
+ setup:"Divide the ice into thirds with dividers or cones. Each zone hosts a 3v3 game with small nets or cones as goals. Shifts of 60–90 seconds; any extra players sub in on the fly.",
+ cues:["Find open ice – don't bunch up","Pass before you get checked","Everyone back to help"],
+ prog:["Must make 2 passes before scoring","Add goalies"],
+ reg:["4v2 with coach as a neutral passer"],
+ dia:"v full; d 75,0 75,85; d 125,0 125,85; n 4,42; n 70,42; n 80,42; n 120,42; X 25,25; X 40,55; X 55,35; O 30,50; O 50,20; O 60,62; X 90,30; X 105,60; O 100,42; X 155,25; O 170,55; X 165,45"},
+{id:"ga-2v2corner", name:"2v2 Corner Battles", cat:"game", focus:"Small-space decisions, support", dur:10, area:"third", players:"2v2 in each corner", wait:0.1, tags:["game","carrying"],
+ setup:"Each corner (to the top of the circle) is a mini arena with a small net or cone goal. 2v2, 45-second shifts. Coach drops a new ring after each goal.",
+ cues:["Support your partner – be a passing option","Protect, then pass","Quick shot when you see the net"],
+ prog:["1v1 + a neutral passer","Goal only counts after a pass"],
+ reg:["2v1 to build success"],
+ dia:"v half; d 160,0 160,85; d 160,42 200,42; n 192,8; n 192,77; X 172,15; X 182,30; O 170,30; O 186,18; X 172,70; X 182,55; O 170,55; O 186,67"},
+{id:"ga-keepaway", name:"Team Keep-Away (5 Passes = Point)", cat:"game", focus:"Passing under pressure, getting open", dur:10, area:"half", players:"Two teams of 4–6", wait:0.05, tags:["game","passing","teamplay"],
+ setup:"Two teams in half ice, one ring. Five passes in a row = 1 point. Opponents try to intercept or lift sticks. No goals needed.",
+ cues:["After you pass, move!","Show a target with your stick","Spread out across the ice"],
+ prog:["Each pass must be a backhand","Must pass over a cone line"],
+ reg:["Add a neutral player who always plays for the team with the ring"],
+ dia:"v half; X 120,20; X 150,15; X 180,35; X 140,65; O 135,40; O 165,25; O 160,60; O 185,70; p 121,21 149,16; p 151,17 179,34; p 179,36 141,64"},
+{id:"ga-endzone", name:"End-Zone Ringette", cat:"game", focus:"Passing to space, moving without the ring", dur:12, area:"half", players:"Two teams of 4–5", wait:0.05, tags:["game","passing","teamplay"],
+ setup:"Half ice. Each team scores by completing a pass to a teammate standing inside the opponent's end zone (marked with cones at each side). No net needed.",
+ cues:["Look up the ice first","Move into the end zone at the right time","Short passes beat long risky ones"],
+ prog:["Receiver must then shoot on a net","Max 3 seconds holding the ring"],
+ reg:["Bigger end zones"],
+ dia:"v half; z 100,0,14,85; z 186,0,14,85; X 130,30; X 150,60; X 170,20; X 190,50; O 120,50; O 160,40; O 175,65; O 106,20; p 171,21 190,48"},
+{id:"ga-4v4half", name:"4v4 Half-Ice with Blue-Line Rule", cat:"game", focus:"Game play with ringette rules", dur:15, area:"half", players:"4v4 + goalies", wait:0.15, tags:["game","rules","teamplay"],
+ setup:"4v4 in half ice with one net. When a team gains possession it must pass the ring back over the blue line (to a teammate) before attacking. Change shifts every 90 seconds.",
+ cues:["Win the ring → pass it out over the line","Support the passer","3 skaters max in the zone"],
+ prog:["Add the 30-second clock (coach count)"],
+ reg:["Clearing the ring by carrying is OK for the first round"],
+ dia:"v half; G 186,42; X 150,25; X 160,60; X 135,40; X 118,70; O 165,35; O 155,50; O 140,20; O 170,70; p 136,41 120,68; d 125,0 125,85"},
+{id:"ga-pirates", name:"Pirate Rings", cat:"game", focus:"Carrying, protecting, stealing", dur:8, area:"half", players:"4 teams in corners", wait:0.05, tags:["game","carrying"],
+ setup:"Pile of rings in the centre circle (or middle of the half). Four teams each have a 'treasure chest' corner. Players carry one ring at a time to their chest. When the pile is empty, they may steal from other chests. Highest count at the whistle wins.",
+ cues:["One ring at a time, carried – no shooting","Heads up in traffic","Protect your chest or attack?"],
+ prog:["Must pass to a teammate before reaching the chest"],
+ reg:["No stealing, just race to collect"],
+ dia:"v half; r 150,40; r 152,44; r 148,45; r 154,40; z 100,0,15,15; z 185,0,15,15; z 100,70,15,15; z 185,70,15,15; X 110,10; X 190,10; X 110,75; X 190,75; k 150,42 112,12; k 150,42 188,73"},
+{id:"ga-numbers", name:"Numbers Game", cat:"game", focus:"Compete, quick decisions", dur:8, area:"half", players:"Two teams on the boards", wait:0.45, tags:["game"],
+ setup:"Two teams sit on opposite boards, numbered. Coach throws a ring out and calls 1 or 2 numbers – those players race out and play 1v1 or 2v2 to a net. Keep calls quick and call multiple numbers so lines stay short.",
+ cues:["Fast first 3 strides","Win the race, protect the ring","Shoot early"],
+ prog:["Call 3 numbers for 3v3","Call a number twice → 2v1"],
+ reg:["Only call groups of 2–3"],
+ dia:"v half; C 150,42; r 150,42; X 120,4 1; X 140,4 2; X 160,4 3; O 120,81 1; O 140,81 2; O 160,81 3; s 140,6 150,38; s 140,79 152,46; G 186,42"},
+{id:"ga-gates", name:"Gate Passing Game", cat:"game", focus:"Passing accuracy, teamwork", dur:8, area:"half", players:"Pairs", wait:0.0, tags:["game","passing"],
+ setup:"Set 8–10 cone 'gates' around half ice. Pairs score a point every time they pass through a gate to each other (one on each side). Can't use the same gate twice in a row.",
+ cues:["Talk to your partner – pick the next gate","Pass firmly through the gate","Keep moving between gates"],
+ prog:["Add 2 'gatekeepers' who intercept","Backhand points double"],
+ reg:["Wider gates"],
+ dia:"v half; c 120,15 125,15; c 150,25 150,30; c 180,15 185,15; c 130,60 135,60; c 165,55 165,60; c 185,70 190,70; X 122,8; X 122,22; p 122,9 122,21; X 150,20; X 158,28; p 145,27 156,27"},
+{id:"ga-scrimmage", name:"Modified Full-Ice Scrimmage", cat:"game", focus:"Applying skills in the game", dur:15, area:"full", players:"Two teams, short shifts", wait:0.3, tags:["game","rules","teamplay"],
+ setup:"Full-ice game with ringette rules, free-pass restarts, short (60–90 s) shifts so everyone plays a lot. Coaches on ice help position and explain calls.",
+ cues:["Pass over every blue line","Spread out: one wide, one middle, one back","Change on the whistle quickly"],
+ prog:["Bonus point for a goal after 3 passes"],
+ reg:["Cross-ice games for bigger groups (see 3v3 Cross-Ice)"],
+ dia:"v full; G 186,42; G 14,42; X 100,42; r 100,42; X 85,20; X 120,65; X 60,40; O 110,25; O 90,60; O 140,42; O 30,42; p 101,41 119,64"},
+{id:"ga-allin", name:"Everybody Score Rush", cat:"game", focus:"Shooting in traffic, fun finish", dur:6, area:"half", players:"Everyone with a ring", wait:0.02, tags:["game","shooting"],
+ setup:"Two teams, everyone with a ring, both goalies in. On 'Go!' all players attack their goal and shoot; collect a new ring and repeat for 60 seconds. Coaches count goals.",
+ cues:["Heads up – shoot when you're clear","Find your own lane","Pick up any loose ring and go again"],
+ prog:["Must deke a cone first"],
+ reg:["Empty nets"],
+ dia:"v full; G 186,42; G 14,42; X 110,20; X 110,40; X 110,60; O 90,25; O 90,45; O 90,65; k 110,20 160,30; h 160,30 186,40; k 90,45 40,42; h 40,42 14,42"},
+{id:"ga-capture", name:"Capture the Rings", cat:"game", focus:"Speed, carrying, teamwork", dur:10, area:"full", players:"Two teams", wait:0.05, tags:["game","carrying","teamplay"],
+ setup:"Each team has 5 rings in their end crease area (coach spot). Players sneak into the other team's end, carry a ring back across the centre line. Tagged carriers drop the ring and go back.",
+ cues:["Carry close, head up","Work together – decoys!","Use speed when you have space"],
+ prog:["Ring must be passed over the centre/blue line to count"],
+ reg:["No tagging carriers"],
+ dia:"v full; r 180,40; r 180,46; r 20,40; r 20,46; X 120,20; X 150,60; X 60,30; O 80,55; O 40,20; O 130,45; k 150,60 180,44; d 100,0 100,85"},
+{id:"ga-2gate", name:"2v2 Gates to Score", cat:"game", focus:"Carry or pass through a gate to score", dur:8, area:"third", players:"2v2 per zone", wait:0.1, tags:["game","carrying","passing"],
+ setup:"In a third (or end zone), place 3 gates. Teams score by carrying or passing through any gate. After a score, the other team takes the ring (free pass) from the middle.",
+ cues:["Look for the open gate","Draw the defender, then pass","Restart quickly"],
+ prog:["Only passes through the gate count"],
+ reg:["Neutral player helps the attacking team"],
+ dia:"v end; c 140,20 140,28; c 180,30 180,38; c 160,65 168,65; X 150,40; X 170,50; O 158,30; O 175,60; k 150,40 142,24; p 170,50 164,64"},
+
+/* ---------- GOALIE BASICS ---------- */
+{id:"go-stance", name:"Goalie Ready Stance & Shuffle", cat:"goalie", focus:"Stance, shuffles, staying square", dur:6, area:"third", players:"Goalies (or everyone tries)", wait:0.1, tags:["goalie"],
+ setup:"Goalies in the crease. Coach points left/right; goalie shuffles across the crease staying square to the coach. In FUN programs, rotate every player through as goalie.",
+ cues:["Knees bent, glove hand up and out","Stick flat in front of the skates","Short shuffles – don't cross the feet"],
+ prog:["Coach moves the ring to new shooting spots","Add a shot after each shuffle"],
+ reg:["Shuffles without equipment, slow"],
+ dia:"v end; G 186,42; C 160,42; s 186,42 184,34; s 186,42 184,50; t 160,34 points"},
+{id:"go-downup", name:"Down & Up Recovery", cat:"goalie", focus:"Getting up quickly, balance", dur:5, area:"third", players:"Goalies", wait:0.1, tags:["goalie"],
+ setup:"Goalie drops to the knees (butterfly-type) on the whistle and recovers to the stance as fast as possible. Then saves a low shot from the coach after each recovery.",
+ cues:["Push up with one leg, the other plants","Eyes on the ring during recovery","Get square again"],
+ prog:["Second shot after recovery"],
+ reg:["Recovery without a shot"],
+ dia:"v end; G 186,42; C 155,42; h 156,42 184,44; t 186,58 DOWN-UP"},
+{id:"go-throw", name:"Goalie Clears: Throw & Pass", cat:"goalie", focus:"Controlling and clearing the ring", dur:6, area:"half", players:"Goalie + 3 skaters", wait:0.2, tags:["goalie","passing"],
+ setup:"Coach shoots a soft shot. Goalie traps it, then throws the ring (frisbee style) or passes with the stick to a skater on the boards within 5 seconds.",
+ cues:["Trap and control first","Look at your target before you throw","Throw flat and low to the stick"],
+ prog:["Two targets – goalie picks the open one"],
+ reg:["Roll/slide the ring to a close target"],
+ dia:"v half; G 186,42; C 150,42; h 151,42 185,42; X 165,8; X 165,77; p 185,40 165,10; p 185,44 165,75"},
+{id:"go-angles", name:"Angles Game", cat:"goalie", focus:"Positioning on the shooter", dur:6, area:"half", players:"Goalie + 4 shooters", wait:0.35, tags:["goalie","shooting"],
+ setup:"Shooters stand at 4 spots in an arc (cones). Coach calls a shooter; goalie moves to face that shooter, then the shooter shoots. Rotate shooters quickly.",
+ cues:["Line up: ring – you – middle of net","Get set before the shot","Small steps, stay square"],
+ prog:["Shooters pass between them first"],
+ reg:["Goalie just moves to the angle, no shot"],
+ dia:"v half; G 186,42; c 160,15 150,35 150,50 160,70; X 160,15; X 150,35; X 150,50; X 160,70; s 186,42 183,36; h 150,35 184,40"},
+{id:"go-tpush", name:"Crease T-Pushes", cat:"goalie", focus:"Lateral movement across the crease", dur:5, area:"third", players:"Goalies", wait:0.1, tags:["goalie"],
+ setup:"Goalie moves from post to post using T-pushes (turn the lead skate, push with the back leg), stopping square each time. Add a save at each post.",
+ cues:["Turn the head and lead foot first","Push hard, then stop square","Stick stays on the ice"],
+ prog:["Pass across the crease, goalie pushes to save"],
+ reg:["Shuffle steps instead of T-push"],
+ dia:"v end; G 186,36; G 186,48; s 186,36 186,48; C 165,42; p 166,42 170,32"},
+
+/* ---------- COOL-DOWN ---------- */
+{id:"cd-glide", name:"Slow Glide & Stretch Lap", cat:"cooldown", focus:"Recovery, flexibility", dur:4, area:"full", players:"All", wait:0.0, tags:[],
+ setup:"Easy laps of the ice. Every half lap, coach calls a stretch while gliding: hamstring (stick on toes), groin (lunge glide), arm circles, deep breaths.",
+ cues:["Slow and easy","Breathe out on the stretch","Hold each stretch 10 seconds"],
+ prog:["Stretch on one foot glide"],
+ reg:["Stretch stationary at the boards"],
+ dia:"v full; X 40,10; X 100,8; X 160,12; X 60,75; X 140,77; s 40,10 100,8 160,12 190,42 160,75 100,77 40,75 10,42 40,10"},
+{id:"cd-circle", name:"Centre-Circle Stretch & Talk", cat:"cooldown", focus:"Stretching, feedback, fun fact", dur:4, area:"third", players:"All", wait:0.0, tags:[],
+ setup:"Everyone takes a knee in the centre circle. Gentle stretches while the coach asks: 'What was your favourite drill? What did we learn?' Give 1–2 shout-outs for effort.",
+ cues:["Celebrate effort, not just goals","One learning point to remember","Hydrate"],
+ prog:["Players give shout-outs to teammates"],
+ reg:["Shorter talk"],
+ dia:"v mid; C 100,42; X 90,30; X 110,30; X 88,48; X 112,48; X 100,58; X 100,26"},
+{id:"cd-longglide", name:"Longest Glide Challenge", cat:"cooldown", focus:"Balance, gliding", dur:3, area:"half", players:"All, waves", wait:0.15, tags:[],
+ setup:"Skate 4 strides from the boards, then glide on one or two feet as far as possible. Mark the best glide with a ring. Easy pace.",
+ cues:["Low and balanced","Arms still","Stretch out tall at the end"],
+ prog:["One-foot glides only"],
+ reg:["Two-foot glide"],
+ dia:"v half; X 110,10; X 110,30; X 110,50; X 110,70; s 110,10 170,10; s 110,30 160,30; s 110,50 175,50; s 110,70 155,70"},
+{id:"cd-shootout", name:"Fun Shootout Finale", cat:"cooldown", focus:"Fun, low-intensity finish", dur:5, area:"half", players:"All, 2 nets", wait:0.4, tags:["shooting"],
+ setup:"Two shootout lines, one at each net (use both ends). Each player gets one breakaway. Goalies rotate or coaches in net. Celebrate every goal.",
+ cues:["Have a plan before you start","Shoot or deke – be brave","Cheer for teammates"],
+ prog:["Shot must come off a move"],
+ reg:["Empty net"],
+ dia:"v half; G 186,42; X 125,42; X 120,42; X 115,42; k 125,42 165,40; h 165,40 186,42"},
+{id:"cd-roundup", name:"Ring Roundup & Stretch", cat:"cooldown", focus:"Clean up + easy stretching", dur:3, area:"full", players:"All", wait:0.0, tags:[],
+ setup:"Players skate easy and collect all rings and cones to the bench, carrying one ring at a time. Finish with 3 slow stretches at the bench.",
+ cues:["Easy pace","Carry one ring at a time","Thank your coaches!"],
+ prog:["Pairs pass rings to the bench"],
+ reg:["Coaches collect cones"],
+ dia:"v full; r 40,30; r 120,60; r 160,20; X 60,40; X 140,50; X 100,30; k 40,30 100,2; k 120,60 100,4; t 100,10 BENCH"}
+];
+
+var BREAK_DRILL = {id:"water", name:"Water Break", cat:"break", focus:"Hydrate, quick instruction", dur:2, area:"third", players:"All", wait:0, tags:[],
+ setup:"Players get water at the bench; coach previews the next drill.", cues:["Drink!","Listen for the next drill"], prog:[], reg:[], dia:""};
+
+/* ===== CORE LOGIC (no DOM – also runs under node for tests) ===== */
+var AREA_RANK = {third: 1, half: 2, full: 3};
+var AREA_LABEL = {third: "⅓ ice", half: "½ ice", full: "Full ice"};
+var SKILL_CATS = ["skating", "passing", "carrying", "shooting", "rules", "goalie", "game"];
+var LINE_TARGET = 0.20;
+
+var THEMES = {
+  balanced: {label: "Balanced mix",                 skills: ["skating", "passing", "shooting"], tag: null},
+  skating:  {label: "Skating & edges",              skills: ["skating", "skating", "carrying"], tag: "skating"},
+  passing:  {label: "Passing & receiving",          skills: ["passing", "passing", "shooting"], tag: "passing"},
+  carrying: {label: "Ring carrying & protection",   skills: ["carrying", "carrying", "skating"], tag: "carrying"},
+  shooting: {label: "Shooting & scoring",           skills: ["shooting", "carrying", "shooting"], tag: "shooting"},
+  rules:    {label: "Free pass & blue lines",       skills: ["rules", "passing", "rules"], tag: "rules"},
+  teamplay: {label: "Team play & small-area games", skills: ["passing", "rules", "game"], tag: "teamplay"},
+  goalie:   {label: "Goalie basics (+ shooting)",   skills: ["goalie", "shooting", "goalie"], tag: "goalie"}
+};
+
+/* [kind, minutes, skillIndex] – warm-up → skill blocks → water → skill → game → cool-down */
+var TEMPLATES = {
+  50: [["warmup", 6], ["skill", 9, 0], ["skill", 9, 1], ["break", 2], ["skill", 7, 2], ["game", 13], ["cooldown", 4]],
+  60: [["warmup", 7], ["skill", 10, 0], ["skill", 10, 1], ["break", 2], ["skill", 9, 2], ["game", 17], ["cooldown", 5]]
+};
+
+var DRILL_MAP = {};
+DRILLS.forEach(function (d) { DRILL_MAP[d.id] = d; });
+
+function drillById(id) {
+  if (id === "water") return BREAK_DRILL;
+  return DRILL_MAP[id] || {id: id, name: "Unknown drill (" + id + ")", cat: "break", focus: "", dur: 5, area: "third",
+    players: "", wait: 0, tags: [], setup: "This drill is not in the library.", cues: [], prog: [], reg: [], dia: ""};
+}
+function uid() { return Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-5); }
+function fits(d, share) { return AREA_RANK[d.area] <= AREA_RANK[share || "full"]; }
+
+function weightedPick(list, wfn, rnd) {
+  var total = 0, ws = list.map(function (d) { var w = Math.max(0.0001, wfn(d)); total += w; return w; });
+  var r = rnd() * total;
+  for (var i = 0; i < list.length; i++) { r -= ws[i]; if (r <= 0) return list[i]; }
+  return list[list.length - 1];
+}
+
+function planStats(blocks) {
+  var total = 0, active = 0, lineMin = 0, gameMin = 0, byCat = {};
+  blocks.forEach(function (b) {
+    var d = drillById(b.drillId), m = +b.dur || 0;
+    total += m;
+    byCat[d.cat] = (byCat[d.cat] || 0) + m;
+    if (d.cat !== "break") { active += m; lineMin += m * (d.wait || 0); }
+    if (d.cat === "game") gameMin += m;
+  });
+  return {total: total, active: active, byCat: byCat, lineMin: lineMin,
+    idle: active ? lineMin / active : 0, gamePct: active ? gameMin / active : 0};
+}
+
+function buildOnce(opts, ctx) {
+  var theme = THEMES[opts.theme] || THEMES.balanced, share = opts.share || "full";
+  var tmpl = TEMPLATES[opts.slot] || TEMPLATES[60], rnd = ctx.rnd || Math.random;
+  var favs = ctx.favs || [], recent = ctx.recent || [];
+  var used = {}, blocks = [], notes = [];
+  function weight(tag) {
+    return function (d) {
+      var w = 1;
+      if (tag && d.tags.indexOf(tag) >= 0) w *= 2.5;
+      if (favs.indexOf(d.id) >= 0) w *= 2.5;
+      if (recent.indexOf(d.id) >= 0) w *= 0.35;
+      return w * (1 - Math.min(d.wait, 0.6));
+    };
+  }
+  function pool(fn) { return DRILLS.filter(function (d) { return !used[d.id] && fits(d, share) && fn(d); }); }
+  tmpl.forEach(function (step) {
+    var kind = step[0], dur = step[1], cand, want;
+    if (kind === "break") { blocks.push({uid: uid(), drillId: "water", dur: dur, note: ""}); return; }
+    want = kind === "skill" ? theme.skills[step[2]] : kind;
+    cand = pool(function (d) { return d.cat === want; });
+    if (!cand.length) {
+      cand = pool(function (d) { return SKILL_CATS.indexOf(d.cat) >= 0 && d.tags.indexOf(want) >= 0; });
+      if (!cand.length) cand = pool(function (d) { return SKILL_CATS.indexOf(d.cat) >= 0; });
+      notes.push("No unused " + CATS[want].label + " drill fits " + AREA_LABEL[share] + " – substituted a related drill.");
+    }
+    if (!cand.length) return;
+    var d = weightedPick(cand, weight(kind === "skill" ? null : theme.tag), rnd);
+    used[d.id] = true;
+    blocks.push({uid: uid(), drillId: d.id, dur: dur, note: ""});
+  });
+  return {blocks: blocks, notes: notes};
+}
+
+/* Builds several random candidates and keeps one that respects the <20 % in-line target. */
+function autoBuild(opts, ctx) {
+  ctx = ctx || {};
+  var best = null, ok = [];
+  for (var i = 0; i < 40; i++) {
+    var r = buildOnce(opts, ctx);
+    r.stats = planStats(r.blocks);
+    if (r.stats.idle <= LINE_TARGET - 0.02) ok.push(r);
+    if (!best || r.stats.idle < best.stats.idle) best = r;
+    if (ok.length >= 5) break;
+  }
+  var pick = ok.length ? ok[Math.floor((ctx.rnd || Math.random)() * ok.length)] : best;
+  var seen = {};
+  pick.notes = pick.notes.filter(function (n) { return seen[n] ? false : (seen[n] = true); });
+  return pick;
+}
+
+function planWarnings(plan) {
+  var st = planStats(plan.blocks), w = [];
+  if (st.total > plan.slot) w.push({lvl: "bad", msg: "Plan is " + (st.total - plan.slot) + " min over your " + plan.slot + "-min ice slot."});
+  else if (st.total < plan.slot) w.push({lvl: "warn", msg: (plan.slot - st.total) + " min unplanned – add a drill or lengthen a block."});
+  if (st.idle > LINE_TARGET) w.push({lvl: "warn", msg: "Estimated time standing in lines is " + Math.round(st.idle * 100) + "% (Learn to Train target: under 20%). Swap a line drill for a station or small-area game."});
+  if (plan.blocks.length) {
+    var first = drillById(plan.blocks[0].drillId), last = drillById(plan.blocks[plan.blocks.length - 1].drillId);
+    if (first.cat !== "warmup") w.push({lvl: "warn", msg: "Start with a warm-up (fun, active, everyone moving)."});
+    if (last.cat !== "cooldown") w.push({lvl: "info", msg: "Finish with a short cool-down / team talk."});
+    if (!st.byCat.game) w.push({lvl: "warn", msg: "No small-area game – U10 players learn the game by playing it."});
+    else if (st.gamePct < 0.2) w.push({lvl: "info", msg: "Games are only " + Math.round(st.gamePct * 100) + "% of the practice – aim for 25–35%."});
+  }
+  var big = plan.blocks.filter(function (b) { return !fits(drillById(b.drillId), plan.share); });
+  if (big.length) w.push({lvl: "bad", msg: big.length + " drill(s) need more ice than your " + AREA_LABEL[plan.share] + " share."});
+  return w;
+}
+
+/* ===== RINK DIAGRAM (SVG built in code) ===== */
+var VIEWS = {full: [0, 200], half: [100, 100], end: [122, 78], mid: [68, 64]};
+var SVG_COL = {X: "#1d4ed8", O: "#dc2626", G: "#0f766e", C: "#111827", ring: "#ea580c", cone: "#f97316",
+  skate: "#1f2937", carry: "#7c3aed", pass: "#0369a1", shot: "#dc2626", back: "#374151"};
+
+function svgEsc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function pt(s) { var a = s.split(",").map(Number); return {x: a[0], y: a[1]}; }
+
+function rinkBase() {
+  var o = [];
+  o.push('<rect x="0.5" y="0.5" width="199" height="84" rx="22" fill="#f4f8fc" stroke="#475569" stroke-width="1"/>');
+  o.push('<line x1="11" y1="3" x2="11" y2="82" stroke="#dc2626" stroke-width=".5"/><line x1="189" y1="3" x2="189" y2="82" stroke="#dc2626" stroke-width=".5"/>');
+  o.push('<line x1="100" y1="0.5" x2="100" y2="84.5" stroke="#dc2626" stroke-width=".7" opacity=".45"/>');
+  o.push('<line x1="75" y1="0.5" x2="75" y2="84.5" stroke="#2563eb" stroke-width="1.6"/><line x1="125" y1="0.5" x2="125" y2="84.5" stroke="#2563eb" stroke-width="1.6"/>');
+  o.push('<circle cx="100" cy="42.5" r="15" fill="none" stroke="#2563eb" stroke-width=".5"/><circle cx="100" cy="42.5" r=".9" fill="#2563eb"/>');
+  [[31, 20.5], [31, 64.5], [169, 20.5], [169, 64.5]].forEach(function (c) {
+    o.push('<circle cx="' + c[0] + '" cy="' + c[1] + '" r="15" fill="none" stroke="#dc2626" stroke-width=".5"/><circle cx="' + c[0] + '" cy="' + c[1] + '" r="1" fill="#dc2626"/>');
+  });
+  [[80, 20.5], [80, 64.5], [120, 20.5], [120, 64.5]].forEach(function (c) {
+    o.push('<circle cx="' + c[0] + '" cy="' + c[1] + '" r="1" fill="#dc2626"/>');
+  });
+  o.push('<path d="M189,33.5 A9,9 0 0 0 189,51.5 Z" fill="#bfdbfe" stroke="#dc2626" stroke-width=".5"/>');
+  o.push('<path d="M11,33.5 A9,9 0 0 1 11,51.5 Z" fill="#bfdbfe" stroke="#dc2626" stroke-width=".5"/>');
+  o.push('<rect x="189" y="39.5" width="3.5" height="6" fill="#fff" stroke="#991b1b" stroke-width=".6"/>');
+  o.push('<rect x="7.5" y="39.5" width="3.5" height="6" fill="#fff" stroke="#991b1b" stroke-width=".6"/>');
+  return o.join("");
+}
+
+function arrowHead(a, b, col, size) {
+  var dx = b.x - a.x, dy = b.y - a.y, L = Math.sqrt(dx * dx + dy * dy) || 1;
+  var ux = dx / L, uy = dy / L, s = size || 2.4;
+  var bx = b.x - ux * s, by = b.y - uy * s;
+  return '<polygon points="' + b.x.toFixed(1) + "," + b.y.toFixed(1) + " " + (bx - uy * s * 0.55).toFixed(1) + "," + (by + ux * s * 0.55).toFixed(1) +
+    " " + (bx + uy * s * 0.55).toFixed(1) + "," + (by - ux * s * 0.55).toFixed(1) + '" fill="' + col + '"/>';
+}
+
+function smoothPath(p) {
+  var d = "M" + p[0].x + "," + p[0].y;
+  if (p.length === 2) return d + " L" + p[1].x + "," + p[1].y;
+  for (var i = 1; i < p.length - 1; i++) {
+    var mx = (p[i].x + p[i + 1].x) / 2, my = (p[i].y + p[i + 1].y) / 2;
+    d += " Q" + p[i].x + "," + p[i].y + " " + (i === p.length - 2 ? p[i + 1].x + "," + p[i + 1].y : mx + "," + my);
+  }
+  return d;
+}
+
+function wavyPoints(p) {
+  var segs = [], total = 0, i;
+  for (i = 1; i < p.length; i++) {
+    var L = Math.hypot(p[i].x - p[i - 1].x, p[i].y - p[i - 1].y);
+    segs.push(L); total += L;
+  }
+  var out = [p[0]], walked = 0, k = 0;
+  for (i = 1; i < p.length; i++) {
+    var a = p[i - 1], b = p[i], L2 = segs[i - 1] || 1, ux = (b.x - a.x) / L2, uy = (b.y - a.y) / L2;
+    for (var t = 1.6; t < L2; t += 1.6) {
+      var off = (total - (walked + t) < 4) ? 0 : (k++ % 2 ? 1 : -1);
+      out.push({x: a.x + ux * t - uy * off, y: a.y + uy * t + ux * off});
+    }
+    walked += L2;
+    out.push(b);
+  }
+  return out;
+}
+
+function rinkSVG(dia, extraClass) {
+  var view = "full", zones = [], lines = [], paths = [], objs = [], players = [], texts = [];
+  (dia || "").split(";").forEach(function (raw) {
+    var s = raw.trim(); if (!s) return;
+    var m = s.match(/^(\S+)\s*(.*)$/), code = m[1], rest = m[2], tok = rest.split(/\s+/);
+    switch (code) {
+      case "v": if (VIEWS[rest]) view = rest; break;
+      case "X": case "O": case "G": case "C": {
+        var q = pt(tok[0]), lbl = tok.slice(1).join(" ") || (code === "O" ? "O" : code);
+        var shape = code === "G" ? '<rect x="' + (q.x - 3.3) + '" y="' + (q.y - 3.3) + '" width="6.6" height="6.6" rx="1.5"' :
+          '<circle cx="' + q.x + '" cy="' + q.y + '" r="3.4"';
+        players.push(shape + ' fill="' + SVG_COL[code] + '" stroke="#fff" stroke-width=".7"/><text x="' + q.x + '" y="' + (q.y + 1.5) +
+          '" font-size="' + (lbl.length > 1 ? 3 : 4.2) + '" text-anchor="middle" fill="#fff" font-weight="700" font-family="Arial,sans-serif">' + svgEsc(lbl) + "</text>");
+        break;
+      }
+      case "r": tok.forEach(function (t) { var q = pt(t); objs.push('<circle cx="' + q.x + '" cy="' + q.y + '" r="1.7" fill="none" stroke="' + SVG_COL.ring + '" stroke-width="1"/>'); }); break;
+      case "c": tok.forEach(function (t) { var q = pt(t); objs.push('<polygon points="' + q.x + "," + (q.y - 2.2) + " " + (q.x - 1.8) + "," + (q.y + 1.6) + " " + (q.x + 1.8) + "," + (q.y + 1.6) + '" fill="' + SVG_COL.cone + '" stroke="#9a3412" stroke-width=".3"/>'); }); break;
+      case "n": tok.forEach(function (t) { var q = pt(t); objs.push('<rect x="' + (q.x - 2) + '" y="' + (q.y - 3) + '" width="4" height="6" fill="#fff" stroke="#334155" stroke-width=".7"/><line x1="' + (q.x - 2) + '" y1="' + q.y + '" x2="' + (q.x + 2) + '" y2="' + q.y + '" stroke="#94a3b8" stroke-width=".3"/>'); }); break;
+      case "z": { var a = rest.split(",").map(Number); zones.push('<rect x="' + a[0] + '" y="' + a[1] + '" width="' + a[2] + '" height="' + a[3] + '" fill="#fde68a" opacity=".45"/>'); break; }
+      case "d": { var p1 = pt(tok[0]), p2 = pt(tok[1]); lines.push('<line x1="' + p1.x + '" y1="' + p1.y + '" x2="' + p2.x + '" y2="' + p2.y + '" stroke="#64748b" stroke-width=".8" stroke-dasharray="2 1.5"/>'); break; }
+      case "t": { var q2 = pt(tok[0]); texts.push('<text x="' + q2.x + '" y="' + q2.y + '" font-size="3.6" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Arial,sans-serif" paint-order="stroke" stroke="#fff" stroke-width="1.2">' + svgEsc(tok.slice(1).join(" ")) + "</text>"); break; }
+      case "s": case "k": case "p": case "h": case "b": {
+        var P = tok.map(pt);
+        if (P.length < 2) break;
+        var col = {s: SVG_COL.skate, k: SVG_COL.carry, p: SVG_COL.pass, h: SVG_COL.shot, b: SVG_COL.back}[code];
+        var dash = {p: ' stroke-dasharray="2.4 1.6"', b: ' stroke-dasharray="4 1.4 1 1.4"'}[code] || "";
+        var w = code === "h" ? 1.3 : 0.75, d;
+        if (code === "k") { var W = wavyPoints(P); d = "M" + W.map(function (q) { return q.x.toFixed(1) + "," + q.y.toFixed(1); }).join(" L"); }
+        else d = smoothPath(P);
+        paths.push('<path d="' + d + '" fill="none" stroke="' + col + '" stroke-width="' + w + '"' + dash + ' stroke-linecap="round" stroke-linejoin="round"/>');
+        paths.push(arrowHead(P[P.length - 2], P[P.length - 1], col, code === "h" ? 3 : 2.4));
+        break;
+      }
+    }
+  });
+  var v = VIEWS[view];
+  return '<svg class="rink ' + (extraClass || "") + " v-" + view + '" viewBox="' + (v[0] - 1) + ' -1 ' + (v[1] + 2) + ' 87" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Rink diagram">' +
+    rinkBase() + zones.join("") + lines.join("") + paths.join("") + objs.join("") + players.join("") + texts.join("") + "</svg>";
+}
+
+function legendSVG() {
+  var items = [["s", "Skate"], ["k", "Carry ring"], ["p", "Pass"], ["h", "Shot"], ["b", "Backward"]];
+  var o = '<svg class="legend-svg" viewBox="0 0 230 12" role="img" aria-label="Diagram legend">';
+  items.forEach(function (it, i) {
+    var x = 2 + i * 46, P = [{x: x, y: 6}, {x: x + 14, y: 6}];
+    var col = {s: SVG_COL.skate, k: SVG_COL.carry, p: SVG_COL.pass, h: SVG_COL.shot, b: SVG_COL.back}[it[0]];
+    var dash = {p: ' stroke-dasharray="2.4 1.6"', b: ' stroke-dasharray="4 1.4 1 1.4"'}[it[0]] || "";
+    var d = it[0] === "k" ? "M" + wavyPoints(P).map(function (q) { return q.x.toFixed(1) + "," + q.y.toFixed(1); }).join(" L") : smoothPath(P);
+    o += '<path d="' + d + '" fill="none" stroke="' + col + '" stroke-width="' + (it[0] === "h" ? 1.3 : 0.8) + '"' + dash + "/>" + arrowHead(P[0], P[1], col, 2.4) +
+      '<text x="' + (x + 17) + '" y="8" font-size="5" font-family="Arial,sans-serif" fill="#334155">' + it[1] + "</text>";
+  });
+  return o + "</svg>";
+}
+
+/* ===== DATA EXPORT / IMPORT (pure) ===== */
+function mergeData(cur, inc, replace) {
+  function byId(a, b) {
+    var map = {}; a.concat(b).forEach(function (x) { if (x && x.id) map[x.id] = x; });
+    return Object.keys(map).map(function (k) { return map[k]; });
+  }
+  if (!inc || typeof inc !== "object") throw new Error("Not a planner backup file.");
+  var plans = Array.isArray(inc.plans) ? inc.plans.filter(validPlan) : [];
+  var hist = Array.isArray(inc.history) ? inc.history.filter(function (h) { return h && h.id && Array.isArray(h.blocks); }) : [];
+  var favs = Array.isArray(inc.favs) ? inc.favs.filter(function (f) { return typeof f === "string"; }) : [];
+  if (replace) return {plans: plans, history: hist, favs: favs, settings: Object.assign({}, cur.settings, inc.settings || {})};
+  return {
+    plans: byId(cur.plans, plans), history: byId(cur.history, hist),
+    favs: cur.favs.concat(favs.filter(function (f) { return cur.favs.indexOf(f) < 0; })),
+    settings: cur.settings
+  };
+}
+function validPlan(p) { return p && typeof p.id === "string" && Array.isArray(p.blocks); }
+
+/* ===== UI ===== */
+if (typeof document !== "undefined") (function () {
+  "use strict";
+  var LS_KEY = "ringettePlanner.v1", storageOK = true;
+  var S = {plans: [], favs: [], history: [], settings: {team: "U10 FUN3", slot: 60, share: "half", theme: "balanced", start: ""}, plan: null};
+  var lib = {q: "", cat: "", area: "", favOnly: false};
+
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function esc(s) { return svgEsc(s == null ? "" : s); }
+  function today() { var d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function toast(msg) { var t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(function () { t.classList.remove("show"); }, 2600); }
+  function catChip(cat) { var c = CATS[cat] || CATS["break"]; return '<span class="chip" style="--c:' + c.color + '">' + esc(c.label) + "</span>"; }
+  function pct(x) { return Math.round(x * 100) + "%"; }
+  function fmtDate(s) { if (!s) return ""; var p = s.split("-"); var d = new Date(+p[0], +p[1] - 1, +p[2]); return isNaN(d) ? s : d.toLocaleDateString(undefined, {weekday: "short", month: "short", day: "numeric", year: "numeric"}); }
+  function clock(start, mins) {
+    if (!start || !/^\d{1,2}:\d{2}$/.test(start)) { return mins + "′"; }
+    var p = start.split(":"), t = (+p[0]) * 60 + (+p[1]) + mins, h = Math.floor(t / 60) % 24, m = t % 60;
+    var h12 = h % 12 || 12;
+    return h12 + ":" + String(m).padStart(2, "0");
+  }
+
+  function newPlan() {
+    return {id: uid(), title: "", team: S.settings.team, date: today(), start: S.settings.start, slot: S.settings.slot,
+      theme: S.settings.theme, share: S.settings.share, notes: "", blocks: [], created: Date.now(), updated: Date.now()};
+  }
+  function load() {
+    var raw = null;
+    try { raw = localStorage.getItem(LS_KEY); } catch (e) { storageOK = false; }
+    if (raw) {
+      try {
+        var d = JSON.parse(raw);
+        S.plans = d.plans || []; S.favs = d.favs || []; S.history = d.history || [];
+        S.settings = Object.assign(S.settings, d.settings || {}); S.plan = validPlan(d.current) ? d.current : null;
+      } catch (e) { console.warn("Bad saved data", e); }
+    }
+    if (!S.plan) S.plan = newPlan();
+  }
+  function persist() {
+    S.plan.updated = Date.now();
+    try { localStorage.setItem(LS_KEY, JSON.stringify({plans: S.plans, favs: S.favs, history: S.history, settings: S.settings, current: S.plan})); }
+    catch (e) { if (storageOK) toast("Can't save in this browser – use Export to keep a copy."); storageOK = false; }
+  }
+  function recentDrills() {
+    var ids = [];
+    S.history.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; }).slice(0, 3)
+      .forEach(function (h) { h.blocks.forEach(function (b) { ids.push(b.drillId); }); });
+    return ids;
+  }
+  function isFav(id) { return S.favs.indexOf(id) >= 0; }
+  function toggleFav(id) {
+    var i = S.favs.indexOf(id);
+    if (i >= 0) S.favs.splice(i, 1); else S.favs.push(id);
+    persist(); renderLibrary();
+    $$('[data-fav="' + id + '"]').forEach(function (b) { b.classList.toggle("on", isFav(id)); b.textContent = isFav(id) ? "★" : "☆"; });
+  }
+
+  /* ----- Tabs ----- */
+  function showTab(name) {
+    $$(".tab").forEach(function (t) { t.classList.toggle("active", t.dataset.tab === name); t.setAttribute("aria-selected", t.dataset.tab === name); });
+    $$(".panel").forEach(function (p) { p.hidden = p.id !== "tab-" + name; });
+    if (name === "saved") renderSaved();
+    if (name === "season") renderSeason();
+    if (name === "drills") renderLibrary();
+    window.scrollTo(0, 0);
+  }
+
+  /* ----- Plan builder ----- */
+  function syncForm() {
+    var p = S.plan;
+    $("#f-title").value = p.title || ""; $("#f-team").value = p.team || ""; $("#f-date").value = p.date || "";
+    $("#f-start").value = p.start || ""; $("#f-theme").value = p.theme; $("#f-share").value = p.share; $("#f-notes").value = p.notes || "";
+    $$('input[name="slot"]').forEach(function (r) { r.checked = +r.value === +p.slot; });
+  }
+  function renderPlan() {
+    var p = S.plan, st = planStats(p.blocks), t = 0;
+    var html = p.blocks.map(function (b, i) {
+      var d = drillById(b.drillId), from = t; t += b.dur;
+      var tooBig = !fits(d, p.share);
+      return '<li class="block' + (tooBig ? " too-big" : "") + '" data-uid="' + b.uid + '" style="--c:' + CATS[d.cat].color + '">' +
+        '<button class="handle" title="Drag to reorder" aria-label="Drag to reorder">⠿</button>' +
+        '<div class="b-time"><b>' + clock(p.start, from) + '</b><small>' + clock(p.start, t) + "</small></div>" +
+        '<div class="b-main">' + catChip(d.cat) + ' <button class="linkish b-name" data-act="info">' + esc(d.name) + "</button>" +
+        '<div class="b-sub">' + esc(d.focus) + (d.cat !== "break" ? " · " + AREA_LABEL[d.area] + " · lines ~" + pct(d.wait) : "") +
+        (tooBig ? ' · <b class="bad">needs more ice</b>' : "") + "</div>" +
+        '<input class="b-note" data-act="note" placeholder="Note (e.g. groups, who leads)" value="' + esc(b.note || "") + '"></div>' +
+        '<div class="b-dur"><button data-act="minus" aria-label="Shorter">−</button><span>' + b.dur + '<small>min</small></span><button data-act="plus" aria-label="Longer">+</button></div>' +
+        '<div class="b-tools"><button data-act="up" aria-label="Move up"' + (i === 0 ? " disabled" : "") + '>↑</button><button data-act="down" aria-label="Move down"' + (i === p.blocks.length - 1 ? " disabled" : "") + ">↓</button>" +
+        (d.cat !== "break" ? '<button data-act="swap" title="Swap drill">⇄</button>' : "") + '<button data-act="del" aria-label="Remove">✕</button></div></li>';
+    }).join("");
+    $("#blocks").innerHTML = html || '<li class="empty">No drills yet – press <b>Auto-build plan</b> or <b>+ Add drill</b>.</li>';
+
+    var diff = st.total - p.slot;
+    var cls = diff === 0 ? "good" : diff > 0 ? "bad" : "warn";
+    var cats = Object.keys(CATS).filter(function (c) { return st.byCat[c]; });
+    $("#summary").innerHTML =
+      '<div class="tiles">' +
+      '<div class="tile ' + cls + '"><span>Total</span><b>' + st.total + " / " + p.slot + "</b><small>" + (diff === 0 ? "✔ on time" : diff > 0 ? "▲ " + diff + " over" : "▼ " + (-diff) + " left") + "</small></div>" +
+      '<div class="tile ' + (st.idle <= LINE_TARGET ? "good" : "warn") + '"><span>Time in lines</span><b>' + pct(st.idle) + "</b><small>" + (st.idle <= LINE_TARGET ? "✔ " : "▲ ") + "target &lt; 20%</small></div>" +
+      '<div class="tile"><span>Small-area games</span><b>' + pct(st.gamePct) + "</b><small>aim 25–35%</small></div>" +
+      '<div class="tile"><span>Drills</span><b>' + p.blocks.filter(function (b) { return b.drillId !== "water"; }).length + "</b><small>" + AREA_LABEL[p.share] + "</small></div></div>" +
+      '<div class="catbar" role="img" aria-label="Minutes by category">' + cats.map(function (c) {
+        return '<span style="flex:' + st.byCat[c] + ';background:' + CATS[c].color + '" title="' + esc(CATS[c].label) + ": " + st.byCat[c] + ' min"></span>';
+      }).join("") + (st.total < p.slot ? '<span class="gap" style="flex:' + (p.slot - st.total) + '" title="Unplanned: ' + (p.slot - st.total) + ' min"></span>' : "") + "</div>" +
+      '<div class="catlegend">' + cats.map(function (c) { return '<span><i style="background:' + CATS[c].color + '"></i>' + esc(CATS[c].label) + " " + st.byCat[c] + "′</span>"; }).join("") + "</div>" +
+      '<ul class="warnings">' + planWarnings(p).map(function (w) { return '<li class="' + w.lvl + '">' + esc(w.msg) + "</li>"; }).join("") + "</ul>";
+  }
+  function changed() { persist(); renderPlan(); }
+  function findBlock(u) { for (var i = 0; i < S.plan.blocks.length; i++) if (S.plan.blocks[i].uid === u) return i; return -1; }
+
+  function doAutoBuild() {
+    var p = S.plan;
+    if (p.blocks.length && !confirm("Replace the current drills with a new auto-built plan?")) return;
+    var r = autoBuild({slot: p.slot, theme: p.theme, share: p.share}, {favs: S.favs, recent: recentDrills()});
+    p.blocks = r.blocks;
+    if (!p.title) p.title = THEMES[p.theme].label;
+    syncForm(); changed();
+    toast("Plan built: " + r.blocks.length + " blocks, ~" + pct(r.stats.idle) + " in lines" + (r.notes.length ? " (" + r.notes[0] + ")" : ""));
+  }
+
+  function onBlocksClick(e) {
+    var btn = e.target.closest("[data-act]"); if (!btn) return;
+    var li = btn.closest(".block"); if (!li) return;
+    var i = findBlock(li.dataset.uid); if (i < 0) return;
+    var b = S.plan.blocks[i], act = btn.dataset.act, bl = S.plan.blocks;
+    if (act === "minus") { b.dur = Math.max(1, b.dur - 1); changed(); }
+    else if (act === "plus") { b.dur = Math.min(40, b.dur + 1); changed(); }
+    else if (act === "up" && i > 0) { bl.splice(i - 1, 0, bl.splice(i, 1)[0]); changed(); }
+    else if (act === "down" && i < bl.length - 1) { bl.splice(i + 1, 0, bl.splice(i, 1)[0]); changed(); }
+    else if (act === "del") { bl.splice(i, 1); changed(); }
+    else if (act === "swap") openPicker({replace: b.uid, cat: drillById(b.drillId).cat});
+    else if (act === "info") openDrill(b.drillId);
+  }
+
+  /* Pointer-based drag & drop (works with mouse and touch). */
+  function initDrag() {
+    var list = $("#blocks"), dragEl = null, pid = null;
+    list.addEventListener("pointerdown", function (e) {
+      var h = e.target.closest(".handle"); if (!h) return;
+      dragEl = h.closest(".block"); pid = e.pointerId;
+      dragEl.classList.add("dragging"); h.setPointerCapture(pid); e.preventDefault();
+    });
+    list.addEventListener("pointermove", function (e) {
+      if (!dragEl || e.pointerId !== pid) return;
+      if (e.clientY < 70) window.scrollBy(0, -12); else if (e.clientY > window.innerHeight - 70) window.scrollBy(0, 12);
+      var over = document.elementFromPoint(e.clientX, e.clientY);
+      var tgt = over && over.closest && over.closest(".block");
+      if (!tgt || tgt === dragEl || tgt.parentNode !== list) return;
+      var r = tgt.getBoundingClientRect();
+      if (e.clientY < r.top + r.height / 2) list.insertBefore(dragEl, tgt); else list.insertBefore(dragEl, tgt.nextSibling);
+    });
+    function end() {
+      if (!dragEl) return;
+      dragEl.classList.remove("dragging"); dragEl = null;
+      var order = $$(".block", list).map(function (li) { return li.dataset.uid; });
+      S.plan.blocks.sort(function (a, b) { return order.indexOf(a.uid) - order.indexOf(b.uid); });
+      changed();
+    }
+    list.addEventListener("pointerup", end);
+    list.addEventListener("pointercancel", end);
+  }
+
+  /* ----- Modal ----- */
+  function openModal(html, cls) {
+    $("#modal-body").innerHTML = html; $("#modal").className = "modal " + (cls || ""); $("#modal").hidden = false;
+    document.body.classList.add("noscroll");
+    var f = $("#modal-body input, #modal-body button"); if (f && window.innerWidth > 700) f.focus();
+  }
+  function closeModal() { $("#modal").hidden = true; document.body.classList.remove("noscroll"); }
+
+  function drillDetailHTML(d, compact) {
+    function list(a) { return a && a.length ? "<ul>" + a.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "<p class='muted'>—</p>"; }
+    return '<div class="drill-detail">' + (compact ? "" : rinkSVG(d.dia, "big")) +
+      '<div class="meta">' + catChip(d.cat) + ' <span class="pill">⏱ ' + d.dur + ' min</span> <span class="pill">' + AREA_LABEL[d.area] + '</span> <span class="pill">👥 ' + esc(d.players) +
+      '</span> <span class="pill" title="Rough share of time a player waits in line">Lines ~' + pct(d.wait) + "</span></div>" +
+      "<p><b>Focus:</b> " + esc(d.focus) + "</p><h4>Setup</h4><p>" + esc(d.setup) + "</p><h4>Coaching points</h4>" + list(d.cues) +
+      '<div class="two"><div><h4>Progressions ▲</h4>' + list(d.prog) + "</div><div><h4>Regressions ▼</h4>" + list(d.reg) + "</div></div></div>";
+  }
+  function openDrill(id) {
+    var d = drillById(id);
+    openModal("<h2>" + esc(d.name) + "</h2>" + drillDetailHTML(d) + (d.dia ? '<div class="legend">' + legendSVG() + "</div>" : "") +
+      '<div class="actions"><button class="btn" data-fav="' + d.id + '">' + (isFav(d.id) ? "★" : "☆") + ' Favourite</button>' +
+      (d.cat !== "break" ? '<button class="btn primary" data-add="' + d.id + '">+ Add to plan</button>' : "") + "</div>");
+    var fb = $("#modal-body [data-fav]"); if (fb) fb.classList.toggle("on", isFav(d.id));
+  }
+  function addDrill(id) {
+    var d = drillById(id);
+    S.plan.blocks.push({uid: uid(), drillId: id, dur: d.dur, note: ""});
+    changed(); toast("Added “" + d.name + "” to the plan");
+  }
+
+  /* Picker: add a drill or replace one */
+  var pick = {};
+  function openPicker(o) {
+    pick = {replace: o.replace || null, cat: o.cat || "", q: ""};
+    openModal("<h2>" + (pick.replace ? "Swap drill" : "Add a drill") + "</h2>" +
+      '<div class="filters"><input type="search" id="pk-q" placeholder="Search drills…">' +
+      '<select id="pk-cat"><option value="">All categories</option>' + Object.keys(CATS).filter(function (c) { return c !== "break"; }).map(function (c) {
+        return '<option value="' + c + '"' + (c === pick.cat ? " selected" : "") + ">" + esc(CATS[c].label) + "</option>"; }).join("") + "</select>" +
+      (pick.replace ? '<button class="btn" id="pk-rand">🎲 Random swap</button>' : "") + "</div>" +
+      '<p class="muted small">Showing drills that fit ' + AREA_LABEL[S.plan.share] + '. ★ = favourite.</p><ul id="pk-list" class="pick-list"></ul>', "wide");
+    $("#pk-q").addEventListener("input", function () { pick.q = this.value; renderPick(); });
+    $("#pk-cat").addEventListener("change", function () { pick.cat = this.value; renderPick(); });
+    if (pick.replace) $("#pk-rand").addEventListener("click", function () {
+      var inPlan = S.plan.blocks.map(function (b) { return b.drillId; });
+      var c = DRILLS.filter(function (d) { return (!pick.cat || d.cat === pick.cat) && fits(d, S.plan.share) && inPlan.indexOf(d.id) < 0; });
+      if (!c.length) { toast("No other drills in that category fit."); return; }
+      choose(weightedPick(c, function (d) { return (isFav(d.id) ? 2.5 : 1) * (1 - Math.min(d.wait, 0.6)); }, Math.random).id);
+    });
+    renderPick();
+  }
+  function renderPick() {
+    var q = pick.q.toLowerCase(), inPlan = S.plan.blocks.map(function (b) { return b.drillId; });
+    var items = DRILLS.filter(function (d) {
+      return fits(d, S.plan.share) && (!pick.cat || d.cat === pick.cat) &&
+        (!q || (d.name + " " + d.focus + " " + d.setup).toLowerCase().indexOf(q) >= 0);
+    });
+    $("#pk-list").innerHTML = items.map(function (d) {
+      return '<li><button class="pick" data-pick="' + d.id + '">' + rinkSVG(d.dia, "thumb") + '<span><b>' + (isFav(d.id) ? "★ " : "") + esc(d.name) +
+        "</b><small>" + esc(CATS[d.cat].label) + " · " + d.dur + " min · " + AREA_LABEL[d.area] + " · lines ~" + pct(d.wait) +
+        (inPlan.indexOf(d.id) >= 0 ? " · <em>already in plan</em>" : "") + "</small></span></button></li>";
+    }).join("") || '<li class="muted">No drills match.</li>';
+  }
+  function choose(id) {
+    if (pick.replace) {
+      var i = findBlock(pick.replace);
+      if (i >= 0) S.plan.blocks[i].drillId = id;
+      changed(); closeModal(); toast("Swapped in “" + drillById(id).name + "”");
+    } else { closeModal(); addDrill(id); }
+  }
+
+  /* ----- Library ----- */
+  function renderLibrary() {
+    var q = lib.q.toLowerCase();
+    var items = DRILLS.filter(function (d) {
+      return (!lib.cat || d.cat === lib.cat) && (!lib.area || fits(d, lib.area)) && (!lib.favOnly || isFav(d.id)) &&
+        (!q || (d.name + " " + d.focus + " " + d.setup + " " + d.cues.join(" ")).toLowerCase().indexOf(q) >= 0);
+    });
+    $("#lib-count").textContent = items.length + " of " + DRILLS.length + " drills";
+    $("#lib-grid").innerHTML = items.map(function (d) {
+      return '<article class="card" style="--c:' + CATS[d.cat].color + '"><button class="card-dia" data-info="' + d.id + '" aria-label="Open ' + esc(d.name) + '">' + rinkSVG(d.dia) + "</button>" +
+        '<div class="card-body"><div class="card-top">' + catChip(d.cat) + '<button class="fav' + (isFav(d.id) ? " on" : "") + '" data-fav="' + d.id + '" aria-label="Favourite">' + (isFav(d.id) ? "★" : "☆") + "</button></div>" +
+        '<h3><button class="linkish" data-info="' + d.id + '">' + esc(d.name) + '</button></h3><p class="small">' + esc(d.focus) + "</p>" +
+        '<p class="small muted">⏱ ' + d.dur + " min · " + AREA_LABEL[d.area] + " · lines ~" + pct(d.wait) + "</p>" +
+        '<div class="card-actions"><button class="btn sm" data-info="' + d.id + '">Details</button><button class="btn sm primary" data-add="' + d.id + '">+ Plan</button></div></div></article>';
+    }).join("") || '<p class="muted">No drills match these filters.</p>';
+  }
+
+  /* ----- Saved plans ----- */
+  function savePlan(asCopy) {
+    var p = JSON.parse(JSON.stringify(S.plan));
+    if (!p.blocks.length) { toast("Nothing to save yet."); return; }
+    if (asCopy) { p.id = uid(); p.title = (p.title || "Plan") + " (copy)"; }
+    if (!p.title) p.title = THEMES[p.theme].label;
+    var i = S.plans.findIndex(function (x) { return x.id === p.id; });
+    if (i >= 0) S.plans[i] = p; else S.plans.unshift(p);
+    S.plan.title = p.title; syncForm(); persist(); toast("Plan saved ✔");
+  }
+  function themeLabel(t) { return (THEMES[t] || {label: t}).label; }
+  function renderSaved() {
+    var sorted = S.plans.slice().sort(function (a, b) { return (b.date || "") > (a.date || "") ? 1 : -1; });
+    $("#saved-list").innerHTML = sorted.map(function (p) {
+      var st = planStats(p.blocks);
+      return '<li class="row-card"><div><b>' + esc(p.title || "Untitled") + '</b><small>' + esc(fmtDate(p.date)) + " · " + p.slot + " min · " + esc(themeLabel(p.theme)) + " · " + AREA_LABEL[p.share] +
+        " · " + st.total + " min planned · lines " + pct(st.idle) + "</small></div>" +
+        '<div class="row-actions"><button class="btn sm primary" data-load="' + p.id + '">Open</button><button class="btn sm" data-print="' + p.id + '">Print</button>' +
+        '<button class="btn sm" data-bench="' + p.id + '">Bench card</button><button class="btn sm danger" data-delplan="' + p.id + '">Delete</button></div></li>';
+    }).join("") || '<li class="muted">No saved plans yet. Build one on the Plan tab and press <b>Save</b>.</li>';
+    $("#print-all").disabled = !S.plans.length;
+  }
+
+  /* ----- Season history ----- */
+  function openRunDialog() {
+    if (!S.plan.blocks.length) { toast("Build a plan first."); return; }
+    openModal("<h2>Log this practice</h2><p class='muted'>Adds “" + esc(S.plan.title || "this plan") + "” to your season history.</p>" +
+      '<label>Date <input type="date" id="run-date" value="' + esc(S.plan.date || today()) + '"></label>' +
+      '<label>How did it go? <select id="run-rate"><option value="3">😀 Great</option><option value="2" selected>🙂 Good</option><option value="1">😐 Tough</option></select></label>' +
+      '<label>Players at practice <input type="number" id="run-n" min="0" max="40" inputmode="numeric" placeholder="e.g. 12"></label>' +
+      '<label>Notes for next time <textarea id="run-notes" rows="3" placeholder="What worked, who needs extra help, what to repeat…"></textarea></label>' +
+      '<div class="actions"><button class="btn primary" id="run-save">Save to history</button></div>');
+    $("#run-save").addEventListener("click", function () {
+      var p = S.plan;
+      S.history.push({id: uid(), planId: p.id, date: $("#run-date").value || today(), title: p.title || themeLabel(p.theme), theme: p.theme, slot: p.slot, share: p.share,
+        rating: +$("#run-rate").value, players: +$("#run-n").value || null, notes: $("#run-notes").value,
+        blocks: p.blocks.map(function (b) { return {drillId: b.drillId, dur: b.dur}; })});
+      persist(); closeModal(); toast("Logged in season history ✔");
+    });
+  }
+  function renderSeason() {
+    var H = S.history.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    var mins = 0, byCat = {}, counts = {}, line = 0, act = 0, game = 0;
+    H.forEach(function (h) {
+      var st = planStats(h.blocks); mins += st.total; line += st.lineMin; act += st.active; game += st.gamePct * st.active;
+      Object.keys(st.byCat).forEach(function (c) { byCat[c] = (byCat[c] || 0) + st.byCat[c]; });
+      h.blocks.forEach(function (b) { if (b.drillId !== "water") counts[b.drillId] = (counts[b.drillId] || 0) + 1; });
+    });
+    var max = Math.max.apply(null, Object.keys(byCat).map(function (c) { return byCat[c]; }).concat([1]));
+    var top = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; }).slice(0, 6);
+    var never = DRILLS.filter(function (d) { return !counts[d.id]; }).length;
+    $("#season-stats").innerHTML = H.length ? '<div class="tiles">' +
+      '<div class="tile"><span>Practices</span><b>' + H.length + "</b></div>" +
+      '<div class="tile"><span>Ice time planned</span><b>' + Math.floor(mins / 60) + "h " + (mins % 60) + "m</b></div>" +
+      '<div class="tile ' + (act && line / act <= LINE_TARGET ? "good" : "warn") + '"><span>Avg time in lines</span><b>' + pct(act ? line / act : 0) + "</b></div>" +
+      '<div class="tile"><span>Avg game time</span><b>' + pct(act ? game / act : 0) + "</b></div></div>" +
+      "<h3>Minutes by skill area (season)</h3><table class='hbars'><tbody>" + Object.keys(CATS).filter(function (c) { return byCat[c]; }).map(function (c) {
+        return "<tr><th>" + esc(CATS[c].label) + '</th><td><span class="hbar" style="width:' + (byCat[c] / max * 100).toFixed(1) + "%;background:" + CATS[c].color + '" title="' + byCat[c] + ' min"></span></td><td class="num">' + byCat[c] + " min</td></tr>";
+      }).join("") + "</tbody></table>" +
+      "<h3>Most-used drills</h3><ol class='small'>" + top.map(function (id) { return "<li>" + esc(drillById(id).name) + " – " + counts[id] + "×</li>"; }).join("") + "</ol>" +
+      '<p class="small muted">' + never + " library drills not used yet this season – try a new one!</p>"
+      : '<p class="muted">No practices logged yet. After a practice, open its plan and press <b>Log as run</b>.</p>';
+    var rate = {1: "😐", 2: "🙂", 3: "😀"};
+    $("#history-list").innerHTML = H.map(function (h) {
+      var st = planStats(h.blocks);
+      return '<li class="row-card"><div><b>' + (rate[h.rating] || "") + " " + esc(fmtDate(h.date)) + " – " + esc(h.title) + "</b><small>" + h.slot + " min · " + esc(themeLabel(h.theme)) + " · " + AREA_LABEL[h.share] +
+        (h.players ? " · " + h.players + " players" : "") + " · lines " + pct(st.idle) + "</small>" + (h.notes ? '<p class="small">' + esc(h.notes) + "</p>" : "") +
+        '<details><summary class="small">Drills</summary><ol class="small">' + h.blocks.map(function (b) { return "<li>" + esc(drillById(b.drillId).name) + " (" + b.dur + "′)</li>"; }).join("") + "</ol></details></div>" +
+        '<div class="row-actions"><button class="btn sm" data-reuse="' + h.id + '">Reuse plan</button><button class="btn sm danger" data-delhist="' + h.id + '">Delete</button></div></li>';
+    }).join("");
+  }
+
+  /* ----- Print views ----- */
+  function headerLine(p) {
+    return esc(p.team || "") + " · " + esc(fmtDate(p.date)) + (p.start ? " · " + esc(clock(p.start, 0)) : "") + " · " + p.slot + "-min slot · " + AREA_LABEL[p.share] + " · Theme: " + esc(themeLabel(p.theme));
+  }
+  function sheetHTML(p) {
+    var st = planStats(p.blocks), t = 0, n = p.blocks.length;
+    var density = n > 9 ? " dense2" : n > 7 ? " dense" : "";
+    return '<section class="page sheet' + density + '"><header class="ph"><div><h1>' + esc(p.title || "Practice plan") + "</h1><p>" + headerLine(p) + "</p></div>" +
+      '<div class="ph-stats"><b>' + st.total + "/" + p.slot + " min</b><span>Lines ~" + pct(st.idle) + "</span><span>Games " + pct(st.gamePct) + "</span></div></header>" +
+      '<div class="rows">' + p.blocks.map(function (b) {
+        var d = drillById(b.drillId), from = t; t += b.dur;
+        if (d.cat === "break") return '<div class="prow brk"><div class="pt">' + clock(p.start, from) + "<small>" + b.dur + ' min</small></div><div class="pn"><b>💧 ' + esc(d.name) + "</b>" + (b.note ? " – " + esc(b.note) : "") + "</div></div>";
+        return '<div class="prow" style="--c:' + CATS[d.cat].color + '"><div class="pt">' + clock(p.start, from) + "<small>" + b.dur + " min</small></div>" +
+          '<div class="pd">' + rinkSVG(d.dia) + "</div>" +
+          '<div class="pn"><div class="pname"><b>' + esc(d.name) + "</b> <span class='pcat'>" + esc(CATS[d.cat].label) + " · " + AREA_LABEL[d.area] + "</span></div>" +
+          '<div class="psetup">' + esc(d.setup) + "</div>" +
+          '<div class="pcues">✔ ' + d.cues.map(esc).join(" &nbsp;✔ ") + "</div>" +
+          '<div class="pprog">▲ ' + esc(d.prog[0] || "") + " &nbsp; ▼ " + esc(d.reg[0] || "") + (b.note ? ' &nbsp; <b>Note:</b> ' + esc(b.note) : "") + "</div></div></div>";
+      }).join("") + "</div>" +
+      '<footer class="pf"><div class="legend">' + legendSVG() + '</div><div class="pnotes">' + (p.notes ? "<b>Notes:</b> " + esc(p.notes) : "<b>Notes:</b> ________________________________________________") +
+      '</div><div class="small">Learn to Train: fun first, lots of touches, short instructions (&lt;30 s), both sides/directions, everyone tries goalie. Ring is passed over every blue line.</div></footer></section>';
+  }
+  function benchHTML(p) {
+    var t = 0, st = planStats(p.blocks);
+    var card = '<div class="bench"><h2>' + esc(p.title || "Practice") + "</h2><p class='bh'>" + esc(fmtDate(p.date)) + (p.start ? " · " + clock(p.start, 0) : "") + " · " + p.slot + " min · " + AREA_LABEL[p.share] + "</p><ol>" +
+      p.blocks.map(function (b) {
+        var d = drillById(b.drillId), from = t; t += b.dur;
+        return '<li style="--c:' + CATS[d.cat].color + '"><span class="bt">' + clock(p.start, from) + '</span><span class="bn"><b>' + esc(d.name) + "</b> <em>" + b.dur + "′</em>" +
+          (d.cues[0] ? "<small>" + esc(d.cues[0]) + (d.cues[1] ? " · " + esc(d.cues[1]) : "") + "</small>" : "") + (b.note ? "<small>📝 " + esc(b.note) + "</small>" : "") + "</span><span class='box'></span></li>";
+      }).join("") + "</ol><p class='bf'>End " + clock(p.start, st.total) + " · Lines ~" + pct(st.idle) + " · Pass over blue lines · 5-sec free pass · Crease = goalie only</p></div>";
+    return '<section class="page benchpage">' + card + card + '<div class="cutline">✂ cut</div></section>';
+  }
+  function openPrint(mode, plans) {
+    $("#print-pages").innerHTML = plans.map(mode === "bench" ? benchHTML : sheetHTML).join("");
+    $("#print-mode").textContent = mode === "bench" ? "Bench card – 2 copies per page (cut down the middle)" : "Practice sheet – one US Letter page per practice";
+    $("#print-view").hidden = false; document.body.classList.add("printing"); window.scrollTo(0, 0);
+  }
+  function closePrint() { $("#print-view").hidden = true; document.body.classList.remove("printing"); }
+
+  /* ----- Export / import ----- */
+  function exportData() {
+    var data = {app: "ringette-u10-planner", version: 1, exported: new Date().toISOString(), plans: S.plans, history: S.history, favs: S.favs, settings: S.settings, current: S.plan};
+    var json = JSON.stringify(data, null, 2);
+    $("#io-text").value = json;
+    try {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([json], {type: "application/json"}));
+      a.download = "ringette-planner-backup-" + today() + ".json";
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+      toast("Backup downloaded (also shown in the box below).");
+    } catch (e) { toast("Copy the JSON from the box below."); }
+  }
+  function importText(txt) {
+    var data;
+    try { data = JSON.parse(txt); } catch (e) { toast("That isn't valid JSON."); return; }
+    var replace = $("#io-replace").checked;
+    if (replace && !confirm("Replace ALL plans, favourites and history with the imported file?")) return;
+    try {
+      var m = mergeData(S, data, replace);
+      S.plans = m.plans; S.history = m.history; S.favs = m.favs; S.settings = m.settings;
+      if (replace && validPlan(data.current)) { S.plan = data.current; syncForm(); }
+      persist(); renderPlan(); renderSaved(); renderSeason(); renderLibrary();
+      toast("Imported: " + (data.plans || []).length + " plans, " + (data.history || []).length + " history entries.");
+    } catch (e) { toast(e.message); }
+  }
+
+  /* ----- Wire up ----- */
+  function init() {
+    load();
+    $("#f-theme").innerHTML = Object.keys(THEMES).map(function (k) { return '<option value="' + k + '">' + esc(THEMES[k].label) + "</option>"; }).join("");
+    $("#lib-cat").innerHTML = '<option value="">All categories</option>' + Object.keys(CATS).filter(function (c) { return c !== "break"; })
+      .map(function (c) { return '<option value="' + c + '">' + esc(CATS[c].label) + " (" + DRILLS.filter(function (d) { return d.cat === c; }).length + ")</option>"; }).join("");
+    $("#drill-total").textContent = DRILLS.length;
+    $("#legend-big").innerHTML = legendSVG();
+    syncForm(); renderPlan(); renderLibrary();
+    if (!storageOK) toast("Browser storage is blocked – use Export to keep your plans.");
+
+    $$(".tab").forEach(function (t) { t.addEventListener("click", function () { showTab(t.dataset.tab); }); });
+    [["#f-title", "title"], ["#f-team", "team"], ["#f-notes", "notes"]].forEach(function (f) {
+      $(f[0]).addEventListener("input", function () { S.plan[f[1]] = this.value; persist(); if (f[1] === "team") { S.settings.team = this.value; } });
+    });
+    $("#f-date").addEventListener("change", function () { S.plan.date = this.value; persist(); });
+    $("#f-start").addEventListener("change", function () { S.plan.start = this.value; S.settings.start = this.value; changed(); });
+    $("#f-theme").addEventListener("change", function () { S.plan.theme = this.value; S.settings.theme = this.value; changed(); });
+    $("#f-share").addEventListener("change", function () { S.plan.share = this.value; S.settings.share = this.value; changed(); });
+    $$('input[name="slot"]').forEach(function (r) { r.addEventListener("change", function () { S.plan.slot = +this.value; S.settings.slot = +this.value; changed(); }); });
+
+    $("#btn-build").addEventListener("click", doAutoBuild);
+    $("#btn-add").addEventListener("click", function () { openPicker({}); });
+    $("#btn-water").addEventListener("click", function () { S.plan.blocks.push({uid: uid(), drillId: "water", dur: 2, note: ""}); changed(); });
+    $("#btn-save").addEventListener("click", function () { savePlan(false); });
+    $("#btn-copy").addEventListener("click", function () { savePlan(true); });
+    $("#btn-new").addEventListener("click", function () { if (S.plan.blocks.length && !confirm("Start a new empty plan? (Save this one first if you want to keep it.)")) return; S.plan = newPlan(); syncForm(); changed(); });
+    $("#btn-print").addEventListener("click", function () { openPrint("sheet", [S.plan]); });
+    $("#btn-bench").addEventListener("click", function () { openPrint("bench", [S.plan]); });
+    $("#btn-run").addEventListener("click", openRunDialog);
+    $("#blocks").addEventListener("click", onBlocksClick);
+    $("#blocks").addEventListener("change", function (e) {
+      if (e.target.dataset.act !== "note") return;
+      var i = findBlock(e.target.closest(".block").dataset.uid); if (i >= 0) { S.plan.blocks[i].note = e.target.value; persist(); }
+    });
+    initDrag();
+
+    $("#lib-q").addEventListener("input", function () { lib.q = this.value; renderLibrary(); });
+    $("#lib-cat").addEventListener("change", function () { lib.cat = this.value; renderLibrary(); });
+    $("#lib-area").addEventListener("change", function () { lib.area = this.value; renderLibrary(); });
+    $("#lib-fav").addEventListener("change", function () { lib.favOnly = this.checked; renderLibrary(); });
+
+    document.addEventListener("click", function (e) {
+      var t = e.target.closest("[data-info],[data-add],[data-fav],[data-pick],[data-load],[data-print],[data-bench],[data-delplan],[data-reuse],[data-delhist]");
+      if (!t) return;
+      var ds = t.dataset;
+      if (ds.info) openDrill(ds.info);
+      else if (ds.add) { if (!$("#modal").hidden) closeModal(); addDrill(ds.add); }
+      else if (ds.fav) toggleFav(ds.fav);
+      else if (ds.pick) choose(ds.pick);
+      else if (ds.load) { var p = S.plans.find(function (x) { return x.id === ds.load; }); if (p) { S.plan = JSON.parse(JSON.stringify(p)); syncForm(); changed(); showTab("plan"); toast("Opened “" + (p.title || "plan") + "”"); } }
+      else if (ds.print || ds.bench) { var q = S.plans.find(function (x) { return x.id === (ds.print || ds.bench); }); if (q) openPrint(ds.print ? "sheet" : "bench", [q]); }
+      else if (ds.delplan) { if (confirm("Delete this saved plan?")) { S.plans = S.plans.filter(function (x) { return x.id !== ds.delplan; }); persist(); renderSaved(); } }
+      else if (ds.delhist) { if (confirm("Delete this history entry?")) { S.history = S.history.filter(function (x) { return x.id !== ds.delhist; }); persist(); renderSeason(); } }
+      else if (ds.reuse) {
+        var h = S.history.find(function (x) { return x.id === ds.reuse; });
+        if (h) {
+          S.plan = newPlan(); S.plan.title = h.title; S.plan.theme = h.theme; S.plan.slot = h.slot; S.plan.share = h.share;
+          S.plan.blocks = h.blocks.map(function (b) { return {uid: uid(), drillId: b.drillId, dur: b.dur, note: ""}; });
+          syncForm(); changed(); showTab("plan"); toast("Copied into a new plan for today");
+        }
+      }
+    });
+    $("#print-all").addEventListener("click", function () { openPrint("sheet", S.plans.slice().sort(function (a, b) { return (a.date || "") < (b.date || "") ? -1 : 1; })); });
+
+    $("#modal").addEventListener("click", function (e) { if (e.target.id === "modal" || e.target.closest(".modal-close")) closeModal(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if (!$("#modal").hidden) closeModal(); else if (!$("#print-view").hidden) closePrint(); } });
+    $("#print-go").addEventListener("click", function () { window.print(); });
+    $("#print-close").addEventListener("click", closePrint);
+
+    $("#io-export").addEventListener("click", exportData);
+    $("#io-file").addEventListener("change", function () {
+      var f = this.files[0]; if (!f) return;
+      var r = new FileReader(); r.onload = function () { importText(String(r.result)); }; r.readAsText(f); this.value = "";
+    });
+    $("#io-import-text").addEventListener("click", function () { importText($("#io-text").value); });
+    $("#io-reset").addEventListener("click", function () {
+      if (!confirm("Erase ALL saved plans, favourites and history from this device?")) return;
+      S.plans = []; S.history = []; S.favs = []; S.plan = newPlan(); syncForm(); persist(); renderPlan(); renderLibrary(); toast("All data cleared.");
+    });
+  }
+  window.__planner = {S: S, openPrint: openPrint, renderPlan: renderPlan};
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+})();
+
+</script>
+</body>
+</html>
