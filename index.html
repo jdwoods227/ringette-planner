@@ -24,6 +24,14 @@ label input,label select,label textarea{margin-top:.25rem;font-weight:400}
 .brand{display:flex;gap:.6rem;align-items:center}
 .brand h1{font-size:1.1rem;margin:0}.brand p{margin:0;font-size:.75rem;opacity:.85}
 .logo{font-size:1.8rem;line-height:1}
+.lvl{margin-left:auto;display:flex;background:#ffffff26;border-radius:10px;padding:2px;flex:none}
+.lvl-btn{border:0;background:transparent;color:#fff;font-weight:700;padding:.35rem .6rem;border-radius:8px;min-height:40px;cursor:pointer;font-size:.85rem;white-space:nowrap}
+.lvl-btn[aria-pressed="true"]{background:#fff;color:var(--pri)}
+body.lv-lts .app-head{background:linear-gradient(135deg,#0e7490,#0891b2)}
+body.lv-lts .tab.active,body.lv-lts .lvl-btn[aria-pressed="true"]{color:#0e7490}
+body:not(.lv-lts) .lts-only,body.lv-lts .u10-only{display:none!important}
+.lvchip{display:inline-block;font-size:.7rem;font-weight:700;padding:.05rem .45rem;border-radius:99px;background:#e0f2fe;color:#0e7490;border:1px solid #7dd3fc;vertical-align:1px}
+.lvchip.u10{background:#e0e7ff;color:#1e40af;border-color:#a5b4fc}
 .tabs{display:flex;gap:.25rem;overflow-x:auto;margin-top:.4rem;scrollbar-width:none}
 .tab{border:0;background:transparent;color:#dbeafe;padding:.6rem .8rem;border-radius:10px 10px 0 0;white-space:nowrap;cursor:pointer;min-height:44px;font-weight:600}
 .tab.active{background:var(--bg);color:var(--pri)}
@@ -34,7 +42,7 @@ main{max-width:1100px;margin:0 auto;padding:.75rem}
 @media (max-width:420px){.span2{grid-column:span 1}}
 fieldset.seg{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;align-content:flex-end;gap:.3rem;min-width:0}
 fieldset.seg legend{font-size:.85rem;font-weight:600;color:#334155;padding:0;margin-bottom:.25rem;float:left;width:100%}
-.seg label{flex:1}
+.seg label{flex:1;position:relative}
 .seg input{position:absolute;opacity:0;pointer-events:none}
 .seg span{display:flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-weight:600;cursor:pointer}
 .seg input:checked+span{background:var(--pri2);border-color:var(--pri2);color:#fff}
@@ -152,6 +160,7 @@ svg.rink{display:block}
 #print-view{position:fixed;inset:0;z-index:70;background:#64748b;overflow:auto}
 #print-view[hidden]{display:none}
 .print-bar{position:sticky;top:0;display:flex;gap:.6rem;align-items:center;justify-content:space-between;background:#0f172a;color:#fff;padding:.5rem .75rem;z-index:2}
+.print-bar .btn:not(.primary){color:var(--ink)}
 #print-pages{padding:1rem 0}
 .page{width:8.5in;height:11in;margin:0 auto 1rem;background:#fff;padding:.4in;overflow:hidden;box-shadow:0 4px 18px #0005;font-size:9.5pt;line-height:1.3;color:#000}
 .ph{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #1e3a8a;padding-bottom:.08in;margin-bottom:.08in}
@@ -203,7 +212,8 @@ svg.rink{display:block}
 </head>
 <body>
 <header class="app-head">
-  <div class="brand"><span class="logo" aria-hidden="true">◎</span><div><h1>U10 Ringette Practice Planner</h1><p>FUN3 · Learn to Train · works offline</p></div></div>
+  <div class="brand"><span class="logo" aria-hidden="true">◎</span><div><h1 id="app-title">U10 Ringette Practice Planner</h1><p id="app-sub">FUN3 · Learn to Train · works offline</p></div>
+    <div class="lvl" role="group" aria-label="Level"><button class="lvl-btn" data-level="u10" aria-pressed="true">U10</button><button class="lvl-btn" data-level="lts" aria-pressed="false">Learn to Skate</button></div></div>
   <nav class="tabs" role="tablist">
     <button class="tab active" data-tab="plan" role="tab" aria-selected="true">📋 Plan</button>
     <button class="tab" data-tab="drills" role="tab">🏒 Drills</button>
@@ -222,13 +232,16 @@ svg.rink{display:block}
       <label>Team <input id="f-team" placeholder="U10 FUN3"></label>
       <label>Date <input id="f-date" type="date"></label>
       <label>Ice start time <input id="f-start" type="time"></label>
-      <fieldset class="seg"><legend>Ice slot</legend>
+      <fieldset class="seg" id="f-slots"><legend>Ice slot</legend>
         <label><input type="radio" name="slot" value="50"><span>50 min</span></label>
         <label><input type="radio" name="slot" value="60"><span>60 min</span></label>
       </fieldset>
       <label>Theme <select id="f-theme"></select></label>
       <label>Ice share <select id="f-share"><option value="full">Full ice</option><option value="half">Half ice</option><option value="third">Third of the ice</option></select></label>
+      <label class="lts-only">Skaters expected <input id="f-skaters" type="number" min="0" max="60" inputmode="numeric" placeholder="e.g. 14"></label>
+      <label class="lts-only">Coaches/helpers on ice <input id="f-coaches" type="number" min="0" max="20" inputmode="numeric" placeholder="e.g. 3"></label>
     </div>
+    <p class="lts-only small muted" style="margin:.5rem 0 0">Ratio guide: 1 on-ice coach or helper per 4–6 skaters (1 per 3–4 for first-timers); never more than 1:8. Every skater and on-ice helper wears a CSA-certified helmet with chin strap done up.</p>
     <div class="actions"><button class="btn primary big" id="btn-build">⚡ Auto-build plan</button></div>
   </div>
 
@@ -256,6 +269,7 @@ svg.rink{display:block}
     <select id="lib-cat" aria-label="Category"></select>
     <select id="lib-area" aria-label="Ice area"><option value="">Any ice area</option><option value="third">Fits ⅓ ice</option><option value="half">Fits ½ ice</option><option value="full">Full ice</option></select>
     <label class="check"><input type="checkbox" id="lib-fav"> ★ Favourites only</label>
+    <label class="check"><input type="checkbox" id="lib-all"> All levels</label>
     <span id="lib-count" class="muted small"></span>
   </div>
   <div id="lib-grid" class="grid-cards"></div>
@@ -269,13 +283,34 @@ svg.rink{display:block}
 
 <!-- SEASON -->
 <section class="panel" id="tab-season" hidden>
-  <div class="card"><h2>Season summary</h2><div id="season-stats"></div></div>
+  <div class="card"><h2 id="season-title">Season summary</h2><div id="season-stats"></div></div>
   <div class="card"><h2>Practice log</h2><ul id="history-list" class="rows-list"></ul></div>
 </section>
 
 <!-- GUIDE & DATA -->
 <section class="panel" id="tab-guide" hidden>
-  <div class="card prose">
+  <div class="card prose lts-only">
+    <h2>Learn to Skate (U7/U8 Active Start) – the planner's rules of thumb</h2>
+    <ul>
+      <li><b>Fun first.</b> Games, stories and silly names ("pizza stop", "make lemons", "bear, knight, stand"). Every practice ends with a game they'll talk about at home.</li>
+      <li><b>Minimal lining up.</b> The auto-builder targets <b>under 15% of time in lines</b>: everyone-at-once drills, waves of 4–5 across the width of the ice, and 3–4 short stations (3–4 min each) with a coach at each.</li>
+      <li><b>High reps, short blocks.</b> 5–8 minutes per activity, 1–2 cues at a time, then let them try. Show, don't tell (under 20 seconds of talking).</li>
+      <li><b>Teach falling first.</b> Bend knees and sit to the side with chin tucked; get up with <i>bear (hands and knees) → knight (one foot up) → stand</i>. Practise it every session.</li>
+      <li><b>Skill path:</b> balance &amp; ready position → falling/getting up → marching → two-foot glide → swizzles → snowplow stop → one-foot glide &amp; stride → backward wiggle/swizzles → edges &amp; circle glides → crossover step-overs. Ring and stick work as soon as they can march with confidence.</li>
+      <li><b>Mixed abilities.</b> Use the regressions (coach tow, hold the boards, march instead of glide) for weak or nervous skaters and the progressions for confident ones – in the same drill.</li>
+      <li><b>Plan structure (45–50 min):</b> helmet check &amp; warm-up → 2 short skill blocks → water → station rotation → fun game → cool-down huddle.</li>
+    </ul>
+    <h2>Safety &amp; ratios</h2>
+    <ul>
+      <li><b>Helmets on, always.</b> CSA-certified helmet with a face mask, chin strap snug (one finger under it), gloves on – for every skater on the ice. Check helmets in the warm-up; re-check after falls.</li>
+      <li><b>Coach-to-skater ratio.</b> Aim for <b>1 on-ice coach or helper per 4–6 skaters</b>, and 1 per 3–4 for first-timers or very nervous skaters. Above 1:8, split the group or get more helpers. Enter skaters and coaches on the Plan tab and the planner checks it.</li>
+      <li><b>On-ice helpers</b> (parents, older players) wear helmets too and must meet your association's screening rules.</li>
+      <li><b>Space and direction.</b> Everyone skates the same way in waves; keep the gate and boards clear; no sticks above the knees; no pushing or body contact.</li>
+      <li><b>Watch for cold, tired or upset skaters</b> – a short water break or a coach-helper buddy usually fixes it.</li>
+    </ul>
+    <p class="small muted">Ratios, helmet and face-mask rules and helper screening vary by association. Check Ringette Canada's Active Start / learn-to-skate resources and your local association's requirements.</p>
+  </div>
+  <div class="card prose u10-only">
     <h2>Learn to Train at U10 – the planner's rules of thumb</h2>
     <ul>
       <li><b>Fun first, every player active.</b> The auto-builder targets <b>under 20% of time standing in lines</b> (each drill carries an estimate) and favours stations, partner work and small-area games.</li>
@@ -296,6 +331,8 @@ svg.rink{display:block}
       <li><b>Safety:</b> no body contact; controlled stick checks only – no slashing, hooking or high sticks.</li>
     </ul>
     <p class="small muted">Rule details and U10 modifications (shot clock, game format, ice size) change between seasons and associations. Check the current Ringette Canada rulebook and Ringette Ontario / your local association's U10 guidelines before teaching them.</p>
+  </div>
+  <div class="card prose">
     <h3>Diagram legend</h3>
     <div class="legend" id="legend-big"></div>
     <p class="small">● <b style="color:#1d4ed8">X</b> team A &nbsp; ● <b style="color:#dc2626">O</b> team B &nbsp; ■ <b style="color:#0f766e">G</b> goalie &nbsp; ● <b>C</b> coach &nbsp; <span style="color:#ea580c">○</span> ring &nbsp; <span style="color:#f97316">▲</span> cone &nbsp; ▭ mini-net / target &nbsp; <span style="background:#fde68a">▢</span> play area</p>
@@ -350,6 +387,15 @@ var CATS = {
   game:     {label: "Small-Area Games",   color: "#6250d6"},
   goalie:   {label: "Goalie Basics",      color: "#e34948"},
   cooldown: {label: "Cool-down",          color: "#8a8f98"},
+  /* Learn to Skate categories */
+  balance:   {label: "Balance & Falling",  color: "#0891b2"},
+  forward:   {label: "Marching, Gliding & Stride", color: "#eb6834"},
+  stopping:  {label: "Stopping",           color: "#b45309"},
+  backward:  {label: "Backward Skating",   color: "#4f46e5"},
+  edges:     {label: "Edges, Turns & Crossovers", color: "#be185d"},
+  ringstick: {label: "Ring & Stick",       color: "#eda100"},
+  fun:       {label: "Fun Games",          color: "#6250d6"},
+  stations:  {label: "Short Stations",     color: "#008300"},
   "break":  {label: "Break",              color: "#cfd3d8"}
 };
 
@@ -829,6 +875,374 @@ var DRILLS = [
  dia:"v full; r 40,30; r 120,60; r 160,20; X 60,40; X 140,50; X 100,30; k 40,30 100,2; k 120,60 100,4; t 100,10 BENCH"}
 ];
 
+/* ===== LEARN TO SKATE LIBRARY (U7/U8 Active Start, first-time and weak skaters) =====
+   Same format as DRILLS; each entry gets lvl:"lts" below. Keep groups tiny, reps high, lines short. */
+var LTS_DRILLS = [
+/* ---------- WARM-UPS ---------- */
+{id:"lts-wu-helmet", name:"Helmet Check & Wiggle Warm-up", cat:"warmup", focus:"Equipment check, body awareness", dur:5, area:"third", players:"All skaters around a coach", wait:0.05, tags:["balance"],
+ setup:"Skaters make a circle around a coach. Coaches walk the circle and check every helmet: buckled, snug (one finger under the chin strap), face mask on, gloves on. Then everyone wiggles toes, marches on the spot, does 5 small knee bends and makes a 'superhero pose' (ready position).",
+ cues:["Helmet buckled – one finger under the strap","Gloves on, fingers curled","Knees soft, hands out front like a superhero"],
+ prog:["Add 3 two-foot hops on the spot","Skaters check a partner's chin strap"],
+ reg:["Hold the boards or a coach's hand while marching on the spot"],
+ dia:"v end; C 160,42; X 160,22; X 175,28; X 180,42; X 175,57; X 160,62; X 145,57; X 140,42; X 145,28; t 160,80 HELMETS ON"},
+{id:"lts-wu-parade", name:"Follow the Coach Parade", cat:"warmup", focus:"Marching, gliding, following", dur:5, area:"half", players:"Groups of 4–6, one coach each", wait:0.0, tags:["forward"],
+ setup:"Each coach leads a 'parade' of 4–6 skaters around their area. The coach calls the move: march, tiny glide, knee bend, arms like airplane wings, touch your knees. Change direction every 30 seconds so every skater gets to be at the front.",
+ cues:["Little penguin steps – toes out","Eyes on the leader, not your feet","Keep a stick-length behind the friend in front"],
+ prog:["A skater leads the parade","Add a glide after every 5 marches"],
+ reg:["Skaters hold a stick between them and the coach","Walk-speed only"],
+ dia:"v half; C 120,22; X 128,24; X 136,27; X 144,30; s 120,22 112,14 125,8 150,12 165,24; C 150,60; X 158,62; X 166,65; s 150,60 140,70 160,78 185,70"},
+{id:"lts-wu-animals", name:"Animal Walks on Ice", cat:"warmup", focus:"Balance, knee bend, fun", dur:5, area:"third", players:"All skaters spread out", wait:0.0, tags:["balance","forward"],
+ setup:"Skaters spread out facing a coach. Coach calls an animal and everyone copies: Penguin (small marching steps), Flamingo (lift one foot for 3), Bunny (small two-foot hops), Bear (sit low, hands on knees), Airplane (two-foot glide with arms out).",
+ cues:["Bend your knees for every animal","Arms out front for balance","Fall? Bear, knight, stand up!"],
+ prog:["Skaters call out the next animal","Do the animal while gliding"],
+ reg:["Only penguin, bear and airplane","Hold a coach's stick"],
+ dia:"v end; C 190,42; X 140,20; X 155,20; X 170,22; X 140,42; X 155,44; X 170,42; X 140,64; X 155,64; X 170,62; t 190,34 Coach"},
+{id:"lts-wu-freezetag", name:"Freeze Tag with Coaches", cat:"warmup", focus:"Marching and gliding in all directions, ready position", dur:5, area:"half", players:"All skaters, 2 coaches are 'it'", wait:0.05, tags:["forward","balance"],
+ setup:"Coaches are 'it' and tag gently with a hand. A tagged skater freezes in ready position (knees bent, hands on knees) until a friend gives them a high-five. Play in a half or third of the ice so it stays crowded and slow.",
+ cues:["Short quick steps to get away","Freeze low – knees bent like a chair","Look where you are going, no crashing"],
+ prog:["Skaters become taggers","Taggers carry a pool noodle to tag with"],
+ reg:["Coaches only walk-skate","Smaller area"],
+ dia:"v half; C 140,30; C 165,58; X 120,18; X 128,62; X 150,12; X 182,22; X 176,70; X 158,40; X 190,50; s 120,18 112,30; s 150,12 162,8; s 182,22 190,32; s 176,70 186,76"},
+{id:"lts-wu-statues", name:"Statues (Freeze Dance)", cat:"warmup", focus:"Starts, stops, balance positions", dur:5, area:"third", players:"All skaters", wait:0.0, tags:["balance","stopping"],
+ setup:"Coach sings, claps or counts while skaters march and glide anywhere in the zone. When the coach stops, everyone freezes as a statue: two-foot statue, low statue, one-foot statue, airplane statue. Silly statues allowed!",
+ cues:["Stop by pushing your heels out","Freeze with knees bent","Eyes up – look at the coach"],
+ prog:["Statue must be on one foot","Freeze from a glide"],
+ reg:["Freeze standing still between marches","Hold the boards"],
+ dia:"v end; C 190,15; X 135,25; X 150,15; X 165,30; X 140,55; X 160,62; X 178,52; s 135,25 128,38; s 150,15 160,8; s 165,30 175,40; s 140,55 130,66; s 178,52 186,62"},
+{id:"lts-wu-coachsays", name:"Coach Says (Beginner)", cat:"warmup", focus:"Listening, balance, falling and getting up", dur:5, area:"third", players:"All skaters", wait:0.0, tags:["balance"],
+ setup:"Skaters spread out facing the coach. 'Coach says…' touch your knees, touch your toes, reach for the sky, march 5 steps, fall down and get up, glide to the cone. No 'Coach says'? Do a silly wiggle instead – nobody is out.",
+ cues:["Knees bent before you move","Get up: bear, knight, stand","Hands in front when you reach down"],
+ prog:["Add 'glide to the line and stop'","Skaters take turns being the coach"],
+ reg:["Only standing actions","Coach does every action with them"],
+ dia:"v end; C 190,42; X 145,22; X 160,22; X 175,22; X 145,42; X 160,42; X 175,42; X 145,62; X 160,62; X 175,62; t 190,34 Coach"},
+
+/* ---------- BALANCE & FALLING ---------- */
+{id:"lts-bal-fall", name:"Fall Down, Get Up (Bear, Knight, Stand)", cat:"balance", focus:"Safe falling and getting up", dur:6, area:"third", players:"All skaters spread out", wait:0.0, tags:["balance","firstday"],
+ setup:"Skaters spread out in a third of the ice with lots of room. Teach the fall: bend knees, sit down to the side, chin tucked. Teach the get-up: roll onto hands and knees (bear), bring one foot up between your hands (knight), push on your knee and stand. Do 8–10 reps, then on 'Timber!' from a glide.",
+ cues:["Bend and sit to the side – chin tucked","Bear: hands and knees. Knight: one foot up. Stand!","Fingers curled in your gloves"],
+ prog:["Race: fall and get up in 3 seconds","Fall from a slow glide on the whistle"],
+ reg:["Coach holds hands for the knight step","Practise the get-up from kneeling only"],
+ dia:"v end; C 190,42; X 140,20 1; X 160,20 2; X 180,20 3; X 140,42 1; X 160,42 2; X 180,42 3; X 140,64 1; X 160,64 2; X 180,64 3; t 160,82 1 bear  2 knight  3 stand"},
+{id:"lts-bal-ready", name:"Ready Position & Chair Dips", cat:"balance", focus:"Knee bend, ready position", dur:5, area:"third", players:"All skaters spread out", wait:0.0, tags:["balance","firstday"],
+ setup:"Skaters stand with feet hip-width apart. 'Sit in a chair': bend knees, back tall, hands out front. Do 10 dips standing still, then 5 dips while doing a short two-foot glide.",
+ cues:["Feet under your shoulders","Knees over toes, bottom back","Chest up – see the coach"],
+ prog:["Dip all the way down to touch your skates while gliding","Hold the low chair for a count of 5"],
+ reg:["Hold the boards","Hold a stick across with a coach holding the other end"],
+ dia:"v end; C 190,42; X 140,25; X 160,25; X 180,25; X 140,60; X 160,60; X 180,60; s 140,25 150,25; s 140,60 150,60; t 160,44 sit in a chair"},
+{id:"lts-bal-reach", name:"Touch Your Toes, Touch the Sky", cat:"balance", focus:"Balance through big movements", dur:5, area:"half", players:"Waves of 4–5 across the ice", wait:0.15, tags:["balance"],
+ setup:"Waves of 4–5 skaters go across the width of the ice. March 4 steps, glide, then on the coach's call: touch your knees, touch your toes, reach for the sky, clap 3 times. Next wave goes as soon as the first one is 3 strides away.",
+ cues:["Keep your weight over the middle of your blades","Bend knees to reach down – don't fold at the waist","Look forward, not down"],
+ prog:["Touch the ice with one glove while gliding","Lift one foot for 2 seconds"],
+ reg:["Do it standing still first","Shorter distance"],
+ dia:"v half; X 120,80; X 140,80; X 160,80; X 180,80; s 120,76 120,20; s 140,76 140,20; s 160,76 160,20; s 180,76 180,20; t 150,48 touch toes; t 150,14 reach up!"},
+{id:"lts-bal-flamingo", name:"Flamingo Balance", cat:"balance", focus:"One-foot balance", dur:5, area:"third", players:"All skaters spread out", wait:0.0, tags:["balance"],
+ setup:"Standing still, skaters lift one foot like a flamingo and count out loud to 3, then switch. Then try it while gliding: push, glide on two feet, lift one foot.",
+ cues:["Stand tall on the standing leg, knee a little bent","Arms out to the side","Both feet: left AND right"],
+ prog:["Count to 5, then 10","Flamingo glide from blue line to the top of the circle"],
+ reg:["One hand on a coach or the boards","Lift the heel only, toe stays on the ice"],
+ dia:"v end; C 190,42; X 140,22; X 160,22; X 180,22; X 140,62; X 160,62; X 180,62; t 160,44 lift 1 foot - count 3"},
+{id:"lts-bal-treasure", name:"Treasure Pick-Up", cat:"balance", focus:"Bending, balance, moving in all directions", dur:6, area:"half", players:"All skaters, 2–3 buckets", wait:0.0, tags:["balance","forward","firstday"],
+ setup:"Scatter rings, bean bags or soft toys all over the area. Skaters march or glide to a 'treasure', bend their knees to pick it up and bring it to a coach's bucket. Coaches throw the treasure back out to keep it going.",
+ cues:["Bend your knees to pick up – back tall","One treasure at a time","Heads up, look for space"],
+ prog:["Pick up from a glide","Use the stick to slide the ring in"],
+ reg:["Treasure close to the boards","Coach helps with the knight get-up"],
+ dia:"v half; r 120,20 135,55 150,30 165,65 180,22 145,72 172,45 125,40; C 150,46; X 115,30; X 140,62; X 175,30; X 185,62; s 115,30 120,22; s 140,62 145,70; s 175,30 172,40; t 150,52 bucket"},
+{id:"lts-bal-tow", name:"Coach Tow (Stick Tow)", cat:"balance", focus:"Feeling a glide in ready position (nervous or weak skaters)", dur:5, area:"third", players:"1 coach with 1–2 skaters", wait:0.3, tags:["balance","forward","firstday"],
+ setup:"For first-timers or nervous skaters. The skater holds a stick across with two hands; a coach skates backward holding the other side and slowly pulls. The skater stays in the 'chair' and feels the glide. Other skaters practise marching nearby while they wait.",
+ cues:["Feet under your shoulders, knees bent","Hold on with both hands, eyes on the coach","Let the blades slide – no walking"],
+ prog:["Coach lets go for a 1-second glide","Skater pushes with one foot while being towed"],
+ reg:["Coach walks slowly beside, holding both hands","Use a skating aid or chair if your arena allows them"],
+ dia:"v end; C 160,22; X 140,22; b 160,22 190,22; s 140,22 165,22; C 160,62; X 140,62; b 160,62 190,62; s 140,62 165,62"},
+
+/* ---------- MARCHING, GLIDING & STRIDE ---------- */
+{id:"lts-fw-march", name:"Penguin March", cat:"forward", focus:"Marching with toes out", dur:5, area:"third", players:"Waves of 4–5", wait:0.15, tags:["forward","firstday"],
+ setup:"Skaters march across the width of the ice like penguins: little steps, toes pointing out, knees bent. Waves of 4–5 so nobody waits more than a few seconds. March back on the return.",
+ cues:["Little steps, toes out like a 'V'","Knees bent, hands out front","Lift your feet – stomp, stomp"],
+ prog:["Count steps – can you get there in fewer?","March faster, then glide"],
+ reg:["Hold a coach's hand or a stick","March along the boards"],
+ dia:"v end; X 135,80; X 150,80; X 165,80; X 180,80; s 135,76 135,12; s 150,76 150,12; s 165,76 165,12; s 180,76 180,12; X 142,8; X 158,8; X 172,8"},
+{id:"lts-fw-marchglide", name:"March & Glide", cat:"forward", focus:"Turning steps into a two-foot glide", dur:6, area:"third", players:"Waves of 4–5", wait:0.15, tags:["forward","firstday"],
+ setup:"March 5 steps, then put both feet together under your shoulders and glide to a count of 3. Repeat across the ice. Coaches stand in the middle and count out loud. Waves of 4–5.",
+ cues:["Feet together under your shoulders for the glide","Knees bent, arms out front","Count your glide: 1… 2… 3!"],
+ prog:["3 marches then glide","Glide through a cone gate"],
+ reg:["10 marches, 1-second glide","Coach holds a stick for support"],
+ dia:"v end; X 135,80; X 150,80; X 165,80; X 180,80; s 135,76 135,52; s 135,52 135,16; s 150,76 150,52; s 150,52 150,16; s 165,76 165,16; s 180,76 180,16; t 158,52 GLIDE"},
+{id:"lts-fw-2glide", name:"Two-Foot Glide Record", cat:"forward", focus:"Long, balanced two-foot glides", dur:6, area:"half", players:"Waves of 4–5", wait:0.2, tags:["forward"],
+ setup:"Skaters push off with a few marches from the boards and glide on two feet as far as they can. Coaches put a cone where each skater stops – next turn, beat your own cone. Waves of 4–5.",
+ cues:["Push, push, then freeze on two feet","Knees soft, hands out front","Look at where you want to go"],
+ prog:["Glide while touching knees, then toes","Glide on one foot at the end"],
+ reg:["Coach tow to start the glide","Glide only 2 seconds"],
+ dia:"v half; X 115,80; X 135,80; X 155,80; X 175,80; s 115,76 115,30; s 135,76 135,22; s 155,76 155,36; s 175,76 175,26; c 115,28 135,20 155,34 175,24"},
+{id:"lts-fw-bridge", name:"Rocket Glide Under the Bridge", cat:"forward", focus:"Two-foot glide with deep knee bend", dur:6, area:"half", players:"2 lines of 3–4, two bridges", wait:0.2, tags:["forward","balance"],
+ setup:"Two coaches hold a pool noodle or stick across as a 'bridge' at shoulder height. Skaters march, glide on two feet and bend their knees to duck under. Lower the bridge each round. Use two bridges so lines stay short.",
+ cues:["Glide on two feet BEFORE the bridge","Bend your knees – don't bend your back","Hands on your knees, eyes forward"],
+ prog:["Lower bridge","Glide on one foot under the bridge"],
+ reg:["High bridge","March under instead of gliding"],
+ dia:"v half; C 140,25; C 140,40; d 140,25 140,40; C 140,50; C 140,65; d 140,50 140,65; X 112,32; X 106,32; X 112,58; X 106,58; s 112,32 175,32; s 112,58 175,58"},
+{id:"lts-fw-scooter", name:"Scooter Pushes", cat:"forward", focus:"One-foot push and glide (stride starter)", dur:6, area:"half", players:"Waves of 4–5", wait:0.15, tags:["forward"],
+ setup:"Like riding a scooter: glide on one foot and push with the other foot out to the side. Do the width of the ice on the left foot, then come back on the right foot.",
+ cues:["Push out to the SIDE, not back","Gliding knee bent","Bring the pushing foot back under you"],
+ prog:["3 pushes, then a long glide","Alternate pushes (stride)"],
+ reg:["Hold a coach's stick","Push with small steps"],
+ dia:"v half; X 120,80; X 145,80; X 170,80; s 120,76 116,62 120,48 116,34 120,20; s 145,76 141,62 145,48 141,34 145,20; s 170,76 166,62 170,48 166,34 170,20; t 145,12 push to the side"},
+{id:"lts-fw-stride", name:"Big Pushes – Stride Basics", cat:"forward", focus:"Forward stride: push to the side, recover, glide", dur:7, area:"half", players:"Waves of 4–5", wait:0.2, tags:["forward"],
+ setup:"Across the width of the ice: push with one foot to the side, bring it back under, push with the other foot. Count the pushes – fewer pushes = bigger glides. Coaches stand at the far side and give high fives.",
+ cues:["Push out to the side and finish with your toe","Bring your foot back under your body","Bend your knees – 'sit in the chair'"],
+ prog:["Fewer pushes than last time","Hands on the stick, stick on the ice"],
+ reg:["Scooter pushes on one side only","March-and-glide"],
+ dia:"v half; X 118,80; X 140,80; X 162,80; X 184,80; s 118,76 112,62 118,48 112,34 118,20; s 140,76 134,62 140,48 134,34 140,20; s 162,76 156,62 162,48 156,34 162,20; C 150,8"},
+{id:"lts-fw-swizzle", name:"Swizzles (Make Lemons)", cat:"forward", focus:"Forward swizzles, inside edges", dur:6, area:"third", players:"Waves of 4–5", wait:0.15, tags:["forward","edges"],
+ setup:"Heels together, toes out, push both feet apart, then pull your toes together to make a 'lemon' shape on the ice. Repeat across the ice. Coaches look for lemon shapes in the snow afterwards.",
+ cues:["Heels together, toes out to start","Push out, pull in – make a lemon","Knees bent the whole time"],
+ prog:["Make 3 lemons in a row without stopping","Swizzle through a line of cones"],
+ reg:["One lemon, then stop and reset","Hold a coach's stick"],
+ dia:"v end; X 140,80; X 160,80; X 180,80; s 140,76 133,66 140,56 133,46 140,36 133,26 140,16; s 160,76 153,66 160,56 153,46 160,36 153,26 160,16; s 180,76 173,66 180,56 173,46 180,36 173,26 180,16; t 160,8 out-in"},
+{id:"lts-fw-onefoot", name:"One-Foot Glide Challenge", cat:"forward", focus:"One-foot glide, balance for striding", dur:5, area:"third", players:"Waves of 4–5", wait:0.2, tags:["forward","balance"],
+ setup:"A few pushes, a two-foot glide, then lift one foot and glide on the other. How long can you glide? Switch feet every turn. Coaches count out loud.",
+ cues:["Glide knee bent, nose over the gliding toe","Lift foot beside the skate, not behind","Arms out like an airplane"],
+ prog:["Glide past 2 cones on one foot","Change feet in the middle"],
+ reg:["Lift the heel only","Two-foot glide"],
+ dia:"v end; X 140,80; X 160,80; X 180,80; s 140,76 140,46; s 140,46 140,18; s 160,76 160,46; s 160,46 160,18; s 180,76 180,18; c 140,46 160,46 180,46; t 160,52 lift one foot"},
+
+/* ---------- STOPPING ---------- */
+{id:"lts-st-snowpile", name:"Make a Snow Pile", cat:"stopping", focus:"Snowplow scrape standing still", dur:5, area:"third", players:"All skaters spread out", wait:0.0, tags:["stopping","firstday"],
+ setup:"Standing still, skaters push one foot out to the side with the toe turned in and scrape the ice to make 'snow'. Who can make the biggest snow pile? Left foot, right foot, then both feet together (pizza).",
+ cues:["Toes in, heels out – a pizza slice","Push out, flatten the blade a little","Knees bent, weight in the middle"],
+ prog:["Scrape while gliding slowly","Two-foot snowplow"],
+ reg:["Hold the boards","Coach holds hands"],
+ dia:"v end; C 190,42; X 140,22; X 160,22; X 180,22; X 140,62; X 160,62; X 180,62; t 160,44 push out - make snow"},
+{id:"lts-st-snowplow", name:"Snowplow Stop – Pizza!", cat:"stopping", focus:"Two-foot and one-foot snowplow stops", dur:7, area:"half", players:"Waves of 4–5", wait:0.2, tags:["stopping"],
+ setup:"Skaters glide toward the coach. On 'Pizza!' they push their heels out and toes in to stop. Start with one-foot snowplow, then both feet. Stop before the coach's line of cones.",
+ cues:["Glide first, then pizza","Heels out, toes in, knees bent","Push down and out to scrape snow"],
+ prog:["Stop on the line, not past it","Stop from a faster glide"],
+ reg:["One-foot snowplow only","Slow glide from a coach tow"],
+ dia:"v half; X 115,80; X 135,80; X 155,80; X 175,80; s 115,76 115,30; s 135,76 135,30; s 155,76 155,30; s 175,76 175,30; c 112,24 124,24 136,24 148,24 160,24 172,24 184,24; C 150,10; t 150,18 PIZZA!"},
+{id:"lts-st-lines", name:"Stop on the Line", cat:"stopping", focus:"Stopping on a target, control", dur:6, area:"half", players:"Waves of 4–5", wait:0.2, tags:["stopping","forward"],
+ setup:"Coaches lay sticks or use the painted lines as targets. Skaters glide and try to stop with their skates on the line. Each line is a different number of points; coaches cheer for every stop.",
+ cues:["Look at the line, not your feet","Start the pizza before the line","Stay low after you stop"],
+ prog:["Stop, then go to the next line and stop again","Stop facing a different way"],
+ reg:["Closer lines","Stop with help from the boards"],
+ dia:"v half; X 115,80; X 140,80; X 165,80; d 105,55 195,55; d 105,32 195,32; s 115,76 115,57; s 140,76 140,34; s 165,76 165,57; t 190,52 1; t 190,29 2"},
+{id:"lts-st-gates", name:"Stop Before the Wall", cat:"stopping", focus:"Snowplow stop with a target, speed control", dur:6, area:"half", players:"3 lanes of 2–3", wait:0.25, tags:["stopping"],
+ setup:"Three lanes. Each lane has a cone gate to glide through, then a 'wall' of cones (soft, low). Skaters glide through the gate and snowplow stop before touching the wall. Back of the lane goes when the skater in front has stopped.",
+ cues:["Glide through the gate on two feet","Pizza early – stop before the wall","Eyes on the wall"],
+ prog:["Move the gate further away for more speed","Stop with one foot only"],
+ reg:["Move the wall further from the gate","Stop anywhere"],
+ dia:"v half; c 130,18 130,30 160,18 160,30; c 182,14 182,20 182,26 182,32; X 112,24; X 106,24; s 112,24 178,24; c 130,52 130,64 160,52 160,64; c 182,48 182,54 182,60 182,66; X 112,58; X 106,58; s 112,58 178,58"},
+
+/* ---------- BACKWARD SKATING ---------- */
+{id:"lts-bk-wiggle", name:"Backward Wiggle", cat:"backward", focus:"First backward movement", dur:5, area:"third", players:"All skaters along the boards", wait:0.0, tags:["backward"],
+ setup:"Skaters stand facing the boards (or a coach), knees bent, and wiggle their bottom side to side to move backward – like a wiggly worm. Small wiggles first, then bigger.",
+ cues:["Sit in the chair, chest up","Toes in a little, push with the balls of your feet","Look over your shoulder before you go"],
+ prog:["Wiggle to the next line","Backward wiggle while a coach counts"],
+ reg:["Hold a stick with a coach facing you","Push off the boards with your hands to start"],
+ dia:"v end; X 140,10; X 155,10; X 170,10; X 185,10; b 140,14 140,40; b 155,14 155,40; b 170,14 170,40; b 185,14 185,40; C 162,60"},
+{id:"lts-bk-swizzle", name:"Backward Swizzles (Upside-Down Lemons)", cat:"backward", focus:"Backward swizzles", dur:6, area:"half", players:"Waves of 4–5", wait:0.15, tags:["backward","edges"],
+ setup:"Toes together, heels out: push your heels apart, then pull them together to make an upside-down lemon going backward. Waves of 4–5 across the ice, coach at the far side as a target.",
+ cues:["Toes together to start","Push out, pull in – heels lead","Look over your shoulder"],
+ prog:["3 lemons in a row","Swizzle back to a cone"],
+ reg:["One lemon at a time","Partner holds a stick in front"],
+ dia:"v half; X 120,16; X 145,16; X 170,16; b 120,20 112,30 120,40 112,50 120,60 112,70; b 145,20 137,30 145,40 137,50 145,60 137,70; b 170,20 162,30 170,40 162,50 170,60 162,70; C 145,80"},
+{id:"lts-bk-ccuts", name:"Backward C-Cuts", cat:"backward", focus:"One-foot backward push", dur:6, area:"half", players:"Waves of 4–5", wait:0.15, tags:["backward"],
+ setup:"Skating backward, push with one foot in a 'C' shape (out, then back in under you) while the other foot glides. Do the width of the ice pushing with the left, then come back pushing with the right.",
+ cues:["Weight on the gliding foot, knees bent","Draw a 'C' with your pushing foot","Check over your shoulder"],
+ prog:["Alternate feet","Carry a stick on the ice"],
+ reg:["Backward swizzles","Coach pushes gently with a stick"],
+ dia:"v half; X 125,16; X 150,16; X 175,16; b 125,20 118,32 125,44 118,56 125,68; b 150,20 143,32 150,44 143,56 150,68; b 175,20 168,32 175,44 168,56 175,68; t 150,80 draw a C"},
+{id:"lts-bk-push", name:"Push-Off Backward Glide", cat:"backward", focus:"Balanced backward glide", dur:5, area:"third", players:"Pairs, or skater + coach", wait:0.1, tags:["backward","balance"],
+ setup:"A skater faces the boards (or a partner) and gently pushes off with their hands to glide backward in ready position on two feet. How far can you glide? Partners take turns.",
+ cues:["Both feet under your shoulders","Sit in the chair, hands out front","Gentle push – no big shove"],
+ prog:["Glide backward and snowplow stop (heels out)","Push off, then 2 backward swizzles"],
+ reg:["Coach holds a stick and gently pushes","Shorter glide"],
+ dia:"v end; X 140,6; X 160,6; X 180,6; b 140,10 140,40; b 160,10 160,46; b 180,10 180,36; d 125,3 197,3; t 160,60 push off the boards"},
+
+/* ---------- EDGES, TURNS & CROSSOVERS ---------- */
+{id:"lts-ed-snake", name:"Snake Through the Cones", cat:"edges", focus:"Two-foot turns, edges, weaving", dur:6, area:"half", players:"3 lanes of 2–3", wait:0.25, tags:["edges"],
+ setup:"Three lanes of 4–5 wide-spaced cones. Skaters weave through on two feet like a snake, pushing with swizzles if they need speed. Next skater goes when the one in front passes the second cone.",
+ cues:["Turn your shoulders where you want to go","Knees bent, both feet on the ice","Look at the next cone"],
+ prog:["Closer cones","Carry a ring with the stick"],
+ reg:["Fewer, wider cones","March around the cones"],
+ dia:"v half; c 125,18 145,18 165,18 185,18; c 125,42 145,42 165,42 185,42; c 125,66 145,66 165,66 185,66; X 110,18; X 110,42; X 110,66; s 110,18 120,12 135,24 155,12 175,24 190,18; s 110,66 120,60 135,72 155,60 175,72 190,66"},
+{id:"lts-ed-drive", name:"Drive the Car", cat:"edges", focus:"Steering a two-foot glide, leaning", dur:5, area:"half", players:"All skaters spread out", wait:0.0, tags:["edges","forward"],
+ setup:"Skaters hold their stick in front like a steering wheel and 'drive' around the area. Coach calls 'turn left', 'turn right', 'red light', 'beep beep!'. Skaters steer by turning shoulders and leaning on both feet.",
+ cues:["Turn your shoulders and your car follows","Lean into the turn – knees bent","Watch for other cars!"],
+ prog:["Park the car in a cone 'garage' with a stop","Drive backward (reverse)"],
+ reg:["Walk-speed driving","Coach is the bus driver with a train of skaters"],
+ dia:"v half; X 120,22; X 140,60; X 165,25; X 185,62; X 150,42; s 120,22 135,14 150,22; s 140,60 125,70 115,58; s 165,25 180,16 190,28; s 185,62 170,74 158,66; C 112,78"},
+{id:"lts-ed-circleglide", name:"Circle Glides (Airplane Lean)", cat:"edges", focus:"Gliding on a curve, edge awareness", dur:6, area:"third", players:"Groups of 4–5 at each circle", wait:0.1, tags:["edges"],
+ setup:"A group at each face-off circle. Push a few times, then glide around the circle on two feet, leaning in like an airplane wing dipping. Go both directions. Up to 4 on a circle at once, spaced out.",
+ cues:["Lean in toward the dot","Inside arm low, outside arm high","Go both ways – left and right"],
+ prog:["Lift the outside foot","Push with the outside foot (C-cut)"],
+ reg:["March around the circle","Walk the circle line holding a stick"],
+ dia:"v end; X 169,5; X 184,20; X 154,20; s 169,5 180,9 184,20; s 154,20 158,10 169,5; X 169,79; X 154,64; X 184,64; s 169,79 158,75 154,64; s 184,64 180,75 169,79"},
+{id:"lts-ed-stepover", name:"Crossover Step-Overs", cat:"edges", focus:"Crossover introduction", dur:6, area:"third", players:"Groups of 4–5 at each circle", wait:0.1, tags:["edges"],
+ setup:"Standing on the circle line, skaters 'step over the pizza': lift the outside foot and step it over the inside foot, then bring the inside foot back beside it. Walk all the way around the circle, then go the other way.",
+ cues:["Outside foot crosses over the top","Lift your foot – don't drag it","Knees bent, lean a little into the circle"],
+ prog:["Step-over, then glide","Two step-overs and a glide around the circle"],
+ reg:["Do 3 step-overs standing on the spot","Hold a coach's hand"],
+ dia:"v end; X 169,5 1; X 182,13 2; X 184,28 3; s 169,5 178,7 184,16 184,28; X 169,79 1; X 156,72 2; X 154,57 3; s 169,79 160,77 154,68 154,57; t 169,46 step over"},
+{id:"lts-ed-cpush", name:"Circle Pushes", cat:"edges", focus:"Outside-foot C-cut push on a curve (pre-crossover)", dur:6, area:"third", players:"Groups of 4–5 at each circle", wait:0.1, tags:["edges"],
+ setup:"Glide around the circle on the inside foot while pushing with the outside foot again and again, like a scooter on a curve. Two laps each way.",
+ cues:["Glide on the inside foot, knee bent","Push out with the outside foot","Lean toward the middle"],
+ prog:["Push with the INSIDE foot under you (crossunder start)","Add one crossover each lap"],
+ reg:["Two-foot circle glide","Smaller circle around a cone"],
+ dia:"v end; X 169,5; s 169,5 180,8 184,20 180,32 169,36 158,32 154,20; X 154,64; s 154,64 158,75 169,79 180,75 184,64 180,53 169,49"},
+{id:"lts-ed-hourglass", name:"Two-Foot Turns Around the Cones", cat:"edges", focus:"Two-foot turns both directions", dur:6, area:"half", players:"2 lines of 3–4", wait:0.25, tags:["edges"],
+ setup:"Skate up, turn around a cone on two feet, skate to the next cone and turn the other way (a figure-8). Two lines, starting on opposite sides so nobody waits long.",
+ cues:["Turn your head and shoulders first","Bend knees through the turn","Turn left AND right"],
+ prog:["Turn a smaller circle","Carry a ring through the turns"],
+ reg:["Big wide turns","March around the cones"],
+ dia:"v half; c 140,28 175,28 140,58 175,58; X 112,28; X 106,28; s 112,28 132,22 145,30 140,38 160,30 175,20 182,28 175,36; X 112,58; X 106,58; s 112,58 132,64 145,56 140,48 160,56 175,66 182,58"},
+
+/* ---------- RING & STICK ---------- */
+{id:"lts-rs-pushwalk", name:"Ring Push March", cat:"ringstick", focus:"Stick in the ring, moving with it", dur:5, area:"half", players:"Every skater with a ring", wait:0.0, tags:["ringstick","forward"],
+ setup:"Every skater has a stick and a ring. Hands on the stick (top hand on top), blade inside the ring. March and push the ring across the ice – the ring is your pet on a leash.",
+ cues:["Top hand on the top of the stick","Stick inside the ring, ring out front","Look up between pushes"],
+ prog:["March, then glide pushing the ring","Push the ring around a cone and back"],
+ reg:["No stick – push the ring with your skate","Coach helps with the grip"],
+ dia:"v half; X 120,78; X 145,78; X 170,78; k 120,74 120,18; k 145,74 145,18; k 170,74 170,18; r 120,16 145,16 170,16"},
+{id:"lts-rs-pickup", name:"Ring Pick-Up", cat:"ringstick", focus:"Lifting the ring with the stick", dur:5, area:"third", players:"Every skater with a ring", wait:0.0, tags:["ringstick"],
+ setup:"Ring on the ice in front of each skater. Put the stick tip in the ring and lift it up to your knees, then put it down. 10 reps standing, then pick it up after a short glide.",
+ cues:["Stick tip in the middle of the ring","Bend your knees, not your back","Lift slowly – keep it on the stick"],
+ prog:["Pick up from a glide","Walk 3 steps with the ring lifted"],
+ reg:["Pick up with your hand","Coach holds the ring still"],
+ dia:"v end; X 140,20; r 145,24; X 160,20; r 165,24; X 180,20; r 185,24; X 140,58; r 145,62; X 160,58; r 165,62; X 180,58; r 185,62; t 162,42 lift up!"},
+{id:"lts-rs-feed", name:"Feed the Monster", cat:"ringstick", focus:"Carrying a ring to a target", dur:6, area:"half", players:"All skaters, 2–3 'monster' nets", wait:0.05, tags:["ringstick","forward"],
+ setup:"Coaches put out 2–3 mini-nets (the hungry monsters) and scatter rings everywhere. Skaters push one ring at a time into a monster's mouth. A coach empties the monsters back out so the game never ends.",
+ cues:["Push, don't swing","Stick inside the ring all the way","Heads up – watch for friends"],
+ prog:["Monsters only eat rings that arrive with a glide","Coach moves a monster around slowly"],
+ reg:["Monsters close by","Kick the ring with your skate to start"],
+ dia:"v half; n 150,8 150,77; r 120,28 132,55 160,40 178,22 175,62 115,62; X 112,40; X 140,30; X 168,48; X 185,40; k 140,30 150,14; k 168,48 152,72; C 190,78"},
+{id:"lts-rs-partner", name:"Partner Ring Slides", cat:"ringstick", focus:"First passes, receiving the ring", dur:5, area:"third", players:"Pairs", wait:0.0, tags:["ringstick"],
+ setup:"Partners stand 2 stick-lengths apart. Gently push (slide) the ring to your partner, who stops it with their stick or skate. 10 slides each, then step one stride further apart.",
+ cues:["Push the ring along the ice toward your partner","Stick on the ice – make a target","Stop it, then push it back"],
+ prog:["Slide while gliding side by side","Use the backhand"],
+ reg:["Stop the ring with your skate","Closer together"],
+ dia:"v end; X 140,15; X 140,35; p 140,18 140,32; X 165,15; X 165,35; p 165,32 165,18; X 140,50; X 140,70; p 140,53 140,67; X 165,50; X 165,70; p 165,67 165,53; X 186,22; X 186,62"},
+{id:"lts-rs-bowling", name:"Ring Bowling", cat:"ringstick", focus:"Push-shot aim and follow-through", dur:6, area:"third", players:"3–4 lanes of 2–3", wait:0.25, tags:["ringstick"],
+ setup:"Set up 'pins' (cones or empty water bottles) 3–4 metres away in several lanes. Skaters push-shoot the ring along the ice to knock pins down, then go get their ring and set the pins up again for the next skater.",
+ cues:["Stick in the ring, push it toward the pins","Finish with your stick pointing at the target","Fetch your ring and reset the pins"],
+ prog:["Move further back","Shoot from a glide"],
+ reg:["Closer pins","Push with two hands low on the stick"],
+ dia:"v end; X 135,15; X 128,15; h 138,15 172,15; c 176,12 176,15 176,18 179,13.5 179,16.5; X 135,42; X 128,42; h 138,42 172,42; c 176,39 176,42 176,45 179,40.5 179,43.5; X 135,68; X 128,68; h 138,68 172,68; c 176,65 176,68 176,71 179,66.5 179,69.5"},
+{id:"lts-rs-shootnet", name:"Score on the Coach's Net", cat:"ringstick", focus:"Carrying and push-shooting into a net", dur:6, area:"half", players:"2 groups, one per net", wait:0.25, tags:["ringstick"],
+ setup:"Each skater has a ring. Carry (push) the ring from the blue line to the top of the circle and push-shoot into the net (no goalie, or a coach goalie who only 'misses'). Two groups using both sides keep lines short.",
+ cues:["Push the ring out in front","Shoot by pushing – stick finishes at the net","Celebrate every goal!"],
+ prog:["Shoot from further out","Add a cone to go around first"],
+ reg:["Start closer","Walk-push the ring"],
+ dia:"v half; X 128,20; X 122,20; X 128,64; X 122,64; k 128,20 160,26; h 160,26 186,40; k 128,64 160,58; h 160,58 186,45; C 192,52"},
+
+/* ---------- FUN GAMES ---------- */
+{id:"lts-g-redlight", name:"Red Light, Green Light", cat:"fun", focus:"Starts, glides, snowplow stops", dur:7, area:"half", players:"All skaters in one wave", wait:0.05, tags:["stopping","forward"],
+ setup:"Everyone on the goal line (or boards), coach at the far side. 'Green light' = march and glide toward the coach; 'Red light' = stop (any way – snowplow is best) and freeze. Anyone still moving goes back 3 steps (nobody is out). First to tag the coach becomes the caller.",
+ cues:["Green: little steps, then glide","Red: pizza stop, knees bent","Freeze like a statue"],
+ prog:["'Yellow light' = swizzles; 'Purple light' = backward","Carry a ring"],
+ reg:["Red light = sit down (fall safely)","Shorter distance"],
+ dia:"v half; C 125,42; X 186,10; X 186,24; X 186,38; X 186,52; X 186,66; X 186,78; s 186,10 160,12; s 186,38 155,38; s 186,66 162,64; t 125,30 RED/GREEN"},
+{id:"lts-g-sharks", name:"Sharks and Minnows (Beginner)", cat:"fun", focus:"Skating forward under light pressure, dodging", dur:7, area:"half", players:"All skaters; coaches start as sharks", wait:0.1, tags:["forward"],
+ setup:"Minnows start on one side, coaches are the sharks in the middle. On 'Fishies, fishies, cross my ocean!' minnows march and glide across. A tagged minnow becomes seaweed: stands in place with arms out and can tag minnows who come close. Use the width of half ice.",
+ cues:["Look for the open water","Little quick steps to get away","Seaweed keeps their skates still"],
+ prog:["Minnows carry rings","Must glide through a cone gate"],
+ reg:["Sharks only walk","Narrower ocean"],
+ dia:"v half; X 115,80; X 135,80; X 155,80; X 175,80; C 140,40 S; C 168,44 S; s 115,76 118,10; s 155,76 150,10; s 175,76 182,10; t 150,4 SAFE; t 150,84 SAFE"},
+{id:"lts-g-obstacle", name:"Obstacle Course Adventure", cat:"fun", focus:"Mixed skills: glide, duck, step, weave, stop", dur:10, area:"half", players:"Small groups starting at different stations", wait:0.1, tags:["forward","balance","stopping","edges"],
+ setup:"Build a loop around half ice: cone slalom → noodle bridge to duck under → stick lying on the ice to step over → glide between two cones → stop at the 'STOP' sign. Send groups of 2–3 from different starting points so nobody waits; skaters go round again and again.",
+ cues:["Duck by bending your knees","Lift your feet high over the stick","Stop at the sign – pizza!"],
+ prog:["Add a ring to carry","Do part of it backward"],
+ reg:["Remove the step-over","Coach skates with nervous skaters"],
+ dia:"v half; c 115,15 125,15 135,15 145,15; s 110,15 120,10 130,20 140,10 150,15 170,15; C 170,30; C 185,30; d 170,30 185,30; s 178,20 178,45; d 172,58 184,58; s 178,48 178,70 150,74; c 145,66 145,80; s 150,74 120,74; t 112,68 STOP; s 120,70 108,40 110,22"},
+{id:"lts-g-treasure", name:"Pirate Treasure Hunt", cat:"fun", focus:"Ring carrying, gliding, bending", dur:8, area:"half", players:"2–4 teams of 2–4 'pirate ships'", wait:0.05, tags:["ringstick","forward"],
+ setup:"Each team has a 'ship' (a corner or a zone marked by cones). Rings (treasure) are scattered in the middle. Pirates bring treasure back one ring at a time with their stick (or hands for first-timers). When the middle is empty, steal from other ships! Count treasure at the end.",
+ cues:["One ring at a time","Stick inside the ring","Heads up – no crashing"],
+ prog:["Must glide the last part back to the ship","Coaches 'guard' the treasure gently"],
+ reg:["Carry rings with your hands","Shorter distance to the ship"],
+ dia:"v half; z 102,2,22,22; z 176,2,22,22; z 102,61,22,22; z 176,61,22,22; r 145,35 155,45 150,52 160,38 140,46; X 115,12; X 188,12; X 115,72; X 188,72; k 145,35 118,16; k 160,38 184,16; s 115,72 140,52; s 188,72 158,48"},
+{id:"lts-g-tails", name:"Tail Tag", cat:"fun", focus:"Agility, quick feet, turning", dur:7, area:"half", players:"All skaters with a pinnie 'tail'", wait:0.0, tags:["edges","forward"],
+ setup:"Everyone tucks a pinnie into the back of their pants as a tail. Grab other tails while protecting your own. Lost your tail? Skate to a coach, get it back and rejoin – nobody is out. Hands only on tails: no pushing or grabbing jerseys.",
+ cues:["Turn and twist to protect your tail","Short quick steps","Gentle hands – tails only"],
+ prog:["Smaller area","Grab a tail, then glide away on two feet"],
+ reg:["Coaches are the only tail-grabbers","Walk-speed only"],
+ dia:"v half; X 120,22; X 140,55; X 165,20; X 182,58; X 150,36; X 125,70; s 120,22 132,14; s 140,55 152,64; s 165,20 178,12; s 182,58 190,70; s 150,36 162,44; C 110,78"},
+{id:"lts-g-cleanroom", name:"Clean Your Room", cat:"fun", focus:"Ring pushing, quick feet, ring control", dur:8, area:"half", players:"Two teams, one on each side of a line", wait:0.0, tags:["ringstick"],
+ setup:"Two teams each have a 'room' on opposite sides of a line of cones. Lots of rings on both sides. On 'Go!' everyone pushes rings out of their room into the other team's room with their stick. On the whistle, freeze and count – fewest rings wins. No lifting or shooting the ring high.",
+ cues:["Push the ring along the ice","Heads up – look for space","Keep your stick low"],
+ prog:["Only backhand pushes","Must glide while pushing"],
+ reg:["Push rings with your skates","Fewer rings"],
+ dia:"v half; c 150,6 150,20 150,34 150,48 150,62 150,76; r 120,20 130,50 115,70 165,25 180,55 170,72 135,30 185,30; X 125,35; X 115,58; X 170,40; X 182,66; k 125,35 148,40; k 170,40 152,30"},
+{id:"lts-g-crocodile", name:"Crocodile River", cat:"fun", focus:"Gliding and dodging, listening", dur:7, area:"half", players:"All skaters; 1–2 coach crocodiles", wait:0.15, tags:["forward"],
+ setup:"Skaters line up on one side of the 'river'. The crocodile (coach) calls a colour or item: 'Anyone wearing red socks can cross!' Those skaters cross while the crocodile tries to tag them. Tagged skaters become baby crocodiles and help tag.",
+ cues:["Push, push, glide across","Look for the gaps","Crocs tag gently – one hand"],
+ prog:["Cross backward","Cross carrying a ring"],
+ reg:["Crocodile only walks","Narrower river"],
+ dia:"v half; X 115,8; X 135,8; X 155,8; X 175,8; X 190,8; C 150,42; s 135,12 130,78; s 175,12 182,78; z 102,30,96,24; t 150,60 RIVER"},
+{id:"lts-g-islands", name:"Musical Islands", cat:"fun", focus:"Skating in traffic, quick stops", dur:6, area:"half", players:"All skaters", wait:0.05, tags:["stopping","forward"],
+ setup:"Scatter 'islands' (hoops or 4-cone squares) around the zone. Skaters skate around while the coach sings or claps. When it stops, everyone stops on an island. Remove an island each round – islands get crowded but everyone shares, nobody is out.",
+ cues:["Stop on the island, don't crash into it","Look for the closest island","Slow down early"],
+ prog:["Skate backward between islands","Islands only count if you snowplow stop"],
+ reg:["March only","More islands"],
+ dia:"v half; z 115,15,14,14; z 160,12,14,14; z 135,52,14,14; z 178,55,14,14; X 108,45; X 150,35; X 175,40; X 125,74; s 108,45 118,30; s 150,35 165,22; s 175,40 183,55; s 125,74 138,62"},
+{id:"lts-g-minigame", name:"Cross-Ice Ring Game (2v2 / 3v3)", cat:"fun", focus:"First games: carrying, pushing, scoring", dur:10, area:"third", players:"2v2 or 3v3, mini-nets, no goalies", wait:0.15, tags:["ringstick"],
+ setup:"For skaters who can glide and stop. Small area, two mini-nets, no goalies. Short shifts (60–90 s), then switch. Coaches stand in the game to restart quickly and keep it gentle: no body contact, sticks low.",
+ cues:["Find the ring, push it to the net","Sticks on the ice","Everyone gets a touch"],
+ prog:["Must pass once before scoring","Add a third net"],
+ reg:["1v1 with a coach helper","Bigger nets"],
+ dia:"v end; n 135,42 190,42; X 150,30; X 160,55; O 170,35; O 158,20; r 162,42; k 150,30 170,40; C 145,72; d 125,3 125,82"},
+
+/* ---------- SHORT STATIONS ---------- */
+{id:"lts-stn-fgs", name:"Stations: Fall – Glide – Stop", cat:"stations", focus:"Three core skills, high reps", dur:12, area:"half", players:"3 groups of 3–6, one coach per station", wait:0.05, tags:["balance","forward","stopping","firstday"],
+ setup:"Three stations, 3–4 minutes each, then rotate on the whistle. 1) Fall down & get up (bear, knight, stand) – non-stop reps. 2) March & two-foot glide through cone gates. 3) Snowplow stop on a line. One coach runs each station.",
+ cues:["Station 1: bend and sit to the side","Station 2: feet under your shoulders","Station 3: heels out, toes in"],
+ prog:["Shorten to 3 minutes and add a 4th station (ring push)","Faster rotations"],
+ reg:["Coach holds hands for the get-up","Longer time at each station"],
+ dia:"v half; d 133,0 133,85; d 166,0 166,85; t 116,8 1 FALL; t 150,8 2 GLIDE; t 183,8 3 STOP; X 110,35; X 120,55; C 116,72; c 140,30 150,30 140,55 150,55; X 144,72; s 144,70 145,18; c 172,30 194,30; X 183,72; s 183,70 183,36; C 192,58"},
+{id:"lts-stn-ring", name:"Stations: Ring Fun Circuit", cat:"stations", focus:"Ring pushing, pick-up, shooting", dur:12, area:"half", players:"3 groups, one coach per station", wait:0.1, tags:["ringstick"],
+ setup:"Three stations, 3–4 minutes each. 1) Ring push march around cones. 2) Ring pick-up (lift with the stick tip). 3) Push-shot ring bowling at cone pins. Every skater has their own ring at every station.",
+ cues:["Stick inside the ring","Bend knees to pick up","Finish the shot pointing at the target"],
+ prog:["Glide while pushing at station 1","Shoot from further back at station 3"],
+ reg:["Use hands to pick up","Closer pins"],
+ dia:"v half; d 133,0 133,85; d 166,0 166,85; t 116,8 1 PUSH; t 150,8 2 PICK UP; t 183,8 3 BOWLING; c 116,30 116,55; k 110,72 110,42 122,22; r 142,40 156,40 142,60 156,60; X 145,40; X 152,60; X 175,70; h 175,66 182,30; c 180,22 184,22 182,19"},
+{id:"lts-stn-back", name:"Stations: Backward & Edges", cat:"stations", focus:"Backward skating, circle glides, crossover step-overs", dur:12, area:"half", players:"3 groups, one coach per station", wait:0.1, tags:["backward","edges"],
+ setup:"Three stations, 3–4 minutes each. 1) Backward wiggle and swizzles along the boards. 2) Circle glides with an airplane lean (both ways). 3) Crossover step-overs on the other circle line.",
+ cues:["Backward: look over your shoulder","Circle: lean toward the dot","Step-over: outside foot crosses over"],
+ prog:["Backward C-cuts at station 1","Add a glide after each step-over"],
+ reg:["Hold a coach's stick","March around the circle"],
+ dia:"v half; t 118,8 1 BACKWARD; X 108,18; X 120,18; b 108,22 108,70; b 120,22 120,70; t 169,44 2 GLIDE; X 169,5; s 169,5 182,12 184,22; t 169,52 3 STEP-OVER; X 154,64; s 154,64 158,75 169,79; C 140,42"},
+{id:"lts-stn-agility", name:"Stations: Agility Fun", cat:"stations", focus:"Ducking, hopping, weaving, stopping", dur:12, area:"half", players:"4 groups of 2–4", wait:0.1, tags:["balance","edges","stopping"],
+ setup:"Four mini-stations, 3 minutes each. 1) Noodle bridge – glide and duck under. 2) Step over sticks lying on the ice. 3) Two-foot weave through cones. 4) Stop-sign stops. Groups do as many reps as they can.",
+ cues:["Knees bend to duck","Lift your feet high","Pizza stop at the sign"],
+ prog:["Little two-foot hop over the stick","Faster through the weave"],
+ reg:["Higher bridge","Hold a coach's hand"],
+ dia:"v half; d 150,0 150,85; d 100,42.5 200,42.5; t 125,8 1 BRIDGE; C 118,22; C 132,22; d 118,22 132,22; s 125,36 125,12; t 175,8 2 STEP; d 168,20 182,20; d 168,30 182,30; s 175,36 175,12; t 125,50 3 WEAVE; c 112,62 125,62 138,62; s 106,70 118,58 131,68 144,58; t 175,50 4 STOP; s 175,80 175,62; c 168,58 182,58"},
+{id:"lts-stn-zone", name:"Stations: Small-Ice Circuit", cat:"stations", focus:"Stops, ring skills and gliding in one zone", dur:10, area:"third", players:"3 groups of 3–5, one coach per station", wait:0.1, tags:["stopping","ringstick","forward","firstday"],
+ setup:"For a third of the ice. Three stations, 3 minutes each: 1) Top circle – snow piles and snowplow stops into the boards area. 2) Middle – ring pick-up and ring push around a cone. 3) Bottom circle – march, glide and duck under a noodle bridge. Rotate on the whistle.",
+ cues:["Stops: heels out, toes in","Rings: stick inside the ring, knees bent","Bridge: glide first, then bend your knees"],
+ prog:["Shorter time per station, two rounds","Add a one-foot glide at station 3"],
+ reg:["Coach helps with each rep","Skip the bridge – two-foot glide only"],
+ dia:"v end; d 125,28 200,28; d 125,57 200,57; t 150,8 1 STOP; X 140,18; s 140,18 165,18; c 172,14 172,22; t 150,36 2 RINGS; r 150,44 165,44; X 145,46; k 145,46 172,42 165,50; t 150,65 3 BRIDGE; C 175,66; C 175,80; d 175,66 175,80; X 140,73; s 140,73 190,73"},
+
+/* ---------- COOL-DOWN ---------- */
+{id:"lts-cd-angels", name:"Snow Angels & Stretch", cat:"cooldown", focus:"Calm down, gentle stretching", dur:4, area:"third", players:"All skaters", wait:0.0, tags:[],
+ setup:"Everyone lies on their back on the ice (helmets on!) and makes snow angels. Then sit up for 3 easy stretches: reach for your toes, butterfly legs, arm circles. Get up using bear, knight, stand.",
+ cues:["Helmets stay on and buckled","Slow breaths","Get up: bear, knight, stand"],
+ prog:["Skaters lead a stretch"],
+ reg:["Sit instead of lying down"],
+ dia:"v end; C 165,42; X 140,20; X 160,18; X 180,22; X 140,64; X 160,66; X 180,62; X 140,42; X 185,42; t 162,82 snow angels"},
+{id:"lts-cd-cleanup", name:"Clean-Up Crew", cat:"cooldown", focus:"Easy skating, helping", dur:4, area:"half", players:"All skaters", wait:0.0, tags:[],
+ setup:"Skaters glide around picking up rings, cones and toys and bring them to the bench, one item at a time. Finish with a high-five line with the coaches.",
+ cues:["One thing at a time","Slow glides","High fives for everyone!"],
+ prog:["Push rings to the bench with the stick"],
+ reg:["Coaches carry the cones"],
+ dia:"v half; r 130,40 165,60 150,20; c 120,62 180,25; X 140,50; X 170,40; X 125,25; k 130,40 105,42; s 170,40 104,46; t 108,34 BENCH"},
+{id:"lts-cd-huddle", name:"Huddle, Cheer & Stickers", cat:"cooldown", focus:"Feedback, fun, team spirit", dur:3, area:"third", players:"All skaters on one knee", wait:0.0, tags:[],
+ setup:"Skaters kneel around the coaches. Ask: 'What was your favourite game?' and 'Show me your ready position!' Name one thing each skater did well. Finish with a team cheer (and stickers off the ice if your group does them).",
+ cues:["Praise effort, not just results","Everyone gets a turn to talk","Team cheer!"],
+ prog:["A skater leads the cheer"],
+ reg:["Standing huddle at the boards"],
+ dia:"v end; C 160,42; C 172,42; X 150,26; X 165,22; X 180,28; X 185,48; X 175,62; X 160,64; X 146,56; X 142,40; t 162,82 huddle"}
+];
+LTS_DRILLS.forEach(function (d) { d.lvl = "lts"; });
+DRILLS.push.apply(DRILLS, LTS_DRILLS);
+
 var BREAK_DRILL = {id:"water", name:"Water Break", cat:"break", focus:"Hydrate, quick instruction", dur:2, area:"third", players:"All", wait:0, tags:[],
  setup:"Players get water at the bench; coach previews the next drill.", cues:["Drink!","Listen for the next drill"], prog:[], reg:[], dia:""};
 
@@ -855,6 +1269,38 @@ var TEMPLATES = {
   60: [["warmup", 7], ["skill", 10, 0], ["skill", 10, 1], ["break", 2], ["skill", 9, 2], ["game", 17], ["cooldown", 5]]
 };
 
+/* Learn to Skate: ~45–50 min ice, short blocks, stations and games, under 15 % in lines. */
+var LTS_THEMES = {
+  balanced: {label: "Balanced mix",                       skills: ["forward", "stopping"], tag: null},
+  firstday: {label: "First time on ice (balance & falling)", skills: ["balance", "forward"], tag: "firstday"},
+  gliding:  {label: "Marching, gliding & striding",       skills: ["forward", "balance"], tag: "forward"},
+  stopping: {label: "Stopping (snowplow)",                skills: ["stopping", "forward"], tag: "stopping"},
+  backward: {label: "Backward skating",                   skills: ["backward", "edges"], tag: "backward"},
+  edges:    {label: "Edges, turns & crossover intro",     skills: ["edges", "edges"], tag: "edges"},
+  ring:     {label: "Ring & stick fun",                   skills: ["ringstick", "forward"], tag: "ringstick"}
+};
+var LTS_TEMPLATES = {
+  45: [["warmup", 5], ["skill", 7, 0], ["skill", 6, 1], ["break", 2], ["stations", 10], ["fun", 11], ["cooldown", 4]],
+  50: [["warmup", 6], ["skill", 7, 0], ["skill", 7, 1], ["break", 2], ["stations", 12], ["fun", 12], ["cooldown", 4]]
+};
+
+var LEVELS = {
+  u10: {id: "u10", label: "U10", title: "U10 Ringette Practice Planner", sub: "FUN3 · Learn to Train · works offline", team: "U10 FUN3",
+    slots: [50, 60], defSlot: 60, themes: THEMES, templates: TEMPLATES, skillCats: SKILL_CATS, lineTarget: LINE_TARGET,
+    cats: ["warmup", "skating", "passing", "carrying", "shooting", "rules", "game", "goalie", "cooldown"],
+    gameLabel: "Small-area games", gameAim: "aim 25–35%"},
+  lts: {id: "lts", label: "Learn to Skate", title: "Learn to Skate Ringette Planner", sub: "U7/U8 · Active Start · works offline", team: "Learn to Skate",
+    slots: [45, 50], defSlot: 45, themes: LTS_THEMES, templates: LTS_TEMPLATES, lineTarget: 0.15,
+    skillCats: ["balance", "forward", "stopping", "backward", "edges", "ringstick"],
+    cats: ["warmup", "balance", "forward", "stopping", "backward", "edges", "ringstick", "fun", "stations", "cooldown"],
+    gameLabel: "Fun games", gameAim: "aim 20–30%"}
+};
+/* Coach-to-skater ratio guidance for Learn to Skate (skaters per on-ice coach/helper). */
+var LTS_RATIO = {ideal: 6, max: 8};
+function levelOf(x) { return x && LEVELS[x.lvl || x.level] ? (x.lvl || x.level) : "u10"; }
+function levelCfg(x) { return LEVELS[typeof x === "string" ? (LEVELS[x] ? x : "u10") : levelOf(x)]; }
+function levelDrills(lv) { return DRILLS.filter(function (d) { return levelOf(d) === lv; }); }
+
 var DRILL_MAP = {};
 DRILLS.forEach(function (d) { DRILL_MAP[d.id] = d; });
 
@@ -880,15 +1326,16 @@ function planStats(blocks) {
     total += m;
     byCat[d.cat] = (byCat[d.cat] || 0) + m;
     if (d.cat !== "break") { active += m; lineMin += m * (d.wait || 0); }
-    if (d.cat === "game") gameMin += m;
+    if (d.cat === "game" || d.cat === "fun") gameMin += m;
   });
   return {total: total, active: active, byCat: byCat, lineMin: lineMin,
     idle: active ? lineMin / active : 0, gamePct: active ? gameMin / active : 0};
 }
 
 function buildOnce(opts, ctx) {
-  var theme = THEMES[opts.theme] || THEMES.balanced, share = opts.share || "full";
-  var tmpl = TEMPLATES[opts.slot] || TEMPLATES[60], rnd = ctx.rnd || Math.random;
+  var L = levelCfg(opts.level || "u10");
+  var theme = L.themes[opts.theme] || L.themes.balanced, share = opts.share || "full";
+  var tmpl = L.templates[opts.slot] || L.templates[L.defSlot], rnd = ctx.rnd || Math.random;
   var favs = ctx.favs || [], recent = ctx.recent || [];
   var used = {}, blocks = [], notes = [];
   function weight(tag) {
@@ -900,15 +1347,15 @@ function buildOnce(opts, ctx) {
       return w * (1 - Math.min(d.wait, 0.6));
     };
   }
-  function pool(fn) { return DRILLS.filter(function (d) { return !used[d.id] && fits(d, share) && fn(d); }); }
+  function pool(fn) { return DRILLS.filter(function (d) { return levelOf(d) === L.id && !used[d.id] && fits(d, share) && fn(d); }); }
   tmpl.forEach(function (step) {
     var kind = step[0], dur = step[1], cand, want;
     if (kind === "break") { blocks.push({uid: uid(), drillId: "water", dur: dur, note: ""}); return; }
     want = kind === "skill" ? theme.skills[step[2]] : kind;
     cand = pool(function (d) { return d.cat === want; });
     if (!cand.length) {
-      cand = pool(function (d) { return SKILL_CATS.indexOf(d.cat) >= 0 && d.tags.indexOf(want) >= 0; });
-      if (!cand.length) cand = pool(function (d) { return SKILL_CATS.indexOf(d.cat) >= 0; });
+      cand = pool(function (d) { return L.skillCats.indexOf(d.cat) >= 0 && d.tags.indexOf(want) >= 0; });
+      if (!cand.length) cand = pool(function (d) { return L.skillCats.indexOf(d.cat) >= 0; });
       notes.push("No unused " + CATS[want].label + " drill fits " + AREA_LABEL[share] + " – substituted a related drill.");
     }
     if (!cand.length) return;
@@ -922,11 +1369,11 @@ function buildOnce(opts, ctx) {
 /* Builds several random candidates and keeps one that respects the <20 % in-line target. */
 function autoBuild(opts, ctx) {
   ctx = ctx || {};
-  var best = null, ok = [];
+  var best = null, ok = [], target = levelCfg(opts.level || "u10").lineTarget;
   for (var i = 0; i < 40; i++) {
     var r = buildOnce(opts, ctx);
     r.stats = planStats(r.blocks);
-    if (r.stats.idle <= LINE_TARGET - 0.02) ok.push(r);
+    if (r.stats.idle <= target - 0.02) ok.push(r);
     if (!best || r.stats.idle < best.stats.idle) best = r;
     if (ok.length >= 5) break;
   }
@@ -937,6 +1384,7 @@ function autoBuild(opts, ctx) {
 }
 
 function planWarnings(plan) {
+  if (levelOf(plan) === "lts") return ltsWarnings(plan);
   var st = planStats(plan.blocks), w = [];
   if (st.total > plan.slot) w.push({lvl: "bad", msg: "Plan is " + (st.total - plan.slot) + " min over your " + plan.slot + "-min ice slot."});
   else if (st.total < plan.slot) w.push({lvl: "warn", msg: (plan.slot - st.total) + " min unplanned – add a drill or lengthen a block."});
@@ -948,6 +1396,35 @@ function planWarnings(plan) {
     if (!st.byCat.game) w.push({lvl: "warn", msg: "No small-area game – U10 players learn the game by playing it."});
     else if (st.gamePct < 0.2) w.push({lvl: "info", msg: "Games are only " + Math.round(st.gamePct * 100) + "% of the practice – aim for 25–35%."});
   }
+  var big = plan.blocks.filter(function (b) { return !fits(drillById(b.drillId), plan.share); });
+  if (big.length) w.push({lvl: "bad", msg: big.length + " drill(s) need more ice than your " + AREA_LABEL[plan.share] + " share."});
+  return w;
+}
+
+function ratioInfo(plan) {
+  var n = +plan.skaters || 0, c = +plan.coaches || 0;
+  return {n: n, c: c, per: n && c ? n / c : 0, need: n ? Math.ceil(n / LTS_RATIO.ideal) : 0};
+}
+function ltsWarnings(plan) {
+  var st = planStats(plan.blocks), w = [], L = LEVELS.lts, r = ratioInfo(plan);
+  if (st.total > plan.slot) w.push({lvl: "bad", msg: "Plan is " + (st.total - plan.slot) + " min over your " + plan.slot + "-min ice slot."});
+  else if (st.total < plan.slot) w.push({lvl: "warn", msg: (plan.slot - st.total) + " min unplanned – add a drill or lengthen a block."});
+  if (st.idle > L.lineTarget) w.push({lvl: "warn", msg: "Estimated time standing in lines is " + Math.round(st.idle * 100) + "% (Learn to Skate target: under 15%). Little skaters get cold and bored in lines – use waves of 4–5, stations or a game."});
+  if (plan.blocks.length) {
+    var first = drillById(plan.blocks[0].drillId), last = drillById(plan.blocks[plan.blocks.length - 1].drillId);
+    if (first.cat !== "warmup") w.push({lvl: "warn", msg: "Start with a warm-up that includes a helmet and chin-strap check."});
+    if (last.cat !== "cooldown") w.push({lvl: "info", msg: "Finish with a short cool-down, huddle and cheer."});
+    if (!st.byCat.fun) w.push({lvl: "warn", msg: "No fun game – games are why 5- to 8-year-olds want to come back."});
+    plan.blocks.forEach(function (b) {
+      var d = drillById(b.drillId);
+      if (d.cat !== "break" && d.cat !== "stations" && b.dur > 12) w.push({lvl: "info", msg: "“" + d.name + "” runs " + b.dur + " min – young skaters focus best in 5–8 min chunks."});
+    });
+    var skillMin = 0; L.skillCats.forEach(function (c) { skillMin += st.byCat[c] || 0; });
+    if (st.active > 30 && !(st.byCat.stations || 0) && skillMin > st.active * 0.5) w.push({lvl: "info", msg: "Consider a station rotation – more reps and less waiting than whole-group drills."});
+  }
+  if (!r.n || !r.c) w.push({lvl: "info", msg: "Enter skaters and on-ice coaches to check your ratio (aim for 1 coach per " + LTS_RATIO.ideal + " or fewer skaters)."});
+  else if (r.per > LTS_RATIO.max) w.push({lvl: "bad", msg: "Ratio is 1 coach to " + r.per.toFixed(1) + " skaters – too many to keep everyone safe and moving. You need about " + r.need + " on-ice coaches/helpers."});
+  else if (r.per > LTS_RATIO.ideal) w.push({lvl: "warn", msg: "Ratio is 1:" + r.per.toFixed(1) + ". Aim for 1:" + LTS_RATIO.ideal + " or better (1:3–4 for first-timers) – about " + r.need + " on-ice coaches/helpers."});
   var big = plan.blocks.filter(function (b) { return !fits(drillById(b.drillId), plan.share); });
   if (big.length) w.push({lvl: "bad", msg: big.length + " drill(s) need more ice than your " + AREA_LABEL[plan.share] + " share."});
   return w;
@@ -1095,8 +1572,10 @@ function validPlan(p) { return p && typeof p.id === "string" && Array.isArray(p.
 if (typeof document !== "undefined") (function () {
   "use strict";
   var LS_KEY = "ringettePlanner.v1", storageOK = true;
-  var S = {plans: [], favs: [], history: [], settings: {team: "U10 FUN3", slot: 60, share: "half", theme: "balanced", start: ""}, plan: null};
-  var lib = {q: "", cat: "", area: "", favOnly: false};
+  var S = {plans: [], favs: [], history: [], drafts: {}, plan: null,
+    settings: {team: "U10 FUN3", slot: 60, share: "half", theme: "balanced", start: "", level: "u10",
+      lts: {team: "Learn to Skate", slot: 45, share: "half", theme: "balanced", start: ""}}};
+  var lib = {q: "", cat: "", area: "", favOnly: false, all: false};
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -1113,9 +1592,16 @@ if (typeof document !== "undefined") (function () {
     return h12 + ":" + String(m).padStart(2, "0");
   }
 
-  function newPlan() {
-    return {id: uid(), title: "", team: S.settings.team, date: today(), start: S.settings.start, slot: S.settings.slot,
-      theme: S.settings.theme, share: S.settings.share, notes: "", blocks: [], created: Date.now(), updated: Date.now()};
+  /* Each level keeps its own settings and its own draft plan. */
+  function curLevel() { return levelOf(S.plan); }
+  function lvSet(lv) { return (lv || curLevel()) === "lts" ? S.settings.lts : S.settings; }
+  function newPlan(lv) {
+    lv = LEVELS[lv] ? lv : (LEVELS[S.settings.level] ? S.settings.level : "u10");
+    var o = lvSet(lv);
+    var p = {id: uid(), title: "", team: o.team, date: today(), start: o.start, slot: o.slot,
+      theme: o.theme, share: o.share, notes: "", blocks: [], created: Date.now(), updated: Date.now()};
+    if (lv !== "u10") { p.level = lv; p.skaters = ""; p.coaches = ""; }
+    return p;
   }
   function load() {
     var raw = null;
@@ -1124,14 +1610,19 @@ if (typeof document !== "undefined") (function () {
       try {
         var d = JSON.parse(raw);
         S.plans = d.plans || []; S.favs = d.favs || []; S.history = d.history || [];
-        S.settings = Object.assign(S.settings, d.settings || {}); S.plan = validPlan(d.current) ? d.current : null;
+        var lts = Object.assign(S.settings.lts, (d.settings || {}).lts || {});
+        S.settings = Object.assign(S.settings, d.settings || {}); S.settings.lts = lts;
+        S.drafts = d.drafts && typeof d.drafts === "object" ? d.drafts : {};
+        if (validPlan(d.current)) S.drafts[levelOf(d.current)] = d.current;
       } catch (e) { console.warn("Bad saved data", e); }
     }
-    if (!S.plan) S.plan = newPlan();
+    var lv = LEVELS[S.settings.level] ? S.settings.level : "u10";
+    S.plan = validPlan(S.drafts[lv]) ? S.drafts[lv] : newPlan(lv);
   }
   function persist() {
     S.plan.updated = Date.now();
-    try { localStorage.setItem(LS_KEY, JSON.stringify({plans: S.plans, favs: S.favs, history: S.history, settings: S.settings, current: S.plan})); }
+    S.drafts[curLevel()] = S.plan; S.settings.level = curLevel();
+    try { localStorage.setItem(LS_KEY, JSON.stringify({plans: S.plans, favs: S.favs, history: S.history, settings: S.settings, current: S.plan, drafts: S.drafts})); }
     catch (e) { if (storageOK) toast("Can't save in this browser – use Export to keep a copy."); storageOK = false; }
   }
   function recentDrills() {
@@ -1158,9 +1649,45 @@ if (typeof document !== "undefined") (function () {
     window.scrollTo(0, 0);
   }
 
+  /* ----- Level ----- */
+  function setLevel(lv) {
+    if (!LEVELS[lv] || lv === curLevel()) return;
+    persist();
+    S.plan = validPlan(S.drafts[lv]) ? S.drafts[lv] : newPlan(lv);
+    lib.cat = ""; $("#lib-cat").value = "";
+    syncForm(); changed(); renderLibrary();
+    if (!$("#tab-saved").hidden) renderSaved();
+    if (!$("#tab-season").hidden) renderSeason();
+    toast("Level: " + LEVELS[lv].label);
+  }
+  /* Updates everything that depends on the current plan's level (header, themes, slots, categories). */
+  function applyLevel() {
+    var lv = curLevel(), L = LEVELS[lv], p = S.plan;
+    S.settings.level = lv;
+    document.body.classList.toggle("lv-lts", lv === "lts");
+    $("#app-title").textContent = L.title; $("#app-sub").textContent = L.sub; document.title = L.title;
+    $$(".lvl-btn").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.level === lv); });
+    if (!L.themes[p.theme]) p.theme = "balanced";
+    $("#f-theme").innerHTML = Object.keys(L.themes).map(function (k) { return '<option value="' + k + '">' + esc(L.themes[k].label) + "</option>"; }).join("");
+    $("#f-theme").value = p.theme;
+    $("#f-slots").innerHTML = "<legend>Ice slot</legend>" + L.slots.map(function (m) {
+      return '<label><input type="radio" name="slot" value="' + m + '"' + (+m === +p.slot ? " checked" : "") + "><span>" + m + " min</span></label>"; }).join("");
+    $("#f-team").placeholder = L.team;
+    var cats = L.cats.filter(function (c) { return lib.all || DRILLS.some(function (d) { return d.cat === c && levelOf(d) === lv; }); });
+    if (lib.all) Object.keys(CATS).forEach(function (c) { if (c !== "break" && cats.indexOf(c) < 0) cats.push(c); });
+    if (cats.indexOf(lib.cat) < 0) lib.cat = "";
+    $("#lib-cat").innerHTML = '<option value="">All categories</option>' + cats.map(function (c) {
+      return '<option value="' + c + '">' + esc(CATS[c].label) + " (" + libDrills().filter(function (d) { return d.cat === c; }).length + ")</option>"; }).join("");
+    $("#lib-cat").value = lib.cat;
+    $("#drill-total").textContent = levelDrills("u10").length + " U10 + " + levelDrills("lts").length + " Learn to Skate";
+  }
+  function libDrills() { return lib.all ? DRILLS : levelDrills(curLevel()); }
+
   /* ----- Plan builder ----- */
   function syncForm() {
+    applyLevel();
     var p = S.plan;
+    $("#f-skaters").value = p.skaters || ""; $("#f-coaches").value = p.coaches || "";
     $("#f-title").value = p.title || ""; $("#f-team").value = p.team || ""; $("#f-date").value = p.date || "";
     $("#f-start").value = p.start || ""; $("#f-theme").value = p.theme; $("#f-share").value = p.share; $("#f-notes").value = p.notes || "";
     $$('input[name="slot"]').forEach(function (r) { r.checked = +r.value === +p.slot; });
@@ -1183,15 +1710,21 @@ if (typeof document !== "undefined") (function () {
     }).join("");
     $("#blocks").innerHTML = html || '<li class="empty">No drills yet – press <b>Auto-build plan</b> or <b>+ Add drill</b>.</li>';
 
-    var diff = st.total - p.slot;
+    var diff = st.total - p.slot, L = levelCfg(p), tgt = Math.round(L.lineTarget * 100);
     var cls = diff === 0 ? "good" : diff > 0 ? "bad" : "warn";
+    var ratioTile = "";
+    if (L.id === "lts") {
+      var r = ratioInfo(p);
+      ratioTile = r.per ? '<div class="tile ' + (r.per <= LTS_RATIO.ideal ? "good" : r.per <= LTS_RATIO.max ? "warn" : "bad") + '"><span>Coach : skaters</span><b>1 : ' + (Math.round(r.per * 10) / 10) + "</b><small>" + r.c + " coaches · " + r.n + " skaters · aim ≤ 1:" + LTS_RATIO.ideal + "</small></div>"
+        : '<div class="tile"><span>Coach : skaters</span><b>–</b><small>enter skaters &amp; coaches</small></div>';
+    }
     var cats = Object.keys(CATS).filter(function (c) { return st.byCat[c]; });
     $("#summary").innerHTML =
       '<div class="tiles">' +
       '<div class="tile ' + cls + '"><span>Total</span><b>' + st.total + " / " + p.slot + "</b><small>" + (diff === 0 ? "✔ on time" : diff > 0 ? "▲ " + diff + " over" : "▼ " + (-diff) + " left") + "</small></div>" +
-      '<div class="tile ' + (st.idle <= LINE_TARGET ? "good" : "warn") + '"><span>Time in lines</span><b>' + pct(st.idle) + "</b><small>" + (st.idle <= LINE_TARGET ? "✔ " : "▲ ") + "target &lt; 20%</small></div>" +
-      '<div class="tile"><span>Small-area games</span><b>' + pct(st.gamePct) + "</b><small>aim 25–35%</small></div>" +
-      '<div class="tile"><span>Drills</span><b>' + p.blocks.filter(function (b) { return b.drillId !== "water"; }).length + "</b><small>" + AREA_LABEL[p.share] + "</small></div></div>" +
+      '<div class="tile ' + (st.idle <= L.lineTarget ? "good" : "warn") + '"><span>Time in lines</span><b>' + pct(st.idle) + "</b><small>" + (st.idle <= L.lineTarget ? "✔ " : "▲ ") + "target &lt; " + tgt + "%</small></div>" +
+      '<div class="tile"><span>' + L.gameLabel + "</span><b>" + pct(st.gamePct) + "</b><small>" + L.gameAim + "</small></div>" +
+      '<div class="tile"><span>Drills</span><b>' + p.blocks.filter(function (b) { return b.drillId !== "water"; }).length + "</b><small>" + AREA_LABEL[p.share] + "</small></div>" + ratioTile + "</div>" +
       '<div class="catbar" role="img" aria-label="Minutes by category">' + cats.map(function (c) {
         return '<span style="flex:' + st.byCat[c] + ';background:' + CATS[c].color + '" title="' + esc(CATS[c].label) + ": " + st.byCat[c] + ' min"></span>';
       }).join("") + (st.total < p.slot ? '<span class="gap" style="flex:' + (p.slot - st.total) + '" title="Unplanned: ' + (p.slot - st.total) + ' min"></span>' : "") + "</div>" +
@@ -1204,9 +1737,9 @@ if (typeof document !== "undefined") (function () {
   function doAutoBuild() {
     var p = S.plan;
     if (p.blocks.length && !confirm("Replace the current drills with a new auto-built plan?")) return;
-    var r = autoBuild({slot: p.slot, theme: p.theme, share: p.share}, {favs: S.favs, recent: recentDrills()});
+    var r = autoBuild({level: curLevel(), slot: p.slot, theme: p.theme, share: p.share}, {favs: S.favs, recent: recentDrills()});
     p.blocks = r.blocks;
-    if (!p.title) p.title = THEMES[p.theme].label;
+    if (!p.title) p.title = themeLabel(p.theme, curLevel());
     syncForm(); changed();
     toast("Plan built: " + r.blocks.length + " blocks, ~" + pct(r.stats.idle) + " in lines" + (r.notes.length ? " (" + r.notes[0] + ")" : ""));
   }
@@ -1285,32 +1818,37 @@ if (typeof document !== "undefined") (function () {
   /* Picker: add a drill or replace one */
   var pick = {};
   function openPicker(o) {
-    pick = {replace: o.replace || null, cat: o.cat || "", q: ""};
+    pick = {replace: o.replace || null, cat: o.cat || "", q: "", all: false};
+    var lvCats = LEVELS[curLevel()].cats;
+    function catOpts(list) { return list.map(function (c) { return '<option value="' + c + '"' + (c === pick.cat ? " selected" : "") + ">" + esc(CATS[c].label) + "</option>"; }).join(""); }
     openModal("<h2>" + (pick.replace ? "Swap drill" : "Add a drill") + "</h2>" +
       '<div class="filters"><input type="search" id="pk-q" placeholder="Search drills…">' +
-      '<select id="pk-cat"><option value="">All categories</option>' + Object.keys(CATS).filter(function (c) { return c !== "break"; }).map(function (c) {
-        return '<option value="' + c + '"' + (c === pick.cat ? " selected" : "") + ">" + esc(CATS[c].label) + "</option>"; }).join("") + "</select>" +
+      '<select id="pk-cat"><option value="">All categories</option>' + catOpts(lvCats) + '<optgroup label="Other level">' +
+        catOpts(Object.keys(CATS).filter(function (c) { return c !== "break" && lvCats.indexOf(c) < 0; })) + "</optgroup></select>" +
+      '<label class="check"><input type="checkbox" id="pk-all"> All levels</label>' +
       (pick.replace ? '<button class="btn" id="pk-rand">🎲 Random swap</button>' : "") + "</div>" +
       '<p class="muted small">Showing drills that fit ' + AREA_LABEL[S.plan.share] + '. ★ = favourite.</p><ul id="pk-list" class="pick-list"></ul>', "wide");
     $("#pk-q").addEventListener("input", function () { pick.q = this.value; renderPick(); });
     $("#pk-cat").addEventListener("change", function () { pick.cat = this.value; renderPick(); });
+    $("#pk-all").addEventListener("change", function () { pick.all = this.checked; renderPick(); });
     if (pick.replace) $("#pk-rand").addEventListener("click", function () {
       var inPlan = S.plan.blocks.map(function (b) { return b.drillId; });
-      var c = DRILLS.filter(function (d) { return (!pick.cat || d.cat === pick.cat) && fits(d, S.plan.share) && inPlan.indexOf(d.id) < 0; });
+      var c = DRILLS.filter(function (d) { return pickLevelOK(d) && (!pick.cat || d.cat === pick.cat) && fits(d, S.plan.share) && inPlan.indexOf(d.id) < 0; });
       if (!c.length) { toast("No other drills in that category fit."); return; }
       choose(weightedPick(c, function (d) { return (isFav(d.id) ? 2.5 : 1) * (1 - Math.min(d.wait, 0.6)); }, Math.random).id);
     });
     renderPick();
   }
+  function pickLevelOK(d) { return pick.all || levelOf(d) === curLevel(); }
   function renderPick() {
     var q = pick.q.toLowerCase(), inPlan = S.plan.blocks.map(function (b) { return b.drillId; });
     var items = DRILLS.filter(function (d) {
-      return fits(d, S.plan.share) && (!pick.cat || d.cat === pick.cat) &&
+      return pickLevelOK(d) && fits(d, S.plan.share) && (!pick.cat || d.cat === pick.cat) &&
         (!q || (d.name + " " + d.focus + " " + d.setup).toLowerCase().indexOf(q) >= 0);
     });
     $("#pk-list").innerHTML = items.map(function (d) {
       return '<li><button class="pick" data-pick="' + d.id + '">' + rinkSVG(d.dia, "thumb") + '<span><b>' + (isFav(d.id) ? "★ " : "") + esc(d.name) +
-        "</b><small>" + esc(CATS[d.cat].label) + " · " + d.dur + " min · " + AREA_LABEL[d.area] + " · lines ~" + pct(d.wait) +
+        "</b><small>" + (pick.all ? lvChip(levelOf(d)) + " " : "") + esc(CATS[d.cat].label) + " · " + d.dur + " min · " + AREA_LABEL[d.area] + " · lines ~" + pct(d.wait) +
         (inPlan.indexOf(d.id) >= 0 ? " · <em>already in plan</em>" : "") + "</small></span></button></li>";
     }).join("") || '<li class="muted">No drills match.</li>';
   }
@@ -1325,14 +1863,15 @@ if (typeof document !== "undefined") (function () {
   /* ----- Library ----- */
   function renderLibrary() {
     var q = lib.q.toLowerCase();
-    var items = DRILLS.filter(function (d) {
+    var all = libDrills();
+    var items = all.filter(function (d) {
       return (!lib.cat || d.cat === lib.cat) && (!lib.area || fits(d, lib.area)) && (!lib.favOnly || isFav(d.id)) &&
         (!q || (d.name + " " + d.focus + " " + d.setup + " " + d.cues.join(" ")).toLowerCase().indexOf(q) >= 0);
     });
-    $("#lib-count").textContent = items.length + " of " + DRILLS.length + " drills";
+    $("#lib-count").textContent = items.length + " of " + all.length + " " + (lib.all ? "" : LEVELS[curLevel()].label + " ") + "drills";
     $("#lib-grid").innerHTML = items.map(function (d) {
       return '<article class="card" style="--c:' + CATS[d.cat].color + '"><button class="card-dia" data-info="' + d.id + '" aria-label="Open ' + esc(d.name) + '">' + rinkSVG(d.dia) + "</button>" +
-        '<div class="card-body"><div class="card-top">' + catChip(d.cat) + '<button class="fav' + (isFav(d.id) ? " on" : "") + '" data-fav="' + d.id + '" aria-label="Favourite">' + (isFav(d.id) ? "★" : "☆") + "</button></div>" +
+        '<div class="card-body"><div class="card-top"><span>' + catChip(d.cat) + (lib.all ? " " + lvChip(levelOf(d)) : "") + '</span><button class="fav' + (isFav(d.id) ? " on" : "") + '" data-fav="' + d.id + '" aria-label="Favourite">' + (isFav(d.id) ? "★" : "☆") + "</button></div>" +
         '<h3><button class="linkish" data-info="' + d.id + '">' + esc(d.name) + '</button></h3><p class="small">' + esc(d.focus) + "</p>" +
         '<p class="small muted">⏱ ' + d.dur + " min · " + AREA_LABEL[d.area] + " · lines ~" + pct(d.wait) + "</p>" +
         '<div class="card-actions"><button class="btn sm" data-info="' + d.id + '">Details</button><button class="btn sm primary" data-add="' + d.id + '">+ Plan</button></div></div></article>';
@@ -1344,17 +1883,18 @@ if (typeof document !== "undefined") (function () {
     var p = JSON.parse(JSON.stringify(S.plan));
     if (!p.blocks.length) { toast("Nothing to save yet."); return; }
     if (asCopy) { p.id = uid(); p.title = (p.title || "Plan") + " (copy)"; }
-    if (!p.title) p.title = THEMES[p.theme].label;
+    if (!p.title) p.title = themeLabel(p.theme, levelOf(p));
     var i = S.plans.findIndex(function (x) { return x.id === p.id; });
     if (i >= 0) S.plans[i] = p; else S.plans.unshift(p);
     S.plan.title = p.title; syncForm(); persist(); toast("Plan saved ✔");
   }
-  function themeLabel(t) { return (THEMES[t] || {label: t}).label; }
+  function themeLabel(t, lv) { return (levelCfg(lv || "u10").themes[t] || {label: t}).label; }
+  function lvChip(lv) { return '<span class="lvchip ' + lv + '">' + esc(LEVELS[lv].label) + "</span>"; }
   function renderSaved() {
     var sorted = S.plans.slice().sort(function (a, b) { return (b.date || "") > (a.date || "") ? 1 : -1; });
     $("#saved-list").innerHTML = sorted.map(function (p) {
       var st = planStats(p.blocks);
-      return '<li class="row-card"><div><b>' + esc(p.title || "Untitled") + '</b><small>' + esc(fmtDate(p.date)) + " · " + p.slot + " min · " + esc(themeLabel(p.theme)) + " · " + AREA_LABEL[p.share] +
+      return '<li class="row-card"><div>' + lvChip(levelOf(p)) + " <b>" + esc(p.title || "Untitled") + '</b><small>' + esc(fmtDate(p.date)) + " · " + p.slot + " min · " + esc(themeLabel(p.theme, levelOf(p))) + " · " + AREA_LABEL[p.share] +
         " · " + st.total + " min planned · lines " + pct(st.idle) + "</small></div>" +
         '<div class="row-actions"><button class="btn sm primary" data-load="' + p.id + '">Open</button><button class="btn sm" data-print="' + p.id + '">Print</button>' +
         '<button class="btn sm" data-bench="' + p.id + '">Bench card</button><button class="btn sm danger" data-delplan="' + p.id + '">Delete</button></div></li>';
@@ -1368,19 +1908,21 @@ if (typeof document !== "undefined") (function () {
     openModal("<h2>Log this practice</h2><p class='muted'>Adds “" + esc(S.plan.title || "this plan") + "” to your season history.</p>" +
       '<label>Date <input type="date" id="run-date" value="' + esc(S.plan.date || today()) + '"></label>' +
       '<label>How did it go? <select id="run-rate"><option value="3">😀 Great</option><option value="2" selected>🙂 Good</option><option value="1">😐 Tough</option></select></label>' +
-      '<label>Players at practice <input type="number" id="run-n" min="0" max="40" inputmode="numeric" placeholder="e.g. 12"></label>' +
+      '<label>Players at practice <input type="number" id="run-n" min="0" max="60" inputmode="numeric" placeholder="e.g. 12" value="' + esc(S.plan.skaters || "") + '"></label>' +
       '<label>Notes for next time <textarea id="run-notes" rows="3" placeholder="What worked, who needs extra help, what to repeat…"></textarea></label>' +
       '<div class="actions"><button class="btn primary" id="run-save">Save to history</button></div>');
     $("#run-save").addEventListener("click", function () {
       var p = S.plan;
-      S.history.push({id: uid(), planId: p.id, date: $("#run-date").value || today(), title: p.title || themeLabel(p.theme), theme: p.theme, slot: p.slot, share: p.share,
+      S.history.push({id: uid(), planId: p.id, level: curLevel(), date: $("#run-date").value || today(), title: p.title || themeLabel(p.theme, curLevel()), theme: p.theme, slot: p.slot, share: p.share,
         rating: +$("#run-rate").value, players: +$("#run-n").value || null, notes: $("#run-notes").value,
         blocks: p.blocks.map(function (b) { return {drillId: b.drillId, dur: b.dur}; })});
       persist(); closeModal(); toast("Logged in season history ✔");
     });
   }
   function renderSeason() {
-    var H = S.history.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    var lv = curLevel();
+    var H = S.history.filter(function (h) { return levelOf(h) === lv; }).sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    $("#season-title").textContent = "Season summary – " + LEVELS[lv].label;
     var mins = 0, byCat = {}, counts = {}, line = 0, act = 0, game = 0;
     H.forEach(function (h) {
       var st = planStats(h.blocks); mins += st.total; line += st.lineMin; act += st.active; game += st.gamePct * st.active;
@@ -1389,22 +1931,22 @@ if (typeof document !== "undefined") (function () {
     });
     var max = Math.max.apply(null, Object.keys(byCat).map(function (c) { return byCat[c]; }).concat([1]));
     var top = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; }).slice(0, 6);
-    var never = DRILLS.filter(function (d) { return !counts[d.id]; }).length;
+    var never = levelDrills(lv).filter(function (d) { return !counts[d.id]; }).length;
     $("#season-stats").innerHTML = H.length ? '<div class="tiles">' +
       '<div class="tile"><span>Practices</span><b>' + H.length + "</b></div>" +
       '<div class="tile"><span>Ice time planned</span><b>' + Math.floor(mins / 60) + "h " + (mins % 60) + "m</b></div>" +
-      '<div class="tile ' + (act && line / act <= LINE_TARGET ? "good" : "warn") + '"><span>Avg time in lines</span><b>' + pct(act ? line / act : 0) + "</b></div>" +
+      '<div class="tile ' + (act && line / act <= LEVELS[lv].lineTarget ? "good" : "warn") + '"><span>Avg time in lines</span><b>' + pct(act ? line / act : 0) + "</b></div>" +
       '<div class="tile"><span>Avg game time</span><b>' + pct(act ? game / act : 0) + "</b></div></div>" +
       "<h3>Minutes by skill area (season)</h3><table class='hbars'><tbody>" + Object.keys(CATS).filter(function (c) { return byCat[c]; }).map(function (c) {
         return "<tr><th>" + esc(CATS[c].label) + '</th><td><span class="hbar" style="width:' + (byCat[c] / max * 100).toFixed(1) + "%;background:" + CATS[c].color + '" title="' + byCat[c] + ' min"></span></td><td class="num">' + byCat[c] + " min</td></tr>";
       }).join("") + "</tbody></table>" +
       "<h3>Most-used drills</h3><ol class='small'>" + top.map(function (id) { return "<li>" + esc(drillById(id).name) + " – " + counts[id] + "×</li>"; }).join("") + "</ol>" +
       '<p class="small muted">' + never + " library drills not used yet this season – try a new one!</p>"
-      : '<p class="muted">No practices logged yet. After a practice, open its plan and press <b>Log as run</b>.</p>';
+      : '<p class="muted">No ' + esc(LEVELS[lv].label) + ' practices logged yet. After a practice, open its plan and press <b>Log as run</b>. (Switch level at the top to see the other level.)</p>';
     var rate = {1: "😐", 2: "🙂", 3: "😀"};
     $("#history-list").innerHTML = H.map(function (h) {
       var st = planStats(h.blocks);
-      return '<li class="row-card"><div><b>' + (rate[h.rating] || "") + " " + esc(fmtDate(h.date)) + " – " + esc(h.title) + "</b><small>" + h.slot + " min · " + esc(themeLabel(h.theme)) + " · " + AREA_LABEL[h.share] +
+      return '<li class="row-card"><div><b>' + (rate[h.rating] || "") + " " + esc(fmtDate(h.date)) + " – " + esc(h.title) + "</b><small>" + h.slot + " min · " + esc(themeLabel(h.theme, levelOf(h))) + " · " + AREA_LABEL[h.share] +
         (h.players ? " · " + h.players + " players" : "") + " · lines " + pct(st.idle) + "</small>" + (h.notes ? '<p class="small">' + esc(h.notes) + "</p>" : "") +
         '<details><summary class="small">Drills</summary><ol class="small">' + h.blocks.map(function (b) { return "<li>" + esc(drillById(b.drillId).name) + " (" + b.dur + "′)</li>"; }).join("") + "</ol></details></div>" +
         '<div class="row-actions"><button class="btn sm" data-reuse="' + h.id + '">Reuse plan</button><button class="btn sm danger" data-delhist="' + h.id + '">Delete</button></div></li>';
@@ -1413,7 +1955,9 @@ if (typeof document !== "undefined") (function () {
 
   /* ----- Print views ----- */
   function headerLine(p) {
-    return esc(p.team || "") + " · " + esc(fmtDate(p.date)) + (p.start ? " · " + esc(clock(p.start, 0)) : "") + " · " + p.slot + "-min slot · " + AREA_LABEL[p.share] + " · Theme: " + esc(themeLabel(p.theme));
+    var lv = levelOf(p), r = ratioInfo(p);
+    return esc(p.team || "") + " · " + esc(fmtDate(p.date)) + (p.start ? " · " + esc(clock(p.start, 0)) : "") + " · " + p.slot + "-min slot · " + AREA_LABEL[p.share] + " · Theme: " + esc(themeLabel(p.theme, lv)) +
+      (lv === "lts" ? " · Level: Learn to Skate" + (r.per ? " · " + r.n + " skaters / " + r.c + " coaches (1:" + (Math.round(r.per * 10) / 10) + ")" : "") : "");
   }
   function sheetHTML(p) {
     var st = planStats(p.blocks), t = 0, n = p.blocks.length;
@@ -1431,16 +1975,20 @@ if (typeof document !== "undefined") (function () {
           '<div class="pprog">▲ ' + esc(d.prog[0] || "") + " &nbsp; ▼ " + esc(d.reg[0] || "") + (b.note ? ' &nbsp; <b>Note:</b> ' + esc(b.note) : "") + "</div></div></div>";
       }).join("") + "</div>" +
       '<footer class="pf"><div class="legend">' + legendSVG() + '</div><div class="pnotes">' + (p.notes ? "<b>Notes:</b> " + esc(p.notes) : "<b>Notes:</b> ________________________________________________") +
-      '</div><div class="small">Learn to Train: fun first, lots of touches, short instructions (&lt;30 s), both sides/directions, everyone tries goalie. Ring is passed over every blue line.</div></footer></section>';
+      '</div><div class="small">' + (levelOf(p) === "lts"
+        ? "<b>Safety:</b> CSA helmet + face mask on every skater, chin strap snug (1 finger), gloves on; re-check after falls. Ratio 1 coach : 4–6 skaters (1:3–4 first-timers, never over 1:8). Active Start: fun first, show don't tell (&lt;20 s), waves of 4–5 or stations – no long lines, praise effort. Fall: bend &amp; sit to the side · Get up: bear → knight → stand."
+        : "Learn to Train: fun first, lots of touches, short instructions (&lt;30 s), both sides/directions, everyone tries goalie. Ring is passed over every blue line.") + "</div></footer></section>";
   }
   function benchHTML(p) {
     var t = 0, st = planStats(p.blocks);
-    var card = '<div class="bench"><h2>' + esc(p.title || "Practice") + "</h2><p class='bh'>" + esc(fmtDate(p.date)) + (p.start ? " · " + clock(p.start, 0) : "") + " · " + p.slot + " min · " + AREA_LABEL[p.share] + "</p><ol>" +
+    var card = '<div class="bench"><h2>' + esc(p.title || "Practice") + "</h2><p class='bh'>" + (levelOf(p) === "lts" ? "Learn to Skate · " : "") + esc(fmtDate(p.date)) + (p.start ? " · " + clock(p.start, 0) : "") + " · " + p.slot + " min · " + AREA_LABEL[p.share] + "</p><ol>" +
       p.blocks.map(function (b) {
         var d = drillById(b.drillId), from = t; t += b.dur;
         return '<li style="--c:' + CATS[d.cat].color + '"><span class="bt">' + clock(p.start, from) + '</span><span class="bn"><b>' + esc(d.name) + "</b> <em>" + b.dur + "′</em>" +
           (d.cues[0] ? "<small>" + esc(d.cues[0]) + (d.cues[1] ? " · " + esc(d.cues[1]) : "") + "</small>" : "") + (b.note ? "<small>📝 " + esc(b.note) + "</small>" : "") + "</span><span class='box'></span></li>";
-      }).join("") + "</ol><p class='bf'>End " + clock(p.start, st.total) + " · Lines ~" + pct(st.idle) + " · Pass over blue lines · 5-sec free pass · Crease = goalie only</p></div>";
+      }).join("") + "</ol><p class='bf'>End " + clock(p.start, st.total) + " · Lines ~" + pct(st.idle) + (levelOf(p) === "lts"
+        ? " · ⛑ Helmets + chin straps checked · Ratio ≤ 1:6" + (ratioInfo(p).per ? " (today " + ratioInfo(p).n + " skaters, " + ratioInfo(p).c + " coaches)" : "") + " · Fall: sit to the side · Up: bear → knight → stand"
+        : " · Pass over blue lines · 5-sec free pass · Crease = goalie only") + "</p></div>";
     return '<section class="page benchpage">' + card + card + '<div class="cutline">✂ cut</div></section>';
   }
   function openPrint(mode, plans) {
@@ -1452,7 +2000,7 @@ if (typeof document !== "undefined") (function () {
 
   /* ----- Export / import ----- */
   function exportData() {
-    var data = {app: "ringette-u10-planner", version: 1, exported: new Date().toISOString(), plans: S.plans, history: S.history, favs: S.favs, settings: S.settings, current: S.plan};
+    var data = {app: "ringette-u10-planner", version: 1, exported: new Date().toISOString(), plans: S.plans, history: S.history, favs: S.favs, settings: S.settings, current: S.plan, drafts: S.drafts};
     var json = JSON.stringify(data, null, 2);
     $("#io-text").value = json;
     try {
@@ -1472,7 +2020,9 @@ if (typeof document !== "undefined") (function () {
     try {
       var m = mergeData(S, data, replace);
       S.plans = m.plans; S.history = m.history; S.favs = m.favs; S.settings = m.settings;
-      if (replace && validPlan(data.current)) { S.plan = data.current; syncForm(); }
+      if (!S.settings.lts) S.settings.lts = {team: "Learn to Skate", slot: 45, share: "half", theme: "balanced", start: ""};
+      if (replace && validPlan(data.current)) { S.drafts = {}; S.plan = data.current; }
+      syncForm();
       persist(); renderPlan(); renderSaved(); renderSeason(); renderLibrary();
       toast("Imported: " + (data.plans || []).length + " plans, " + (data.history || []).length + " history entries.");
     } catch (e) { toast(e.message); }
@@ -1481,30 +2031,30 @@ if (typeof document !== "undefined") (function () {
   /* ----- Wire up ----- */
   function init() {
     load();
-    $("#f-theme").innerHTML = Object.keys(THEMES).map(function (k) { return '<option value="' + k + '">' + esc(THEMES[k].label) + "</option>"; }).join("");
-    $("#lib-cat").innerHTML = '<option value="">All categories</option>' + Object.keys(CATS).filter(function (c) { return c !== "break"; })
-      .map(function (c) { return '<option value="' + c + '">' + esc(CATS[c].label) + " (" + DRILLS.filter(function (d) { return d.cat === c; }).length + ")</option>"; }).join("");
-    $("#drill-total").textContent = DRILLS.length;
     $("#legend-big").innerHTML = legendSVG();
     syncForm(); renderPlan(); renderLibrary();
     if (!storageOK) toast("Browser storage is blocked – use Export to keep your plans.");
 
     $$(".tab").forEach(function (t) { t.addEventListener("click", function () { showTab(t.dataset.tab); }); });
     [["#f-title", "title"], ["#f-team", "team"], ["#f-notes", "notes"]].forEach(function (f) {
-      $(f[0]).addEventListener("input", function () { S.plan[f[1]] = this.value; persist(); if (f[1] === "team") { S.settings.team = this.value; } });
+      $(f[0]).addEventListener("input", function () { if (f[1] === "team") { lvSet().team = this.value; } S.plan[f[1]] = this.value; persist(); });
     });
+    [["#f-skaters", "skaters"], ["#f-coaches", "coaches"]].forEach(function (f) {
+      $(f[0]).addEventListener("input", function () { S.plan[f[1]] = this.value === "" ? "" : Math.max(0, Math.round(+this.value) || 0); changed(); });
+    });
+    $$(".lvl-btn").forEach(function (b) { b.addEventListener("click", function () { setLevel(b.dataset.level); }); });
     $("#f-date").addEventListener("change", function () { S.plan.date = this.value; persist(); });
-    $("#f-start").addEventListener("change", function () { S.plan.start = this.value; S.settings.start = this.value; changed(); });
-    $("#f-theme").addEventListener("change", function () { S.plan.theme = this.value; S.settings.theme = this.value; changed(); });
-    $("#f-share").addEventListener("change", function () { S.plan.share = this.value; S.settings.share = this.value; changed(); });
-    $$('input[name="slot"]').forEach(function (r) { r.addEventListener("change", function () { S.plan.slot = +this.value; S.settings.slot = +this.value; changed(); }); });
+    $("#f-start").addEventListener("change", function () { S.plan.start = this.value; lvSet().start = this.value; changed(); });
+    $("#f-theme").addEventListener("change", function () { S.plan.theme = this.value; lvSet().theme = this.value; changed(); });
+    $("#f-share").addEventListener("change", function () { S.plan.share = this.value; lvSet().share = this.value; changed(); });
+    $("#f-slots").addEventListener("change", function (e) { if (e.target.name !== "slot") return; S.plan.slot = +e.target.value; lvSet().slot = +e.target.value; changed(); });
 
     $("#btn-build").addEventListener("click", doAutoBuild);
     $("#btn-add").addEventListener("click", function () { openPicker({}); });
     $("#btn-water").addEventListener("click", function () { S.plan.blocks.push({uid: uid(), drillId: "water", dur: 2, note: ""}); changed(); });
     $("#btn-save").addEventListener("click", function () { savePlan(false); });
     $("#btn-copy").addEventListener("click", function () { savePlan(true); });
-    $("#btn-new").addEventListener("click", function () { if (S.plan.blocks.length && !confirm("Start a new empty plan? (Save this one first if you want to keep it.)")) return; S.plan = newPlan(); syncForm(); changed(); });
+    $("#btn-new").addEventListener("click", function () { if (S.plan.blocks.length && !confirm("Start a new empty plan? (Save this one first if you want to keep it.)")) return; S.plan = newPlan(curLevel()); syncForm(); changed(); });
     $("#btn-print").addEventListener("click", function () { openPrint("sheet", [S.plan]); });
     $("#btn-bench").addEventListener("click", function () { openPrint("bench", [S.plan]); });
     $("#btn-run").addEventListener("click", openRunDialog);
@@ -1519,6 +2069,7 @@ if (typeof document !== "undefined") (function () {
     $("#lib-cat").addEventListener("change", function () { lib.cat = this.value; renderLibrary(); });
     $("#lib-area").addEventListener("change", function () { lib.area = this.value; renderLibrary(); });
     $("#lib-fav").addEventListener("change", function () { lib.favOnly = this.checked; renderLibrary(); });
+    $("#lib-all").addEventListener("change", function () { lib.all = this.checked; applyLevel(); renderLibrary(); });
 
     document.addEventListener("click", function (e) {
       var t = e.target.closest("[data-info],[data-add],[data-fav],[data-pick],[data-load],[data-print],[data-bench],[data-delplan],[data-reuse],[data-delhist]");
@@ -1535,7 +2086,7 @@ if (typeof document !== "undefined") (function () {
       else if (ds.reuse) {
         var h = S.history.find(function (x) { return x.id === ds.reuse; });
         if (h) {
-          S.plan = newPlan(); S.plan.title = h.title; S.plan.theme = h.theme; S.plan.slot = h.slot; S.plan.share = h.share;
+          S.plan = newPlan(levelOf(h)); S.plan.title = h.title; S.plan.theme = h.theme; S.plan.slot = h.slot; S.plan.share = h.share;
           S.plan.blocks = h.blocks.map(function (b) { return {uid: uid(), drillId: b.drillId, dur: b.dur, note: ""}; });
           syncForm(); changed(); showTab("plan"); toast("Copied into a new plan for today");
         }
@@ -1556,10 +2107,10 @@ if (typeof document !== "undefined") (function () {
     $("#io-import-text").addEventListener("click", function () { importText($("#io-text").value); });
     $("#io-reset").addEventListener("click", function () {
       if (!confirm("Erase ALL saved plans, favourites and history from this device?")) return;
-      S.plans = []; S.history = []; S.favs = []; S.plan = newPlan(); syncForm(); persist(); renderPlan(); renderLibrary(); toast("All data cleared.");
+      S.plans = []; S.history = []; S.favs = []; S.drafts = {}; S.plan = newPlan(curLevel()); syncForm(); persist(); renderPlan(); renderLibrary(); toast("All data cleared.");
     });
   }
-  window.__planner = {S: S, openPrint: openPrint, renderPlan: renderPlan};
+  window.__planner = {S: S, openPrint: openPrint, renderPlan: renderPlan, setLevel: setLevel};
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
 
