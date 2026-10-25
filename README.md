@@ -28,9 +28,9 @@ Everything is in **one file, `index.html`**: no install, no internet, no account
 - **Themes:** balanced mix, first time on ice (balance & falling), marching/gliding/striding, stopping (snowplow), backward skating, edges/turns/crossover intro, ring & stick fun.
 - **Minimal lining up:** the auto-builder targets **under 15% of time in lines** (U10 target is 20%) by using everyone-at-once drills, waves of 4–5 across the width of the ice, and 3–4 short stations with a coach at each.
 - **Coach-to-skater ratio:** enter *skaters expected* and *coaches/helpers on ice*. The summary shows the ratio and warns above 1:6, with a stronger warning above 1:8 (aim for 1:3–4 with first-timers). These numbers are **the planner's own rule of thumb**, not a Ringette Canada rule. For comparison, Skate Canada's CanSkate standard is at least 1 coach/helper per 10 skaters, with 1 per 5 as better practice.
-- **Equipment:** every skater wears a CSA hockey helmet with the chin strap fastened, a CSA Type A/B ringette facial protector and a neck protector (rule 5.6). Goalies wear a Type A/B or a Type C goalie facial protector (rule 5.10.d). On-ice coaches and helpers must wear helmets (Ringette Canada OP-05); they don't need masks.
+- **Equipment:** every skater wears a CSA hockey helmet with the chin strap fastened, a CSA Type A/B ringette facial protector and a neck protector (rule 5.6). Shoulder pads designed for ice sports, knee, shin and elbow pads, and hip, tailbone and genital protection are recommended for Learn to Skate (no rule source covers this level). At U10 those pads are required: shoulder, knee, shin and elbow pads (rule 5.8) and hip, tailbone and genital protection (rule 5.9). Goalies wear a Type A/B or a Type C goalie facial protector (rule 5.10.d). On-ice coaches and helpers must wear helmets (Ringette Canada OP-05); they don't need masks.
 - **Helper screening:** follow the Rule of Two. Anyone on the ice as a coach or helper completes Respect in Sport and gets a police check as your association requires. The Guide tab points to Ringette Ontario's Screening Policy rather than quoting its levels.
-- **Safety cues:** a gear check in the warm-up (helmet, chin strap, facial protector, neck protector), safe falling and the *bear → knight → stand* get-up. Every practice sheet and bench card also carries a gear and ratio reminder.
+- **Safety cues:** a gear check in the warm-up (helmet, chin strap, facial protector, neck protector; shoulder pads, knee, shin and elbow pads, and hip, tailbone and genital protection recommended), safe falling and the *bear → knight → stand* get-up. Every practice sheet and bench card also carries a gear and ratio reminder.
 - Warnings tell you when there's no fun game, a block runs longer than 12 minutes, there's no station rotation in a skill-heavy plan, or the ratio is too high.
 - In the drill picker and the Drills tab, tick **All levels** to borrow drills from the other level (for example, Learn to Skate drills for weak skaters in a U10 practice).
 
@@ -72,7 +72,7 @@ Each drill has: name, skill focus, suggested duration, players/grouping, ice are
 - Under ~20% of practice time standing in lines (each drill has an estimate, and the auto-builder checks the total).
 - 25–35% of the practice in small-area games.
 - Short instructions with 2–3 cues, both sides and both directions, everyone gets a turn in goal.
-- Ringette rules taught through drills: pass over each blue line, but only **one blue line per pass** (a neutral-zone player must play it). Also 5-second free passes, crease is for the goalie only, and at most **three skaters per team (plus the goalie) past the free-play line**.
+- Ringette rules taught through drills: pass over each blue line, but only **one blue line per pass** (a neutral-zone player must play it). Also 5-second free passes, crease is for the goalie only, and at most **three skaters per team (plus the goalie) past the free-play line**. A fourth skater may enter while a delayed penalty is signalled against the other team (rule 8.6.b), or while that team substitutes its goalie (rule 8.6.c).
 - Safety built into the contact and equipment drills:
   - Stick lifts only, with sticks below the knees, in tag and keep-away games.
   - Staggered, angled corner entries, and play stops on any contact.
@@ -86,9 +86,9 @@ Each drill has: name, skill focus, suggested duration, players/grouping, ice are
 ### Sources cited in the Guide tab
 These are plain-text references. The page never fetches them.
 - Simplified Rules of Ringette: https://cloud.rampinteractive.com/apringette/files/Coaching/Simplified%20Rules%20of%20Ringette.pdf
-- 2019–2021 Rule Changes summary: https://cloud.rampinteractive.com/apringette/files/Coaching/2019%20-%202021%20Rule%20Changes%2C%20summary.pdf
-- Ringette Canada Official Rules & Case Book 2025–2027: https://www.ringette.ca/wp-content/uploads/2025/09/Final-Draft-Official-Rules-and-Case-Book-2025-2027-English-5.5x8.5-sm-1.pdf
-- Ringette Canada Policy OP-05: https://www.ringette.ca/wp-content/uploads/2025/06/PolicyOP-05_2025__CoachingCertification_EN.pdf
+- 2019–2021 Rule Changes summary (historical): https://cloud.rampinteractive.com/apringette/files/Coaching/2019%20-%202021%20Rule%20Changes%2C%20summary.pdf
+- Ringette Canada Official Rules & Case Book 2025–2027 (final draft): https://www.ringette.ca/wp-content/uploads/2025/09/Final-Draft-Official-Rules-and-Case-Book-2025-2027-English-5.5x8.5-sm-1.pdf
+- Ringette Canada Policy OP-05: https://www.ringette.ca/wp-content/uploads/2025/10/PolicyOP-05_2025__CoachingCertification_EN-1.pdf
 - Skate Canada CanSkate requirements: https://info.skatecanada.ca/index.php/en-ca/procedures/394-canskate-requirements-and-delivery-standards.html
 - Ringette Ontario Screening Policy (2025): https://cloud.rampinteractive.com/ringetteontariogames/files/Policies/2025/SCREENING%20POLICY.pdf
 
